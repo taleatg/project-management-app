@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import './Header.scss';
+import LangSelect from './LangSelect';
 
 const pages = ['Welcome', 'Home'];
 
@@ -122,6 +123,7 @@ const ResponsiveAppBar = () => {
               </Link>
             </Button>
           </Box>
+          <LangSelect />
           <Link to={`/login`} className="link link__menu">
             <Button color="inherit">Logout</Button>
           </Link>
