@@ -26,3 +26,16 @@
     justify-content: space-around;
   }
 }
+
+.MuiCollapse-wrapperInner {
+  margin-top: 10px;
+}
+
+.MuiAlert-icon {
+  display: flex;
+  align-items: center;
+}
+
+.MuiAlert-message {
+  font-size: 20px;
+}

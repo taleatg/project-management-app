@@ -12,11 +12,29 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import './Header.scss';
 import LangSelect from './LangSelect';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { authSlice } from '../store/reducers/checkAuthentication';
 
-const pages = ['Welcome', 'Home'];
+type IPages = {
+  [key: string]: string;
+};
 
 const ResponsiveAppBar = () => {
+  const dispatch = useAppDispatch();
+  const { switchAuthorization } = authSlice.actions;
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+
+  const pages: IPages = isAuthenticated
+    ? {
+        welcome: 'Welcome',
+        home: 'Home',
+        edit: 'Edit profile',
+        create: 'New board',
+      }
+    : { welcome: 'Welcome' };
+
+  const keys = Object.keys(pages);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -68,22 +86,15 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {keys.map((key) => (
+                <MenuItem key={key} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    <Link to={`/${page}`} className={'link link__burger-menu'}>
-                      {page}
+                    <Link to={`/${key}`} className={'link link__burger-menu'}>
+                      {pages[key]}
                     </Link>
                   </Typography>
                 </MenuItem>
               ))}
-              <MenuItem key="edit-profile" onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link to={'/edit-profile'} className={'link link__burger-menu'}>
-                    Edit profile
-                  </Link>
-                </Typography>
-              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -95,44 +106,32 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {keys.map((key) => (
               <Button
-                key={page}
+                key={key}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'blue', display: 'block' }}
               >
-                <Link to={`/${page}`} className="link link__menu">
-                  {page}
+                <Link to={`/${key}`} className="link link__menu">
+                  {pages[key]}
                 </Link>
               </Button>
             ))}
-            <Button
-              key="create-new-board"
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Create new board
-            </Button>
-            <Button
-              key="edit-profile"
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'blue', display: 'block' }}
-            >
-              <Link to={'/edit-profile'} className="link link__menu">
-                Edit profile
-              </Link>
-            </Button>
           </Box>
           <LangSelect />
-          <Link to={`/login`} className="link link__menu">
-            <Button color="inherit">Logout</Button>
-          </Link>
-          <Link to={`/login`} className="link link__menu">
-            <Button color="inherit">Login</Button>
-          </Link>
-          <Link to={`/login`} className="link link__menu">
-            <Button color="inherit">Sign up</Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link to={`/welcome`} className="link link__menu">
+              <Button color="inherit" onClick={() => dispatch(switchAuthorization(false))}>
+                Logout
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to={`/login`} className="link link__menu">
+                <Button color="inherit">Login / Sign Up</Button>
+              </Link>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
