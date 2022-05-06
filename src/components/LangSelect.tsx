@@ -4,12 +4,16 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { langSlice } from '../store/reducers/langSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
 
 export default function LangSelect() {
-  const [lang, setLang] = React.useState('English');
+  const { selectLang } = langSlice.actions;
+  const dispatch = useAppDispatch();
+  const { lang } = useAppSelector((state) => state.langReducer);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setLang(event.target.value as string);
+    dispatch(selectLang(event.target.value));
   };
 
   return (
