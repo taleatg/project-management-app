@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
 import { useForm, Controller, SubmitHandler, useFormState } from 'react-hook-form';
+import { signIn } from './services';
+import { useNavigate } from 'react-router-dom';
 import './AuthForm.scss';
 
 interface SignInForm {
@@ -11,20 +13,12 @@ interface SignInForm {
 
 export const AuthForm = () => {
   const { handleSubmit, control, reset } = useForm<SignInForm>();
-  const [authorization, setAuthorization] = useState('login');
+  const [authorization, setAuthorization] = useState('signin');
   const { errors } = useFormState({ control });
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<SignInForm> = (data) => {
-    console.log(data);
-    reset({
-      name: '',
-      login: '',
-      password: '',
-    });
-  };
-
-  const switchAuthorization = () => {
-    setAuthorization(authorization === 'login' ? 'signUp' : 'login');
+  const authorizationSwitch = () => {
+    setAuthorization(authorization === 'signin' ? 'signup' : 'signin');
   };
 
   const createInput = (
@@ -63,13 +57,38 @@ export const AuthForm = () => {
     );
   };
 
+  const onSubmit: SubmitHandler<SignInForm> = async (data) => {
+    const body: Record<string, string> = {
+      login: data.login,
+      password: data.password,
+    };
+    if (authorization === 'signup') {
+      body.name = data.name;
+      setAuthorization('signin');
+    }
+    reset({
+      name: '',
+      login: '',
+      password: '',
+    });
+
+    const signin = await signIn(
+      body,
+      `https://project-management-app.herokuapp.com/${authorization}`
+    );
+
+    if (signin.token) {
+      navigate('/home');
+    }
+  };
+
   return (
     <div className="auth-form">
       <Typography variant="h4" component="div" gutterBottom>
-        {authorization === 'login' ? 'Authorization' : 'Registration'}
+        {authorization === 'signin' ? 'Authorization' : 'Registration'}
       </Typography>
       <form className="auth-form__form" onSubmit={handleSubmit(onSubmit)}>
-        {authorization === 'signUp'
+        {authorization === 'signup'
           ? createInput('name', /^[A-Za-zА-Яа-я_]{2,}/, 'Enter at least two letters', 'text')
           : null}
         {createInput(
@@ -88,8 +107,8 @@ export const AuthForm = () => {
           <Button type="submit" variant="contained">
             Submit
           </Button>
-          <Button variant="outlined" onClick={switchAuthorization}>
-            {authorization === 'login' ? 'Sign up' : 'Login'}
+          <Button variant="outlined" onClick={authorizationSwitch}>
+            {authorization === 'signin' ? 'Sign up' : 'Login'}
           </Button>
         </div>
       </form>
