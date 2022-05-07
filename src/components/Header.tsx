@@ -12,25 +12,29 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import './Header.scss';
 import LangSelect from './LangSelect';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { authSlice } from '../store/reducers/checkAuthentication';
 
 type IPages = {
   [key: string]: string;
 };
 
-const isAuthenticated = true; // TODO: get value from store
-const pages: IPages = isAuthenticated
-  ? {
-      welcome: 'Welcome',
-      home: 'Home',
-      edit: 'Edit profile',
-      create: 'New board',
-    }
-  : { welcome: 'Welcome' };
-
-const keys = Object.keys(pages);
-
 const ResponsiveAppBar = () => {
+  const dispatch = useAppDispatch();
+  const { switchAuthorization } = authSlice.actions;
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+
+  const pages: IPages = isAuthenticated
+    ? {
+        welcome: 'Welcome',
+        home: 'Home',
+        edit: 'Edit profile',
+        create: 'New board',
+      }
+    : { welcome: 'Welcome' };
+
+  const keys = Object.keys(pages);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -117,15 +121,14 @@ const ResponsiveAppBar = () => {
           <LangSelect />
           {isAuthenticated ? (
             <Link to={`/welcome`} className="link link__menu">
-              <Button color="inherit">Logout</Button>
+              <Button color="inherit" onClick={() => dispatch(switchAuthorization(false))}>
+                Logout
+              </Button>
             </Link>
           ) : (
             <>
               <Link to={`/login`} className="link link__menu">
-                <Button color="inherit">Login</Button>
-              </Link>
-              <Link to={`/login`} className="link link__menu">
-                <Button color="inherit">Sign up</Button>
+                <Button color="inherit">Login / Sign Up</Button>
               </Link>
             </>
           )}

@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import langReducer from './reducers/langSlice';
+import authReducer from './reducers/checkAuthentication';
 
 const rootReducer = combineReducers({
   langReducer,
+  authReducer,
 });
 
 const store = configureStore({
