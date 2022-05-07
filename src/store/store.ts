@@ -2,10 +2,12 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import langReducer from './reducers/langSlice';
 import authReducer from './reducers/checkAuthentication';
+import boardReducer from './reducers/boardSlice';
 
 const rootReducer = combineReducers({
   langReducer,
   authReducer,
+  boardReducer,
 });
 
 const store = configureStore({
