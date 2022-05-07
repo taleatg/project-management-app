@@ -1,21 +1,25 @@
-import { BoardData } from './interfaces';
 import axios from 'axios';
 import { baseUrl } from './columnService';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export async function getBoardsList(token: string): Promise<BoardData[]> {
-  return axios({
-    method: 'get',
-    url: `${baseUrl}/boards`,
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then((res) => {
-      console.log(res.data);
-      return res.data;
+export const getBoardsList = createAsyncThunk(
+  'board/getBoardsList',
+  async (token: string, { rejectWithValue }) => {
+    return axios({
+      method: 'get',
+      url: `${baseUrl}/boards`,
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .catch((error) => {
-      throw error;
-    });
-}
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          return rejectWithValue(error.message);
+        }
+      });
+  }
+);
 
 export async function postBoard(token: string) {
   return axios({
@@ -23,11 +27,7 @@ export async function postBoard(token: string) {
     url: `${baseUrl}/boards`,
     data: { title: 'title' },
     headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  }).catch(function (error) {
+    throw error;
+  });
 }
