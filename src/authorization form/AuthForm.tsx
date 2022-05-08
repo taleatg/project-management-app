@@ -7,7 +7,7 @@ import { useAppDispatch } from '../store/store';
 import { authSlice } from '../store/reducers/checkAuthentication';
 import { FormField } from './FormFields';
 import './AuthForm.scss';
-import { BackendErrors } from './BackendErrors';
+import { BackendResponse } from './BackendResponse';
 
 export interface SignInForm {
   name: string;
@@ -47,7 +47,7 @@ export const AuthForm = () => {
     }
     reset();
 
-    const signin = await signIn(body, authorization, 'POST');
+    const signin = await signIn({ body: body, path: authorization });
 
     if (signin.token) {
       const decoded = parseJwt(signin.token);
@@ -56,7 +56,10 @@ export const AuthForm = () => {
         switchAuthorization({ isAuthenticated: true, token: signin.token, userId: decoded.userId })
       );
     } else if (signin.message) {
-      setBackendErrors(signin.message.join(', '));
+      setBackendErrors(signin.message);
+      setTimeout(() => {
+        setBackendErrors('');
+      }, 5000);
     } else if (signin.id) {
       setAuthorization('signin');
       setValue('login', data.login);
@@ -108,7 +111,7 @@ export const AuthForm = () => {
         </form>
       </div>
 
-      {backendErrors ? <BackendErrors backendErrors={backendErrors} /> : null}
+      {backendErrors ? <BackendResponse type="error" backendErrors={backendErrors} /> : null}
     </>
   );
 };

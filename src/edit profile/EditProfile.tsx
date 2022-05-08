@@ -7,7 +7,7 @@ import './EditProfile.scss';
 import { deleteUser, updateUser } from '../authorization form/services';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
-import { BackendErrors } from '../authorization form/BackendErrors';
+import { BackendResponse } from '../authorization form/BackendResponse';
 import { useNavigate } from 'react-router-dom';
 import { authSlice } from '../store/reducers/checkAuthentication';
 
@@ -15,10 +15,11 @@ export function EditProfile() {
   const dispatch = useAppDispatch();
   const { token } = useAppSelector((state) => state.authReducer);
   const { switchAuthorization } = authSlice.actions;
-  const { handleSubmit, control } = useForm<SignInForm>();
+  const { handleSubmit, control, reset } = useForm<SignInForm>();
   const { errors } = useFormState({ control });
   const { userId } = useAppSelector((state) => state.authReducer);
   const [backendErrors, setBackendErrors] = useState('');
+  const [isSuccessfulUpdate, setIsSuccessfulUpdate] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
@@ -29,16 +30,33 @@ export function EditProfile() {
     };
 
     if (data.password === data.repeatPassword) {
-      const signin = await updateUser(body, `users/${userId}`, 'PUT', token);
+      const signin = await updateUser({
+        body: body,
+        path: `users/${userId}`,
+        method: 'PUT',
+        token: token,
+      });
+      reset();
 
       if (signin.message) {
-        setBackendErrors(signin.message.join(', '));
+        setBackendErrors(signin.message);
       }
+
+      if (signin.id) {
+        setIsSuccessfulUpdate(true);
+      }
+    } else {
+      setBackendErrors("Passwords don't match");
     }
+
+    setTimeout(() => {
+      setBackendErrors('');
+      setIsSuccessfulUpdate(false);
+    }, 5000);
   };
 
   const deleteAccount = async () => {
-    await deleteUser(`users/${userId}`, token);
+    await deleteUser({ path: `users/${userId}`, token: token });
     navigate('/home');
     dispatch(switchAuthorization({ isAuthenticated: false, token: token, userId: userId }));
   };
@@ -110,7 +128,10 @@ export function EditProfile() {
           </div>
         </form>
       </div>
-      {backendErrors ? <BackendErrors backendErrors={backendErrors} /> : null}
+      {backendErrors ? <BackendResponse type="error" backendErrors={backendErrors} /> : null}
+      {isSuccessfulUpdate ? (
+        <BackendResponse type="success" backendErrors="User data has been successfully updated!" />
+      ) : null}
     </>
   );
 }
