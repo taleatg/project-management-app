@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ConfirmModalProps {
   textButton: string;
@@ -28,8 +29,13 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
   };
 
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen} color={'warning'}>
+    <div>
+      <Button
+        variant="contained"
+        color="error"
+        startIcon={<DeleteIcon />}
+        onClick={handleClickOpen}
+      >
         {props.textButton}
       </Button>
       <Dialog
@@ -53,6 +59,6 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }

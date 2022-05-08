@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Alert, IconButton, Collapse, Box } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { useForm, Controller, SubmitHandler, useFormState } from 'react-hook-form';
+import { Button, Typography } from '@mui/material';
+import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
 import { signIn } from './services';
 import { useNavigate } from 'react-router-dom';
-import './AuthForm.scss';
 import { useAppDispatch } from '../store/store';
 import { authSlice } from '../store/reducers/checkAuthentication';
+import { FormField } from './FormFields';
+import { BackendResponse } from './BackendResponse';
+import './AuthForm.scss';
 
-interface SignInForm {
+export interface SignInForm {
   name: string;
   login: string;
   password: string;
+  repeatPassword: string;
 }
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();
-  const { switchAuthorization, setToken } = authSlice.actions;
+  const { switchAuthorization, setToken, setUserId } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
   const [authorization, setAuthorization] = useState('signin');
   const [backendErrors, setBackendErrors] = useState('');
-  const [openError, setOpenError] = useState(true);
   const { errors } = useFormState({ control });
   const navigate = useNavigate();
 
@@ -28,40 +29,12 @@ export const AuthForm = () => {
     setAuthorization(authorization === 'signin' ? 'signup' : 'signin');
   };
 
-  const createInput = (
-    name: 'login' | 'name' | 'password',
-    validate: RegExp,
-    error: string,
-    type: string
-  ) => {
-    return (
-      <Controller
-        control={control}
-        name={name}
-        defaultValue=""
-        rules={{
-          required: `Enter ${name}`,
-          validate: (value: string) => {
-            if (!value.match(validate)) {
-              return error;
-            }
-            return true;
-          },
-        }}
-        render={({ field }) => (
-          <TextField
-            label={name}
-            type={type}
-            className="auth-input"
-            fullWidth
-            onChange={(e) => field.onChange(e)}
-            value={field.value}
-            error={!!errors[name]?.message}
-            helperText={errors[name]?.message}
-          />
-        )}
-      />
-    );
+  const parseJwt = (token: string) => {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
   };
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
@@ -74,22 +47,23 @@ export const AuthForm = () => {
     }
     reset();
 
-    const signin = await signIn(
-      body,
-      `https://project-management-app.herokuapp.com/${authorization}`
-    );
+    const signin = await signIn({ body: body, path: authorization });
 
     if (signin.token) {
+      const decoded = parseJwt(signin.token);
       navigate('/home');
       dispatch(switchAuthorization(true));
       dispatch(setToken(signin.token));
+      dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);
+      setTimeout(() => {
+        setBackendErrors('');
+      }, 5000);
     } else if (signin.id) {
       setAuthorization('signin');
       setValue('login', data.login);
       setValue('password', data.password);
-      dispatch(setToken(signin.token));
     }
   };
 
@@ -101,15 +75,26 @@ export const AuthForm = () => {
         </Typography>
         <form className="auth-form__form" onSubmit={handleSubmit(onSubmit)}>
           {authorization === 'signup'
-            ? createInput('name', /^[A-Za-zА-Яа-я_]{2,}/, 'Enter at least two letters', 'text')
+            ? FormField(
+                control,
+                errors.name?.message,
+                'name',
+                /^[A-Za-zА-Яа-я_]{2,}/,
+                'Enter at least two letters',
+                'text'
+              )
             : null}
-          {createInput(
+          {FormField(
+            control,
+            errors.login?.message,
             'login',
             /^[A-Za-z0-9]{5,}/,
             'Login must contain at least 5 Latin letters or numbers',
             'text'
           )}
-          {createInput(
+          {FormField(
+            control,
+            errors.password?.message,
             'password',
             /^[a-zA-Z0-9_]{8,}/,
             'Password must contain at least 8 characters',
@@ -126,29 +111,7 @@ export const AuthForm = () => {
         </form>
       </div>
 
-      {backendErrors ? (
-        <Box sx={{ width: '100%' }}>
-          <Collapse in={openError}>
-            <Alert
-              severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  onClick={() => {
-                    setOpenError(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
-              {backendErrors}
-            </Alert>
-          </Collapse>
-        </Box>
-      ) : null}
+      {backendErrors ? <BackendResponse type="error" backendErrors={backendErrors} /> : null}
     </>
   );
 };
