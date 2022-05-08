@@ -22,20 +22,24 @@ export const BoardPage = () => {
   return (
     <Container maxWidth="xl">
       <h2>{title}</h2>
-      <Button>
-        <AddBoxIcon /> {'Add column'}
-      </Button>
-      {allColumns.length !== 0 && (
+      <div className="columnButtons">
         <Button>
-          <AddBoxIcon /> {'Add task'}
+          <AddBoxIcon /> {'Add column'}
         </Button>
-      )}
+        {allColumns.length !== 0 && (
+          <Button>
+            <AddBoxIcon /> {'Add task'}
+          </Button>
+        )}
+      </div>
       <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="colomnList">
         {status === 'resolved' &&
           allColumns.length !== 0 &&
           allColumns.map((column) => (
-            <Grid item key={column.order}>
-              <Paper className="colomnList_item">{column.title}</Paper>
+            <Grid item key={column.order} className="colomnList_item">
+              <Paper className="colomnList_column">
+                <div>{column.title}</div>
+              </Paper>
             </Grid>
           ))}
       </Grid>
