@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/store';
 import { authSlice } from '../store/reducers/checkAuthentication';
 import { FormField } from './FormFields';
-import './AuthForm.scss';
 import { BackendResponse } from './BackendResponse';
+import './AuthForm.scss';
 
 export interface SignInForm {
   name: string;
