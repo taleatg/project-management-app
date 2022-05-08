@@ -30,12 +30,12 @@ export const BoardPage = () => {
           <AddBoxIcon /> {'Add task'}
         </Button>
       )}
-      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="colomnList">
         {status === 'resolved' &&
           allColumns.length !== 0 &&
           allColumns.map((column) => (
-            <Grid item xs={3} key={column.order}>
-              <Paper>{column.title}</Paper>
+            <Grid item key={column.order}>
+              <Paper className="colomnList_item">{column.title}</Paper>
             </Grid>
           ))}
       </Grid>

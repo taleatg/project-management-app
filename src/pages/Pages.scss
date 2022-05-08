@@ -1,0 +1,19 @@
+.boardList_item {
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+  padding: 0 20px 0 0;
+  align-items: center;
+}
+
+.colomnList {
+  margin-top: 1rem;
+}
+
+.colomnList_item {
+  display: flex;
+  width: 240px;
+  justify-content: space-between;
+  padding: 0 20px 0 0;
+  align-items: center;
+}
