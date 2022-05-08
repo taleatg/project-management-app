@@ -22,7 +22,7 @@ export function EditProfile() {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
-    const body = {
+    const body: Record<string, string> = {
       name: data.name,
       login: data.login,
       password: data.password,

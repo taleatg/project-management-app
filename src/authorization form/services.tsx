@@ -20,14 +20,17 @@ export const deleteUser = async (path: string, token: string) => {
 };
 
 export const updateUser = async (
-  body: { name: string; login: string; password: string },
+  body: Record<string, string>,
   path: string,
   method: string,
   token: string
 ) => {
   const response = await fetch(`${baseUrl}/${path}`, {
     method: method,
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-type': 'application/json; charset=UTF-8',
+    },
     body: JSON.stringify(body),
   });
 
