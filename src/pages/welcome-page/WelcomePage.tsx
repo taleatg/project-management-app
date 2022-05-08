@@ -1,5 +1,6 @@
-import { Typography, createTheme, ThemeProvider as div, Link, ThemeProvider } from '@mui/material';
+import { Typography, createTheme, Link, ThemeProvider } from '@mui/material';
 import React from 'react';
+import './WelcomePage.scss';
 
 export const WelcomePage: React.FC = () => {
   const myTheme = createTheme({

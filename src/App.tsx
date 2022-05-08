@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { WelcomePage } from './pages/WelcomePage';
+import { WelcomePage } from './pages/welcome-page/WelcomePage';
 import { BoardPage } from './pages/BoardPage';
 import { Layout } from './components/Layout';
 import { NotFoundPage } from './pages/NotFoundPage';
