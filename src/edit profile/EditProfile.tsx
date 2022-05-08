@@ -58,7 +58,7 @@ export function EditProfile() {
   const deleteAccount = async () => {
     await deleteUser({ path: `users/${userId}`, token: token });
     navigate('/home');
-    dispatch(switchAuthorization({ isAuthenticated: false, token: token, userId: userId }));
+    dispatch(switchAuthorization(false));
   };
 
   return (

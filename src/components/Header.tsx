@@ -22,7 +22,7 @@ type IPages = {
 const ResponsiveAppBar = () => {
   const dispatch = useAppDispatch();
   const { switchAuthorization } = authSlice.actions;
-  const { isAuthenticated, token, userId } = useAppSelector((state) => state.authReducer);
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const pages: IPages = isAuthenticated
@@ -121,14 +121,7 @@ const ResponsiveAppBar = () => {
           <LangSelect />
           {isAuthenticated ? (
             <Link to={`/welcome`} className="link link__menu">
-              <Button
-                color="inherit"
-                onClick={() =>
-                  dispatch(
-                    switchAuthorization({ isAuthenticated: false, token: token, userId: userId })
-                  )
-                }
-              >
+              <Button color="inherit" onClick={() => dispatch(switchAuthorization(false))}>
                 Logout
               </Button>
             </Link>

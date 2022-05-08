@@ -18,7 +18,7 @@ export interface SignInForm {
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();
-  const { switchAuthorization } = authSlice.actions;
+  const { switchAuthorization, setToken, setUserId } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
   const [authorization, setAuthorization] = useState('signin');
   const [backendErrors, setBackendErrors] = useState('');
@@ -52,9 +52,9 @@ export const AuthForm = () => {
     if (signin.token) {
       const decoded = parseJwt(signin.token);
       navigate('/home');
-      dispatch(
-        switchAuthorization({ isAuthenticated: true, token: signin.token, userId: decoded.userId })
-      );
+      dispatch(switchAuthorization(true));
+      dispatch(setToken(signin.token));
+      dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);
       setTimeout(() => {
