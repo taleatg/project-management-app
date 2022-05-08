@@ -1,7 +1,7 @@
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { TextField } from '@mui/material';
-import { SignInForm } from './AuthForm';
+import { SignInForm } from '../services/interfaces';
 
 export const FormField = (
   control: Control<SignInForm>,

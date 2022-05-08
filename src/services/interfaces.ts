@@ -8,3 +8,10 @@ export interface ColumnData {
   title: string;
   order: number;
 }
+
+export interface SignInForm {
+  name: string;
+  login: string;
+  password: string;
+  repeatPassword: string;
+}
