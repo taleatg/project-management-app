@@ -5,15 +5,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAppSelector } from '../store/store';
 
 interface ConfirmModalProps {
   textButton: string;
-  confirmedAction: () => void;
+  id: string;
+  confirmedAction: (id: string, token: string) => Promise<void> | void;
 }
 
 export default function ConfirmationModal(props: ConfirmModalProps) {
   const [open, setOpen] = React.useState(false);
-
+  const { token } = useAppSelector((state) => state.authReducer);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -23,7 +25,7 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
   };
 
   const handleConfirm = () => {
-    props.confirmedAction();
+    props.confirmedAction(props.id, token);
     setOpen(false);
   };
 
