@@ -16,7 +16,7 @@ export const HomePage = () => {
     await dispatch(getBoardsList(token));
   }
 
-  async function deleteData(id: string, token: string): Promise<void> {
+  async function deleteData(id: string): Promise<void> {
     await deleteBoard(id, token);
     fetchData();
   }
@@ -29,21 +29,25 @@ export const HomePage = () => {
     <Container maxWidth="xl">
       <h2>Boards</h2>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid
+          container
+          rowSpacing={2}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          className="boardList"
+        >
           {status === 'resolved' &&
             allBoard.length !== 0 &&
             allBoard.map((board) => (
-              <Grid item key={board.id}>
-                <Paper className="boardList_item">
-                  <Link to={`/board`} className="link">
+              <Grid item key={board.id} className="boardList_item">
+                <Link to={`/board`} className="link">
+                  <Paper className="boardList_board">
                     <BoardPreview board={board} />
-                  </Link>
-                  <ConfirmationModal
-                    textButton={'delete board'}
-                    id={board.id}
-                    confirmedAction={deleteData}
-                  />
-                </Paper>
+                  </Paper>
+                </Link>
+                <ConfirmationModal
+                  textButton={'delete board'}
+                  confirmedAction={() => deleteData(board.id)}
+                />
                 <Divider />
               </Grid>
             ))}
