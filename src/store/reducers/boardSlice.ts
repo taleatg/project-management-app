@@ -23,8 +23,9 @@ export const boardSlice = createSlice({
   name: 'board',
   initialState: boardState,
   reducers: {
-    selectedBoard(state, action: PayloadAction<string>) {
-      state.currentBoard.id = action.payload;
+    selectedBoard(state, action: PayloadAction<BoardData>) {
+      state.currentBoard.id = action.payload.id;
+      state.currentBoard.title = action.payload.title;
     },
   },
   extraReducers: (builder) => {
