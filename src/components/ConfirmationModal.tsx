@@ -28,7 +28,7 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
   };
 
   return (
-    <div>
+    <>
       <Button variant="outlined" onClick={handleClickOpen} color={'warning'}>
         {props.textButton}
       </Button>
@@ -53,6 +53,6 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
