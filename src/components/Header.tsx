@@ -14,6 +14,7 @@ import './Header.scss';
 import LangSelect from './LangSelect';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { authSlice } from '../store/reducers/checkAuthentication';
+import NewBoardModal from './NewBoardModal';
 
 type IPages = {
   [key: string]: string;
@@ -30,7 +31,6 @@ const ResponsiveAppBar = () => {
         welcome: 'Welcome',
         home: 'Home',
         edit: 'Edit profile',
-        create: 'New board',
       }
     : { welcome: 'Welcome' };
 
@@ -95,6 +95,15 @@ const ResponsiveAppBar = () => {
                   </Typography>
                 </MenuItem>
               ))}
+              {isAuthenticated && (
+                <MenuItem key="new-board" onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">
+                    <Link to="/home" className={'link link__burger-menu'}>
+                      {/*<NewBoardModal />*/}
+                    </Link>
+                  </Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
           <Typography
@@ -105,18 +114,22 @@ const ResponsiveAppBar = () => {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+            className="menu-buttons-box"
+          >
             {keys.map((key) => (
-              <Button
-                key={key}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'blue', display: 'block' }}
-              >
+              <Button key={key} sx={{ my: 2, color: 'blue', display: 'block' }}>
                 <Link to={`/${key}`} className="link link__menu">
                   {pages[key]}
                 </Link>
               </Button>
             ))}
+            {isAuthenticated && (
+              <Link to={'/home'} className="link link__menu">
+                <NewBoardModal />
+              </Link>
+            )}
           </Box>
           <LangSelect />
           {isAuthenticated ? (
@@ -126,11 +139,9 @@ const ResponsiveAppBar = () => {
               </Button>
             </Link>
           ) : (
-            <>
-              <Link to={`/login`} className="link link__menu">
-                <Button color="inherit">Login / Sign Up</Button>
-              </Link>
-            </>
+            <Link to={`/login`} className="link link__menu">
+              <Button color="inherit">Login / Sign Up</Button>
+            </Link>
           )}
         </Toolbar>
       </Container>
