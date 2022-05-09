@@ -35,7 +35,11 @@ export interface FormValues {
   'Board title': string;
 }
 
-export default function NewBoardModal() {
+interface NewBoardModalProps {
+  place: 'menu' | 'burger-menu';
+}
+
+export default function NewBoardModal(props: NewBoardModalProps) {
   const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
@@ -58,10 +62,15 @@ export default function NewBoardModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>
-        <span className="new-board__button">New board</span>
-      </Button>
-
+      {props.place === 'menu' ? (
+        <Button onClick={handleOpen}>
+          <span className="link link__menu">New board</span>
+        </Button>
+      ) : (
+        <Typography textAlign="center" onClick={handleOpen}>
+          New board
+        </Typography>
+      )}
       <Modal
         open={open}
         onClose={handleClose}

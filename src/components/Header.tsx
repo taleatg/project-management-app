@@ -97,11 +97,9 @@ const ResponsiveAppBar = () => {
               ))}
               {isAuthenticated && (
                 <MenuItem key="new-board" onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link to="/home" className={'link link__burger-menu'}>
-                      {/*<NewBoardModal />*/}
-                    </Link>
-                  </Typography>
+                  <Link to="/home" className={'link link__burger-menu'}>
+                    <NewBoardModal place="burger-menu" />
+                  </Link>
                 </MenuItem>
               )}
             </Menu>
@@ -115,7 +113,7 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box
-            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, color: 'red' }}
             className="menu-buttons-box"
           >
             {keys.map((key) => (
@@ -127,7 +125,7 @@ const ResponsiveAppBar = () => {
             ))}
             {isAuthenticated && (
               <Link to={'/home'} className="link link__menu">
-                <NewBoardModal />
+                <NewBoardModal place="menu" />
               </Link>
             )}
           </Box>
