@@ -62,13 +62,3 @@ export const deleteBoard = createAsyncThunk(
       });
   }
 );
-
-// export async function deleteBoard(id: string, token: string) {
-//   return axios({
-//     method: 'delete',
-//     url: `${baseUrl}/boards/${id}`,
-//     headers: { Authorization: `Bearer ${token}` },
-//   }).catch(function (error) {
-//     throw error;
-//   });
-// }
