@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { CircularProgress, Container, Grid, Paper } from '@mui/material';
+import { CircularProgress, Container, Grid, Paper, TextField } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
+import { CreateColumn } from '../columns/CreateColumn';
 
 export const BoardPage = () => {
   const { id, title } = useAppSelector((state) => state.boardReducer.currentBoard);
@@ -23,22 +25,39 @@ export const BoardPage = () => {
     <Container maxWidth="xl">
       <h2>{title}</h2>
       <div className="columnButtons">
-        <Button>
-          <AddBoxIcon /> {'Add column'}
-        </Button>
-        {allColumns.length !== 0 && (
-          <Button>
-            <AddBoxIcon /> {'Add task'}
-          </Button>
-        )}
+        <CreateColumn
+          button={
+            <>
+              <AddBoxIcon />
+              Add column
+            </>
+          }
+        />
       </div>
-      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="colomnList">
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        className="columnList"
+        flexWrap="nowrap"
+        marginLeft="10px"
+      >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
           allColumns.map((column) => (
-            <Grid item key={column.order} className="colomnList_item">
-              <Paper className="colomnList_column">
-                <div>{column.title}</div>
+            <Grid item key={column.order} className="columnList_item">
+              <div className="title-column">
+                <TextField size="small" label={column.title} margin="normal" />
+                <Button>
+                  <AddIcon />
+                </Button>
+              </div>
+              <Paper className="columnList_column">
+                {allColumns.length !== 0 && (
+                  <Button size="small" fullWidth sx={{ textTransform: 'none' }}>
+                    <AddIcon fontSize="small" /> {'Add task'}
+                  </Button>
+                )}
               </Paper>
             </Grid>
           ))}

@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
-import { signIn } from './services';
+import { signIn } from '../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/store';
-import { authSlice } from '../store/reducers/checkAuthentication';
+import { authSlice } from '../store/reducers/authenticationSlice';
 import { FormField } from './FormFields';
 import { BackendResponse } from './BackendResponse';
+import { SignInForm } from '../services/interfaces';
 import './AuthForm.scss';
-
-export interface SignInForm {
-  name: string;
-  login: string;
-  password: string;
-  repeatPassword: string;
-}
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();

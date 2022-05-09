@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { Button, Typography } from '@mui/material';
 import { FormField } from '../authorization form/FormFields';
-import { SignInForm } from '../authorization form/AuthForm';
+import { SignInForm } from '../services/interfaces';
 import './EditProfile.scss';
-import { deleteUser, updateUser } from '../authorization form/services';
+import { deleteUser, updateUser } from '../services/authorizationService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { BackendResponse } from '../authorization form/BackendResponse';
 import { useNavigate } from 'react-router-dom';
-import { authSlice } from '../store/reducers/checkAuthentication';
+import { authSlice } from '../store/reducers/authenticationSlice';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();
