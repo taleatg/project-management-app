@@ -27,6 +27,10 @@ const style_submit = {
   marginTop: '20px',
 };
 
+const style_textfield = {
+  marginTop: '20px',
+};
+
 export interface FormValues {
   'Board title': string;
 }
@@ -38,7 +42,12 @@ export default function NewBoardModal() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { register, reset, handleSubmit } = useForm<FormValues>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const title = data['Board title'];
@@ -64,7 +73,15 @@ export default function NewBoardModal() {
             Create new board
           </Typography>
           <form>
-            <TextField {...register('Board title')} fullWidth />
+            <TextField
+              {...register('Board title', { required: true })}
+              fullWidth
+              margin="normal"
+              sx={style_textfield}
+            />
+            <div className="new-board__error">
+              {errors['Board title']?.type === 'required' ? 'Please enter board title' : ''}
+            </div>
             <Button
               type="submit"
               variant="contained"
