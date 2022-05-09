@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BoardData } from '../../services/interfaces';
-import { getBoardsList } from '../../services/boardService';
+import { deleteBoard, getBoardsList, postBoard } from '../../services/boardService';
 
 interface BoardState {
   status: string | null;
@@ -27,6 +27,12 @@ export const boardSlice = createSlice({
       state.currentBoard.id = action.payload.id;
       state.currentBoard.title = action.payload.title;
     },
+    addNewBoardInState(state, action: PayloadAction<BoardData>) {
+      state.allBoard.push(action.payload);
+    },
+    removeBoard(state, action: PayloadAction<BoardData>) {
+      state.allBoard.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getBoardsList.pending, (state) => {
@@ -38,6 +44,24 @@ export const boardSlice = createSlice({
       state.allBoard = action.payload;
     });
     builder.addCase(getBoardsList.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload as Error;
+    });
+    builder.addCase(postBoard.fulfilled, (state, action) => {
+      state.status = 'resolved';
+      state.allBoard.push(action.payload);
+    });
+    builder.addCase(postBoard.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload as Error;
+    });
+    builder.addCase(deleteBoard.fulfilled, (state, action) => {
+      state.status = 'resolved';
+      state.allBoard = state.allBoard.filter((board) => {
+        return board.id !== action.payload;
+      });
+    });
+    builder.addCase(deleteBoard.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.payload as Error;
     });
