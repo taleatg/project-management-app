@@ -20,7 +20,7 @@ type IPages = {
   [key: string]: string;
 };
 
-const ResponsiveAppBar = () => {
+export const Header = () => {
   const dispatch = useAppDispatch();
   const { switchAuthorization } = authSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
@@ -146,4 +146,3 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
