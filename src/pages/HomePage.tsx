@@ -17,8 +17,7 @@ export const HomePage = () => {
   }
 
   async function deleteData(id: string): Promise<void> {
-    await deleteBoard(id, token);
-    fetchData();
+    await dispatch(deleteBoard({ id, token }));
   }
 
   useEffect(() => {
