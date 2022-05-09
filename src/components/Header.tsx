@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import './Header.scss';
 import LangSelect from './LangSelect';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { authSlice } from '../store/reducers/checkAuthentication';
+import { authSlice } from '../store/reducers/authenticationSlice';
 
 type IPages = {
   [key: string]: string;

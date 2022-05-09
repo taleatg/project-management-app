@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { BackendResponse } from '../authorization form/BackendResponse';
 import { useNavigate } from 'react-router-dom';
-import { authSlice } from '../store/reducers/checkAuthentication';
+import { authSlice } from '../store/reducers/authenticationSlice';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();

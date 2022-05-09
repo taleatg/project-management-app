@@ -4,7 +4,7 @@ import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
 import { signIn } from '../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/store';
-import { authSlice } from '../store/reducers/checkAuthentication';
+import { authSlice } from '../store/reducers/authenticationSlice';
 import { FormField } from './FormFields';
 import { BackendResponse } from './BackendResponse';
 import { SignInForm } from '../services/interfaces';
