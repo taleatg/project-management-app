@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { CircularProgress, Container, Grid, Paper, TextField } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -32,19 +33,32 @@ export const BoardPage = () => {
             </>
           }
         />
-        {allColumns.length !== 0 && (
-          <Button>
-            <AddBoxIcon /> {'Add task'}
-          </Button>
-        )}
       </div>
-      <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="columnList">
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        className="columnList"
+        flexWrap="nowrap"
+        marginLeft="10px"
+      >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
           allColumns.map((column) => (
             <Grid item key={column.order} className="columnList_item">
-              <TextField size="small" label={column.title} margin="normal" />
-              <Paper className="columnList_column" />
+              <div className="title-column">
+                <TextField size="small" label={column.title} margin="normal" />
+                <Button>
+                  <AddIcon />
+                </Button>
+              </div>
+              <Paper className="columnList_column">
+                {allColumns.length !== 0 && (
+                  <Button size="small" fullWidth sx={{ textTransform: 'none' }}>
+                    <AddIcon fontSize="small" /> {'Add task'}
+                  </Button>
+                )}
+              </Paper>
             </Grid>
           ))}
       </Grid>

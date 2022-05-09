@@ -27,6 +27,9 @@ export const columnSlice = createSlice({
     selectedColumn(state, action: PayloadAction<ColumnData>) {
       state.currenColumn = action.payload;
     },
+    addColumn(state, action: PayloadAction<ColumnData>) {
+      state.allColumns = [...state.allColumns, action.payload];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {
