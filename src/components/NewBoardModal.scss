@@ -1,18 +1,17 @@
-.new-board__button {
-  color: white;
-}
-
-.new-board__modal {
-  width: 310px;
-  display: flex;
-}
-
-.new-board__submit {
-  margin: 20px;
-}
-
-.new-board__error {
-  height: 10px;
-  font-size: 16px;
-  color: red;
+.new-board {
+  &__button {
+    color: white;
+  }
+  &__modal {
+    width: 310px;
+    display: flex;
+  }
+  &__submit {
+    margin: 20px;
+  }
+  &__error {
+    height: 10px;
+    font-size: 16px;
+    color: red;
+  }
 }

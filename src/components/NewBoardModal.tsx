@@ -28,7 +28,7 @@ const style_submit = {
 };
 
 const style_textfield = {
-  marginTop: '20px',
+  marginTop: '30px',
 };
 
 export interface FormValues {
