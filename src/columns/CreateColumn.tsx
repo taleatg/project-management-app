@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { setBoardColumn } from '../services/boardColumnService';
-import { useAppSelector } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { columnAction, getColumnsList } from '../services/columnService';
 import './Columns.scss';
 
 interface ColumnType {
@@ -14,18 +14,21 @@ export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { token } = useAppSelector((state) => state.authReducer);
   const [open, setOpen] = React.useState(false);
-  const { handleSubmit, control, reset, setValue } = useForm<ColumnType>();
+  const { handleSubmit, control, reset } = useForm<ColumnType>();
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
-    const allColumns = await setBoardColumn({ boardId: id, token: token, method: 'GET' });
+    const columns = await columnAction({ boardId: id, token: token, method: 'GET' });
 
-    await setBoardColumn({
-      body: { title: data.title, order: allColumns.length + 1 },
+    await columnAction({
+      body: { title: data.title, order: columns.length + 1 },
       boardId: id,
       token: token,
       method: 'POST',
     });
+
+    dispatch(getColumnsList({ token, id }));
     reset();
   };
 
