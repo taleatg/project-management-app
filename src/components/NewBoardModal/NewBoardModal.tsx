@@ -7,7 +7,7 @@ import './NewBoardModal.scss';
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { postBoard } from '../../services/boardService';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useAppDispatch } from '../../store/store';
 
 const style = {
   display: 'flex',
@@ -40,7 +40,6 @@ interface NewBoardModalProps {
 }
 
 export default function NewBoardModal(props: NewBoardModalProps) {
-  const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -55,7 +54,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const title = data['Board title'];
-    await dispatch(postBoard({ title, token }));
+    await dispatch(postBoard(title));
     reset();
     handleClose();
   };

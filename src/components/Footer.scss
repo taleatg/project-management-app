@@ -1,0 +1,39 @@
+.footer {
+  font-size: 2em;
+  padding: 1em 0;
+  text-shadow: 0 0 10px #1976d2;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10%;
+}
+
+.year {
+  display: flex;
+  align-items: center;
+}
+
+.github-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.creator {
+  background: url('../../public/gh-cat.svg') no-repeat left;
+  background-size: 1.2em 1.2em;
+  display: flex;
+  align-items: center;
+  margin: 0 0.5em;
+  padding-left: 1.2em;
+  transition: .3s;
+}
+
+.rs-school {
+  width: 90px;
+  height: 50px;
+  background: url('../../public/rs-text-logo.svg') no-repeat center;
+  background-size: contain;
+  transition: .3s;
+}

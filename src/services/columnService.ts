@@ -2,15 +2,12 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { boardColumns } from './interfaces';
 
-export const baseUrl = 'https://project-management-app.herokuapp.com';
-
 export const getColumnsList = createAsyncThunk(
   'columns/getColumnsList',
-  async ({ token, path }: { token: string; path: string }, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     return axios({
       method: 'get',
-      url: `${baseUrl}/${path}`,
-      headers: { Authorization: `Bearer ${token}` },
+      url: `/boards/${id}/columns`,
     })
       .then((res) => {
         return res.data;
@@ -26,7 +23,7 @@ export const getColumnsList = createAsyncThunk(
 export const columnAction = async ({ body, boardId, token, method }: boardColumns) => {
   return axios({
     method: method,
-    url: `${baseUrl}/boards/${boardId}/columns`,
+    url: `/boards/${boardId}/columns`,
     data: JSON.stringify(body),
     headers: {
       Authorization: `Bearer ${token}`,

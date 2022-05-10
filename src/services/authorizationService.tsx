@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { baseUrl } from './columnService';
 
 interface signIn {
   body?: Record<string, string>;
@@ -11,28 +10,24 @@ interface signIn {
 export const signIn = async ({ body, path }: signIn) => {
   return axios({
     method: 'POST',
-    url: `${baseUrl}/${path}`,
+    url: `/${path}`,
     data: JSON.stringify(body),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
   })
     .then((res) => res.data)
     .catch((err) => err.response.data);
 };
 
-export const deleteUser = async ({ path, token }: Record<string, string>) => {
+export const deleteUser = async (path: string) => {
   return axios({
     method: 'DELETE',
-    url: `${baseUrl}/${path}`,
-    headers: { Authorization: `Bearer ${token}` },
+    url: `/${path}`,
   }).catch((err) => err.response.data);
 };
 
 export const updateUser = async ({ body, path, method, token }: signIn) => {
   return axios({
     method: method,
-    url: `${baseUrl}/${path}`,
+    url: `/${path}`,
     data: JSON.stringify(body),
     headers: {
       Authorization: `Bearer ${token}`,
