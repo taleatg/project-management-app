@@ -9,6 +9,7 @@ import { FormField } from './FormFields';
 import { BackendResponse } from './BackendResponse';
 import { SignInForm } from '../services/interfaces';
 import './AuthForm.scss';
+import axios from 'axios';
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();
@@ -48,6 +49,7 @@ export const AuthForm = () => {
       navigate('/home');
       dispatch(switchAuthorization(true));
       dispatch(setToken(signin.token));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${signin.token}`;
       dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);
