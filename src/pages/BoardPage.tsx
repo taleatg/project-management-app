@@ -14,7 +14,7 @@ export const BoardPage = () => {
   const dispatch = useAppDispatch();
 
   async function fetchData(): Promise<void> {
-    await dispatch(getColumnsList({ token, id }));
+    await dispatch(getColumnsList(id));
   }
 
   useEffect(() => {
