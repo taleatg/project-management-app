@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { baseUrl } from './columnService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getBoardsList = createAsyncThunk(
@@ -7,8 +6,7 @@ export const getBoardsList = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     return axios({
       method: 'get',
-      url: `${baseUrl}/boards`,
-      headers: { Authorization: `Bearer ${token}` },
+      url: `/boards`,
     })
       .then((res) => {
         return res.data;
@@ -23,15 +21,11 @@ export const getBoardsList = createAsyncThunk(
 
 export const postBoard = createAsyncThunk(
   'board/postBoard',
-  async ({ title, token }: { title: string; token: string }, { rejectWithValue }) => {
+  async (title: string, { rejectWithValue }) => {
     return axios({
       method: 'post',
-      url: `${baseUrl}/boards`,
+      url: `/boards`,
       data: { title: title },
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-type': 'application/json; charset=UTF-8',
-      },
     })
       .then((res) => {
         return res.data;
@@ -46,11 +40,10 @@ export const postBoard = createAsyncThunk(
 
 export const deleteBoard = createAsyncThunk(
   'board/deleteBoard',
-  async ({ id, token }: { id: string; token: string }, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     return axios({
       method: 'delete',
-      url: `${baseUrl}/boards/${id}`,
-      headers: { Authorization: `Bearer ${token}` },
+      url: `/boards/${id}`,
     })
       .then(() => {
         return id;
