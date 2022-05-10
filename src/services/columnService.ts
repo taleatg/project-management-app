@@ -4,10 +4,10 @@ import { boardColumns } from './interfaces';
 
 export const getColumnsList = createAsyncThunk(
   'columns/getColumnsList',
-  async (id: string, { rejectWithValue }) => {
+  async (path: string, { rejectWithValue }) => {
     return axios({
       method: 'get',
-      url: `/boards/${id}/columns`,
+      url: path,
     })
       .then((res) => {
         return res.data;
@@ -20,15 +20,11 @@ export const getColumnsList = createAsyncThunk(
   }
 );
 
-export const columnAction = async ({ body, boardId, token, method }: boardColumns) => {
+export const columnAction = async ({ body, method, path }: boardColumns) => {
   return axios({
     method: method,
-    url: `/boards/${boardId}/columns`,
+    url: path,
     data: JSON.stringify(body),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-type': 'application/json; charset=UTF-8',
-    },
   })
     .then((res) => {
       return res.data;

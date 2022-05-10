@@ -24,8 +24,11 @@ export interface boardColumns {
   body?: {
     title?: string;
     order?: number;
+    description?: string;
+    userId?: string;
   };
-  boardId: string;
-  token: string;
+  boardId?: string;
+  token?: string;
   method: string;
+  path: string;
 }

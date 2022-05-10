@@ -5,7 +5,7 @@ import { getColumnsList } from '../../services/columnService';
 interface ColumnState {
   status: string | null;
   error: Error | null;
-  currenColumn: ColumnData;
+  currentColumn: ColumnData;
   allColumns: ColumnData[];
   currentTask: ColumnData;
   allTasks: ColumnData[];
@@ -14,7 +14,7 @@ interface ColumnState {
 const columnState: ColumnState = {
   status: null,
   error: null,
-  currenColumn: {
+  currentColumn: {
     id: '',
     title: '',
     order: 0,
@@ -40,12 +40,16 @@ export const columnSlice = createSlice({
       state,
       action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>
     ) {
-      state.currenColumn = action.payload.currentColumn;
+      state.currentColumn = action.payload.currentColumn;
       state.currentTask = action.payload.currentTask;
     },
-    addItem(state, action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>) {
-      state.allColumns = [...state.allColumns, action.payload.currentColumn];
-      state.allTasks = [...state.allTasks, action.payload.currentTask];
+    addColumn(state, action: PayloadAction<ColumnData>) {
+      state.allColumns = [...state.allColumns, action.payload];
+      state.currentColumn = action.payload;
+    },
+    addTask(state, action: PayloadAction<ColumnData>) {
+      state.allTasks = [...state.allTasks, action.payload];
+      state.currentTask = action.payload;
     },
   },
   extraReducers: (builder) => {

@@ -13,13 +13,9 @@ export const BoardPage = () => {
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
 
-  async function fetchData(): Promise<void> {
-    await dispatch(getColumnsList(id));
-  }
-
   useEffect(() => {
-    fetchData();
-  }, [dispatch, token]);
+    dispatch(getColumnsList(`/boards/${id}/columns`));
+  }, [dispatch, token, id]);
 
   return (
     <Container maxWidth="xl">
@@ -44,7 +40,7 @@ export const BoardPage = () => {
       >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
-          allColumns.map((column) => <Column key={column.order} title={column.title} />)}
+          allColumns.map((column) => <Column column={column} key={column.title} />)}
       </Grid>
       {status === 'rejected' && (
         <BackendResponse backendErrors="Error! Something went wrong :(" type="error" />

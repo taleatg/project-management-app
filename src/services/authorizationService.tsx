@@ -24,15 +24,11 @@ export const deleteUser = async (path: string) => {
   }).catch((err) => err.response.data);
 };
 
-export const updateUser = async ({ body, path, method, token }: signIn) => {
+export const updateUser = async ({ body, path, method }: signIn) => {
   return axios({
     method: method,
     url: `/${path}`,
     data: JSON.stringify(body),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-type': 'application/json; charset=UTF-8',
-    },
   })
     .then((res) => res.data)
     .catch((err) => err.response.data);

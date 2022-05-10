@@ -12,16 +12,12 @@ export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
   const dispatch = useAppDispatch();
 
-  async function fetchData(): Promise<void> {
-    await dispatch(getBoardsList(token));
-  }
-
   async function deleteData(id: string): Promise<void> {
     await dispatch(deleteBoard(id));
   }
 
   useEffect(() => {
-    fetchData();
+    dispatch(getBoardsList(token));
   }, [dispatch, token]);
 
   return (

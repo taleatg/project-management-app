@@ -13,25 +13,23 @@ interface ColumnType {
 
 export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
-  const { token } = useAppSelector((state) => state.authReducer);
-  const { currentTask } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
-  const { addItem } = columnSlice.actions;
+  const { addColumn } = columnSlice.actions;
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
-    const columns = await columnAction({ boardId: id, token: token, method: 'GET' });
+    const columns = await columnAction({ body: {}, method: 'GET', path: `/boards/${id}/columns` });
 
-    const currentColumn = await columnAction({
+    const column = await columnAction({
       body: { title: data.title, order: columns.length + 1 },
       boardId: id,
-      token: token,
       method: 'POST',
+      path: `/boards/${id}/columns`,
     });
 
-    dispatch(addItem({ currentColumn, currentTask }));
+    dispatch(addColumn(column));
     reset();
   };
 
