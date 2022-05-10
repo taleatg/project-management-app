@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
-import { signIn } from '../services/authorizationService';
+import { signIn } from '../../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../store/store';
-import { authSlice } from '../store/reducers/authenticationSlice';
+import { useAppDispatch } from '../../store/store';
+import { authSlice } from '../../store/reducers/authenticationSlice';
 import { FormField } from './FormFields';
 import { BackendResponse } from './BackendResponse';
-import { SignInForm } from '../services/interfaces';
+import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import axios from 'axios';
 

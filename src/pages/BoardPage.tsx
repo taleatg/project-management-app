@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { CircularProgress, Container, Grid, Paper, TextField } from '@mui/material';
+import { CircularProgress, Container, Grid } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/material/Button';
 import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { CreateColumn } from '../columns/CreateColumn';
+import { CreateColumn } from '../components/boards/columns/CreateColumn';
+import { Column } from '../components/boards/columns/Column';
+import { BackendResponse } from '../components/authorization form/BackendResponse';
 
 export const BoardPage = () => {
   const { id, title } = useAppSelector((state) => state.boardReducer.currentBoard);
@@ -44,25 +44,11 @@ export const BoardPage = () => {
       >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
-          allColumns.map((column) => (
-            <Grid item key={column.order} className="columnList_item">
-              <div className="title-column">
-                <TextField size="small" label={column.title} margin="normal" />
-                <Button>
-                  <AddIcon />
-                </Button>
-              </div>
-              <Paper className="columnList_column">
-                {allColumns.length !== 0 && (
-                  <Button size="small" fullWidth sx={{ textTransform: 'none' }}>
-                    <AddIcon fontSize="small" /> {'Add task'}
-                  </Button>
-                )}
-              </Paper>
-            </Grid>
-          ))}
+          allColumns.map((column) => <Column key={column.order} title={column.title} />)}
       </Grid>
-      {status === 'rejected' && <h4>Error! Something went wrong :( </h4>}
+      {status === 'rejected' && (
+        <BackendResponse backendErrors="Error! Something went wrong :(" type="error" />
+      )}
       {status === 'pending' && <CircularProgress />}
     </Container>
   );

@@ -10,7 +10,7 @@ import { HomePage } from './pages/HomePage';
 import { EditProfilePage } from './pages/EditProfilePage';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import { PrivateRoute } from './routing/PrivateRoute';
+import { PrivateRoute } from './components/PrivateRoute';
 import './axiosConfig';
 
 function App() {

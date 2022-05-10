@@ -6,8 +6,8 @@ import Modal from '@mui/material/Modal';
 import './NewBoardModal.scss';
 import { TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { postBoard } from '../services/boardService';
-import { useAppDispatch } from '../store/store';
+import { postBoard } from '../../services/boardService';
+import { useAppDispatch } from '../../store/store';
 
 const style = {
   display: 'flex',

@@ -7,6 +7,8 @@ interface ColumnState {
   error: Error | null;
   currenColumn: ColumnData;
   allColumns: ColumnData[];
+  currentTask: ColumnData;
+  allTasks: ColumnData[];
 }
 
 const columnState: ColumnState = {
@@ -17,6 +19,16 @@ const columnState: ColumnState = {
     title: '',
     order: 0,
   },
+  currentTask: {
+    id: '',
+    title: '',
+    order: 0,
+    description: '',
+    userId: '',
+    boardId: '',
+    columnId: '',
+  },
+  allTasks: [],
   allColumns: [],
 };
 
@@ -24,11 +36,16 @@ export const columnSlice = createSlice({
   name: 'columns',
   initialState: columnState,
   reducers: {
-    selectedColumn(state, action: PayloadAction<ColumnData>) {
-      state.currenColumn = action.payload;
+    selectedItem(
+      state,
+      action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>
+    ) {
+      state.currenColumn = action.payload.currentColumn;
+      state.currentTask = action.payload.currentTask;
     },
-    addColumn(state, action: PayloadAction<ColumnData>) {
-      state.allColumns = [...state.allColumns, action.payload];
+    addItem(state, action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>) {
+      state.allColumns = [...state.allColumns, action.payload.currentColumn];
+      state.allTasks = [...state.allTasks, action.payload.currentTask];
     },
   },
   extraReducers: (builder) => {
@@ -36,7 +53,7 @@ export const columnSlice = createSlice({
       state.status = 'pending';
       state.error = null;
     });
-    builder.addCase(getColumnsList.fulfilled, (state, action) => {
+    builder.addCase(getColumnsList.fulfilled, (state, action: PayloadAction<ColumnData[]>) => {
       state.status = 'resolved';
       state.allColumns = action.payload;
     });
