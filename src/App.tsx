@@ -11,6 +11,7 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import { PrivateRoute } from './routing/PrivateRoute';
+import './axiosConfig';
 
 function App() {
   return (
