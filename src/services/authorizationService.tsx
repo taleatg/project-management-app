@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const baseUrl = 'https://project-management-app.herokuapp.com';
+import { baseUrl } from './columnService';
 
 interface signIn {
   body?: Record<string, string>;

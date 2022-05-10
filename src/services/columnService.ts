@@ -6,10 +6,10 @@ export const baseUrl = 'https://project-management-app.herokuapp.com';
 
 export const getColumnsList = createAsyncThunk(
   'columns/getColumnsList',
-  async ({ token, id }: { token: string; id: string }, { rejectWithValue }) => {
+  async ({ token, path }: { token: string; path: string }, { rejectWithValue }) => {
     return axios({
       method: 'get',
-      url: `${baseUrl}/boards/${id}/columns`,
+      url: `${baseUrl}/${path}`,
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {

@@ -11,10 +11,10 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import './Header.scss';
-import LangSelect from './LangSelect';
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { authSlice } from '../store/reducers/authenticationSlice';
-import NewBoardModal from './NewBoardModal';
+import LangSelect from '../LangSelect';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { authSlice } from '../../store/reducers/authenticationSlice';
+import NewBoardModal from '../NewBoardModal/NewBoardModal';
 
 type IPages = {
   [key: string]: string;

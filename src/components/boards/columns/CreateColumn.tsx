@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { columnAction } from '../services/columnService';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { columnAction } from '../../../services/columnService';
 import './Columns.scss';
-import { columnSlice } from '../store/reducers/columnSlice';
+import { columnSlice } from '../../../store/reducers/columnSlice';
 
 interface ColumnType {
   title: string;
@@ -14,9 +14,10 @@ interface ColumnType {
 export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { token } = useAppSelector((state) => state.authReducer);
+  const { currentTask } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
-  const { addColumn } = columnSlice.actions;
+  const { addItem } = columnSlice.actions;
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
@@ -30,7 +31,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
       method: 'POST',
     });
 
-    dispatch(addColumn(currentColumn));
+    dispatch(addItem({ currentColumn, currentTask }));
     reset();
   };
 
