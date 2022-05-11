@@ -14,7 +14,6 @@ interface ColumnType {
 export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { token } = useAppSelector((state) => state.authReducer);
-  const { currentTask } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
   const { addItem } = columnSlice.actions;
@@ -31,7 +30,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
       method: 'POST',
     });
 
-    dispatch(addItem({ currentColumn, currentTask }));
+    dispatch(addItem(currentColumn));
     reset();
   };
 
