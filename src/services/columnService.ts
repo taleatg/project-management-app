@@ -20,15 +20,11 @@ export const getColumnsList = createAsyncThunk(
   }
 );
 
-export const columnAction = async ({ body, boardId, token, method }: boardColumns) => {
+export const columnAction = async ({ body, path, method }: boardColumns) => {
   return axios({
     method: method,
-    url: `/boards/${boardId}/columns`,
+    url: path,
     data: JSON.stringify(body),
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-type': 'application/json; charset=UTF-8',
-    },
   })
     .then((res) => {
       return res.data;
