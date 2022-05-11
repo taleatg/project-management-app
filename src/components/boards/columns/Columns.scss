@@ -32,3 +32,27 @@
     justify-content: space-around;
   }
 }
+
+.column {
+  min-width: 300px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    min-width: 213px;
+  }
+
+  //&:first-child {
+  //  padding: 16px 0 0 2px;
+  //}
+
+  &__body {
+    width: 100%;
+    height: calc(100vh - 20rem);
+    margin: 5px 0 15px;
+  }
+}

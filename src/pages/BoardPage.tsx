@@ -44,7 +44,7 @@ export const BoardPage = () => {
       >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
-          allColumns.map((column) => <Column key={column.order} title={column.title} />)}
+          allColumns.map((column) => <Column key={column.order} id={column.id} />)}
       </Grid>
       {status === 'rejected' && (
         <BackendResponse backendErrors="Error! Something went wrong :(" type="error" />
