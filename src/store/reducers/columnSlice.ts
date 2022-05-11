@@ -5,30 +5,18 @@ import { getColumnsList } from '../../services/columnService';
 interface ColumnState {
   status: string | null;
   error: Error | null;
-  currenColumn: ColumnData;
+  currentColumn: ColumnData;
   allColumns: ColumnData[];
-  currentTask: ColumnData;
-  allTasks: ColumnData[];
 }
 
 const columnState: ColumnState = {
   status: null,
   error: null,
-  currenColumn: {
+  currentColumn: {
     id: '',
     title: '',
     order: 0,
   },
-  currentTask: {
-    id: '',
-    title: '',
-    order: 0,
-    description: '',
-    userId: '',
-    boardId: '',
-    columnId: '',
-  },
-  allTasks: [],
   allColumns: [],
 };
 
@@ -36,16 +24,18 @@ export const columnSlice = createSlice({
   name: 'columns',
   initialState: columnState,
   reducers: {
-    selectedItem(
-      state,
-      action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>
-    ) {
-      state.currenColumn = action.payload.currentColumn;
-      state.currentTask = action.payload.currentTask;
+    selectedItem(state, action: PayloadAction<ColumnData>) {
+      state.currentColumn = action.payload;
     },
-    addItem(state, action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>) {
-      state.allColumns = [...state.allColumns, action.payload.currentColumn];
-      state.allTasks = [...state.allTasks, action.payload.currentTask];
+    addItem(state, action: PayloadAction<ColumnData>) {
+      state.allColumns = [...state.allColumns, action.payload];
+    },
+    changeColumn(state, action: PayloadAction<ColumnData>) {
+      state.currentColumn = action.payload;
+      const upgradeColumnIndex = state.allColumns.findIndex(
+        (column: ColumnData) => column.id === action.payload.id
+      );
+      state.allColumns[upgradeColumnIndex] = action.payload;
     },
   },
   extraReducers: (builder) => {
