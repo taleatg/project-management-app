@@ -32,3 +32,25 @@
     justify-content: space-around;
   }
 }
+
+.column {
+  min-width: 265px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    width: calc(100% - 24px);
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  &__body {
+    width: 100%;
+    height: calc(100vh - 20rem);
+    margin: 5px 0 15px;
+  }
+}

@@ -30,9 +30,6 @@ export const boardSlice = createSlice({
     addNewBoardInState(state, action: PayloadAction<BoardData>) {
       state.allBoard.push(action.payload);
     },
-    removeBoard(state, action: PayloadAction<BoardData>) {
-      state.allBoard.push(action.payload);
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getBoardsList.pending, (state) => {

@@ -6,9 +6,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
 
 interface ConfirmModalProps {
-  textButton: string;
+  textButton?: string;
   confirmedAction: () => void;
 }
 
@@ -30,14 +31,20 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<DeleteIcon />}
-        onClick={handleClickOpen}
-      >
-        {props.textButton}
-      </Button>
+      {props.textButton ? (
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<DeleteIcon />}
+          onClick={handleClickOpen}
+        >
+          {props.textButton}
+        </Button>
+      ) : (
+        <IconButton aria-label="delete" onClick={handleClickOpen}>
+          <DeleteIcon color="primary" />
+        </IconButton>
+      )}
       <Dialog
         open={open}
         onClose={handleCancel}
@@ -47,7 +54,7 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
         <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Do you really want to {props.textButton.toLowerCase()}?
+            Do you really want to {props.textButton ? props.textButton.toLowerCase() : 'detele it'}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { boardColumns } from './interfaces';
+import { boardColumns, ColumnData } from './interfaces';
 
 export const getColumnsList = createAsyncThunk(
   'columns/getColumnsList',
@@ -10,7 +10,7 @@ export const getColumnsList = createAsyncThunk(
       url: `/boards/${id}/columns`,
     })
       .then((res) => {
-        return res.data;
+        return res.data.sort((a: ColumnData, b: ColumnData) => (a.order > b.order ? 1 : -1));
       })
       .catch((error) => {
         if (error instanceof Error) {
@@ -20,11 +20,14 @@ export const getColumnsList = createAsyncThunk(
   }
 );
 
-export const columnAction = async ({ body, method, path }: boardColumns) => {
+export const postColumn = async (
+  { title, order }: { title: string; order: number },
+  boardId: string
+) => {
   return axios({
-    method: method,
-    url: path,
-    data: JSON.stringify(body),
+    method: 'post',
+    url: `/boards/${boardId}/columns`,
+    data: JSON.stringify({ title, order }),
   })
     .then((res) => {
       return res.data;
@@ -32,4 +35,49 @@ export const columnAction = async ({ body, method, path }: boardColumns) => {
     .catch((err) => {
       return err.response.data;
     });
+};
+
+export const putColumn = async (
+  { title, order }: { title: string; order: number },
+  boardId: string,
+  columnId: string
+) => {
+  return axios({
+    method: 'put',
+    url: `/boards/${boardId}/columns/${columnId}`,
+    data: JSON.stringify({ title, order }),
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
+
+export const deleteColumn = async (boardId: string, columnId: string) => {
+  return axios({
+    method: 'delete',
+    url: `/boards/${boardId}/columns/${columnId}`,
+  })
+    .then(() => {
+      return columnId;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
+
+export const columnAction = async ({ body, method, path }: boardColumns) => {
+  return axios({
+    method: method,
+    url: path,
+    data: JSON.stringify(body),
+  })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err.response.data;
+      });
 };

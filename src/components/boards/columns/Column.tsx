@@ -1,24 +1,108 @@
 import { Grid, Paper, TextField } from '@mui/material';
-import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import React from 'react';
+import './Columns.scss';
+import React, { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import CheckIcon from '@mui/icons-material/Check';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData } from '../../../services/interfaces';
+import { deleteColumn, putColumn } from '../../../services/columnService';
+import ConfirmationModal from '../../ConfirmationModal';
 import { CreateTask } from '../tasks/CreateTask';
 import { Tasks } from '../tasks/Tasks';
-import { useAppSelector } from '../../../store/store';
 
-export function Column(props: { column: ColumnData }) {
-  const { status } = useAppSelector((state) => state.columnReducer);
+const styleTextField = {
+  width: '160px',
+};
+
+export function Column(props: { id: string, column: ColumnData }) {
+  const { changeColumn, removeColumn } = columnSlice.actions;
+  const [isEdit, setIsEdit] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const { allColumns, status } = useAppSelector((state) => state.columnReducer);
+  const { currentBoard } = useAppSelector((state) => state.boardReducer);
+  const dispatch = useAppDispatch();
+
+  const initTitle = (allColumns.find((column) => column.id === props.id) as ColumnData).title;
+  const currentColumn = allColumns.find((column) => column.id === props.id) as ColumnData;
+
+  const titleClickHandler = () => {
+    setIsEdit(true);
+  };
+
+  const confirmClickHandler = async () => {
+    const updatedColumn = await putColumn(
+      {
+        title: newTitle,
+        order: currentColumn.order,
+      },
+      currentBoard.id,
+      currentColumn.id
+    );
+    await dispatch(changeColumn(updatedColumn));
+    setIsEdit(false);
+  };
+
+  const cancelClickHandler = () => {
+    setIsEdit(false);
+  };
+
+  async function deleteClickHandler(boardId: string, columnId: string) {
+    await deleteColumn(boardId, columnId);
+    dispatch(removeColumn(columnId));
+
+    const changedColumns = allColumns.filter(
+      (column) => column.order > currentColumn.order
+    ) as ColumnData[];
+    for (let i = 0; i < changedColumns.length; i++) {
+      const updatedColumn = await putColumn(
+        {
+          title: changedColumns[i].title,
+          order: changedColumns[i].order - 1,
+        },
+        currentBoard.id,
+        changedColumns[i].id
+      );
+      await dispatch(changeColumn(updatedColumn));
+    }
+  }
 
   return (
-    <Grid item className="columnList_item">
-      <div className="title-column">
-        <TextField size="small" label={props.column.title} margin="normal" />
-        <Button>
-          <AddIcon />
-        </Button>
+    <Grid item className="column">
+      <div className="column__header">
+        {isEdit ? (
+          <>
+            <IconButton aria-label="cancel" onClick={cancelClickHandler}>
+              <DoDisturbIcon color="error" />
+            </IconButton>
+            <IconButton aria-label="check" onClick={confirmClickHandler}>
+              <CheckIcon color="success" />
+            </IconButton>
+            <TextField
+              label="Column title"
+              defaultValue={initTitle}
+              autoFocus={true}
+              margin={'none'}
+              sx={styleTextField}
+              size="small"
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+          </>
+        ) : (
+          <>
+            <div className="column__title" onClick={titleClickHandler}>
+              {initTitle}
+            </div>
+            <ConfirmationModal
+              textButton={''}
+              confirmedAction={() => deleteClickHandler(currentBoard.id, props.id)}
+            />
+          </>
+        )}
       </div>
-      <Paper className="columnList_column">
+      <Paper className="column__body">
         <CreateTask
           columnId={props.column.id}
           button={

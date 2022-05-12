@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { columnAction } from '../../../services/columnService';
 import './Columns.scss';
 import { columnSlice } from '../../../store/reducers/columnSlice';
+import { postColumn } from '../../../services/columnService';
 
 interface ColumnType {
   title: string;
@@ -13,6 +13,7 @@ interface ColumnType {
 
 export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
+  const { allColumns } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
   const { addColumn } = columnSlice.actions;
@@ -20,16 +21,10 @@ export function CreateColumn(props: { button: JSX.Element }) {
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
-    const columns = await columnAction({ body: {}, method: 'GET', path: `/boards/${id}/columns` });
-
-    const column = await columnAction({
-      body: { title: data.title, order: columns.length + 1 },
-      boardId: id,
-      method: 'POST',
-      path: `/boards/${id}/columns`,
-    });
-
-    dispatch(addColumn(column));
+    const title = data.title;
+    const order = allColumns.length + 1;
+    const newColumn = await postColumn({ title: title, order: order }, id);
+    dispatch(addColumn(newColumn));
     reset();
   };
 

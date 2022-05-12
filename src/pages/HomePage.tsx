@@ -39,10 +39,7 @@ export const HomePage = () => {
                     <BoardPreview board={board} />
                   </Paper>
                 </Link>
-                <ConfirmationModal
-                  textButton={'delete board'}
-                  confirmedAction={() => deleteData(board.id)}
-                />
+                <ConfirmationModal confirmedAction={() => deleteData(board.id)} />
                 <Divider />
               </Grid>
             ))}
