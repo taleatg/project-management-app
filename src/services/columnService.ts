@@ -54,3 +54,16 @@ export const putColumn = async (
       return err.response.data;
     });
 };
+
+export const deleteColumn = async (boardId: string, columnId: string) => {
+  return axios({
+    method: 'delete',
+    url: `/boards/${boardId}/columns/${columnId}`,
+  })
+    .then(() => {
+      return columnId;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
