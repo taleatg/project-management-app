@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import './Tasks.scss';
-// import { deleteTask } from '../../../services/taskService';
+import { deleteTask } from '../../../services/taskService';
 // import ConfirmationModal from '../../ConfirmationModal';
 import { getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
@@ -16,17 +16,11 @@ export function Tasks(props: { columnId: string }) {
   const dispatch = useAppDispatch();
   const { getAllTasks } = columnSlice.actions;
   const { token } = useAppSelector((state) => state.authReducer);
-  // const { deleteTaskFromState, getAllTasks } = columnSlice.actions;
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [allTasks, setAllTasks] = useState<TaskData[]>([
     {
-      // id: '',
-      // title: '',
-      // order: 0,
-      // tasks: [
-      //   {
       id: '',
       title: '',
       order: 1,
@@ -39,8 +33,6 @@ export function Tasks(props: { columnId: string }) {
           fileSize: 0,
         },
       ],
-      //   },
-      // ],
     },
   ]);
 
@@ -53,18 +45,19 @@ export function Tasks(props: { columnId: string }) {
     getTasks();
   }, [dispatch, token, currentBoard.id, props.columnId, getAllTasks]);
 
+  const deleteSelectedTask = async (taskId: string) => {
+    await deleteTask({ boardId: currentBoard.id, columnId: props.columnId, taskId: taskId });
+    const tasks = await getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId });
+    setAllTasks(tasks);
+    handleClose();
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const deleteSelectedTask = async () => {
-    // await deleteTask({ boardId: props.bordId, columnId: props.column.id, taskId: props.task.id });
-    // dispatch(deleteTaskFromState(props.task.id));
-    handleClose();
   };
 
   return (
@@ -121,8 +114,7 @@ export function Tasks(props: { columnId: string }) {
                             {/*>/*/}
                             <DeleteIcon
                               sx={{ color: 'red' }}
-                              onClick={deleteSelectedTask}
-                              id={task.id}
+                              onClick={() => deleteSelectedTask(task.id)}
                             />
                           </MenuItem>
                         </Menu>

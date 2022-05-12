@@ -50,24 +50,6 @@ export const columnSlice = createSlice({
       state.allColumns = [...state.allColumns, action.payload];
       state.currentColumn = action.payload;
     },
-    addTask(state, action: PayloadAction<ColumnData>) {
-      // state.allColumns = [...state.allColumns, action.payload];
-      state.allColumns.filter((column) => {
-        // action.payload.id - columnId передать
-        if (column.id === action.payload.id) {
-          // column.tasks.push(action.payload.task) // передать таск
-        }
-      });
-    },
-
-    deleteTaskFromState(state, action: PayloadAction<string>) {
-      // state.allTasks.filter((task, index) => {
-      //   if (task.id === action.payload) {
-      //     state.allTasks.splice(index, 1);
-      //   }
-      // });
-      // console.log('delete', state.allTasks);
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {

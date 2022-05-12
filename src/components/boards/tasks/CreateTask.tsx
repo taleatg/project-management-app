@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/store';
 import { columnAction } from '../../../services/columnService';
-import { columnSlice } from '../../../store/reducers/columnSlice';
 
 interface ColumnType {
   title: string;
@@ -15,10 +14,8 @@ interface ColumnType {
 export function CreateTask(props: { button: JSX.Element; columnId: string }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { userId } = useAppSelector((state) => state.authReducer);
-  const { addTask } = columnSlice.actions;
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
-  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
@@ -35,7 +32,6 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
       path: `/boards/${id}/columns/${props.columnId}/tasks`,
     });
 
-    dispatch(addTask(newTask));
     reset();
   };
 

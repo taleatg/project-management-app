@@ -12,7 +12,6 @@ export const getTasksInColumn = async ({
     url: `/boards/${boardId}/columns/${columnId}/tasks`,
   })
     .then((res) => {
-      console.log('getTasksInColumn.res', res.data);
       return res.data;
     })
     .catch((err) => {
