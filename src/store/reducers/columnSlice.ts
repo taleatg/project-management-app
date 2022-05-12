@@ -37,6 +37,9 @@ export const columnSlice = createSlice({
       );
       state.allColumns[upgradeColumnIndex] = action.payload;
     },
+    removeColumn(state, action: PayloadAction<string>) {
+      state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {
