@@ -12,6 +12,10 @@ import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData } from '../../../services/interfaces';
 import { putColumn } from '../../../services/columnService';
 
+const styleTextField = {
+  width: '160px',
+};
+
 export function Column(props: { id: string }) {
   const { changeColumn, selectedItem } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
@@ -60,13 +64,15 @@ export function Column(props: { id: string }) {
               label="Column title"
               defaultValue={initTitle}
               autoFocus={true}
+              margin={'none'}
+              sx={styleTextField}
               size="small"
               onChange={(e) => setNewTitle(e.target.value)}
             />
           </>
         ) : (
           <>
-            <div className="columnList_item__title" onClick={titleClickHandler}>
+            <div className="column__title" onClick={titleClickHandler}>
               {initTitle}
             </div>
             <IconButton aria-label="delete">

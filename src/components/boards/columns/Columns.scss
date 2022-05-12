@@ -34,7 +34,7 @@
 }
 
 .column {
-  min-width: 300px;
+  min-width: 265px;
 
   &__header {
     display: flex;
@@ -43,12 +43,10 @@
   }
 
   &__title {
-    min-width: 213px;
+    width: calc(100% - 24px);
+    font-size: 1.2rem;
+    font-weight: 500;
   }
-
-  //&:first-child {
-  //  padding: 16px 0 0 2px;
-  //}
 
   &__body {
     width: 100%;
