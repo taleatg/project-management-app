@@ -1,7 +1,6 @@
 import { Grid, Paper, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import './Columns.scss';
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -10,14 +9,15 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData } from '../../../services/interfaces';
-import { putColumn } from '../../../services/columnService';
+import { deleteColumn, putColumn } from '../../../services/columnService';
+import ConfirmationModal from '../../ConfirmationModal';
 
 const styleTextField = {
   width: '160px',
 };
 
 export function Column(props: { id: string }) {
-  const { changeColumn, selectedItem } = columnSlice.actions;
+  const { changeColumn, selectedItem, removeColumn } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, currentColumn } = useAppSelector((state) => state.columnReducer);
@@ -49,6 +49,11 @@ export function Column(props: { id: string }) {
     setIsEdit(false);
   };
 
+  async function deleteClickHandler(boardId: string, columnId: string) {
+    await deleteColumn(boardId, columnId);
+    dispatch(removeColumn(columnId));
+  }
+
   return (
     <Grid item className="column">
       <div className="column__header">
@@ -75,9 +80,10 @@ export function Column(props: { id: string }) {
             <div className="column__title" onClick={titleClickHandler}>
               {initTitle}
             </div>
-            <IconButton aria-label="delete">
-              <DeleteIcon color="primary" />
-            </IconButton>
+            <ConfirmationModal
+              textButton={''}
+              confirmedAction={() => deleteClickHandler(currentBoard.id, props.id)}
+            />
           </>
         )}
       </div>
