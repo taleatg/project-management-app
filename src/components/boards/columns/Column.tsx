@@ -52,15 +52,17 @@ export function Column(props: { id: string }) {
     await deleteColumn(boardId, columnId);
     dispatch(removeColumn(columnId));
 
-    for (let i = currentColumn.order + 1; i <= allColumns.length; i++) {
-      const changedColumn = allColumns.find((column) => column.order === i) as ColumnData;
+    const changedColumns = allColumns.filter(
+      (column) => column.order > currentColumn.order
+    ) as ColumnData[];
+    for (let i = 0; i < changedColumns.length; i++) {
       const updatedColumn = await putColumn(
         {
-          title: changedColumn.title,
-          order: changedColumn.order - 1,
+          title: changedColumns[i].title,
+          order: changedColumns[i].order - 1,
         },
         currentBoard.id,
-        changedColumn.id
+        changedColumns[i].id
       );
       await dispatch(changeColumn(updatedColumn));
     }
