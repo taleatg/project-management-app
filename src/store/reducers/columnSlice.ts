@@ -7,28 +7,32 @@ interface ColumnState {
   error: Error | null;
   currentColumn: ColumnData;
   allColumns: ColumnData[];
-  currentTask: ColumnData;
-  allTasks: ColumnData[];
 }
 
-const columnState: ColumnState = {
+export const columnState: ColumnState = {
   status: null,
   error: null,
   currentColumn: {
     id: '',
     title: '',
     order: 0,
+    tasks: [
+      {
+        id: '',
+        title: '',
+        order: 1,
+        done: false,
+        description: '',
+        userId: '',
+        files: [
+          {
+            filename: '',
+            fileSize: 0,
+          },
+        ],
+      },
+    ],
   },
-  currentTask: {
-    id: '',
-    title: '',
-    order: 0,
-    description: '',
-    userId: '',
-    boardId: '',
-    columnId: '',
-  },
-  allTasks: [],
   allColumns: [],
 };
 
@@ -36,20 +40,33 @@ export const columnSlice = createSlice({
   name: 'columns',
   initialState: columnState,
   reducers: {
-    selectedItem(
-      state,
-      action: PayloadAction<{ currentColumn: ColumnData; currentTask: ColumnData }>
-    ) {
-      state.currentColumn = action.payload.currentColumn;
-      state.currentTask = action.payload.currentTask;
+    getAllTasks(state, action) {
+      state.currentColumn.tasks = action.payload;
+    },
+    selectedColumn(state, action: PayloadAction<ColumnData>) {
+      state.currentColumn = action.payload;
     },
     addColumn(state, action: PayloadAction<ColumnData>) {
       state.allColumns = [...state.allColumns, action.payload];
       state.currentColumn = action.payload;
     },
     addTask(state, action: PayloadAction<ColumnData>) {
-      state.allTasks = [...state.allTasks, action.payload];
-      state.currentTask = action.payload;
+      // state.allColumns = [...state.allColumns, action.payload];
+      state.allColumns.filter((column) => {
+        // action.payload.id - columnId передать
+        if (column.id === action.payload.id) {
+          // column.tasks.push(action.payload.task) // передать таск
+        }
+      });
+    },
+
+    deleteTaskFromState(state, action: PayloadAction<string>) {
+      // state.allTasks.filter((task, index) => {
+      //   if (task.id === action.payload) {
+      //     state.allTasks.splice(index, 1);
+      //   }
+      // });
+      // console.log('delete', state.allTasks);
     },
   },
   extraReducers: (builder) => {

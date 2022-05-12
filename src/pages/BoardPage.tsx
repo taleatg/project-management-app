@@ -14,7 +14,7 @@ export const BoardPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getColumnsList(`/boards/${id}/columns`));
+    dispatch(getColumnsList(id));
   }, [dispatch, token, id]);
 
   return (

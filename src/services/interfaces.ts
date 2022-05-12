@@ -7,10 +7,37 @@ export interface ColumnData {
   id: string;
   title: string;
   order: number;
-  description?: string;
-  userId?: string;
-  boardId?: string;
-  columnId?: string;
+  tasks: [
+    {
+      id: string;
+      title: string;
+      order: 1;
+      done: false;
+      description: string;
+      userId: string;
+      files: [
+        {
+          filename: string;
+          fileSize: number;
+        }
+      ];
+    }
+  ];
+}
+
+export interface TaskData {
+  id: string;
+  title: string;
+  order: 1;
+  done: false;
+  description: string;
+  userId: string;
+  files: [
+    {
+      filename: string;
+      fileSize: number;
+    }
+  ];
 }
 
 export interface SignInForm {
