@@ -17,18 +17,17 @@ const styleTextField = {
 };
 
 export function Column(props: { id: string }) {
-  const { changeColumn, selectedItem, removeColumn } = columnSlice.actions;
+  const { changeColumn, removeColumn } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
-  const { allColumns, currentColumn } = useAppSelector((state) => state.columnReducer);
+  const { allColumns } = useAppSelector((state) => state.columnReducer);
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
   const dispatch = useAppDispatch();
 
   const initTitle = (allColumns.find((column) => column.id === props.id) as ColumnData).title;
+  const currentColumn = allColumns.find((column) => column.id === props.id) as ColumnData;
 
   const titleClickHandler = () => {
-    const current = allColumns.find((column) => column.id === props.id) as ColumnData;
-    dispatch(selectedItem(current));
     setIsEdit(true);
   };
 
@@ -52,6 +51,19 @@ export function Column(props: { id: string }) {
   async function deleteClickHandler(boardId: string, columnId: string) {
     await deleteColumn(boardId, columnId);
     dispatch(removeColumn(columnId));
+
+    for (let i = currentColumn.order + 1; i <= allColumns.length; i++) {
+      const changedColumn = allColumns.find((column) => column.order === i) as ColumnData;
+      const updatedColumn = await putColumn(
+        {
+          title: changedColumn.title,
+          order: changedColumn.order - 1,
+        },
+        currentBoard.id,
+        changedColumn.id
+      );
+      await dispatch(changeColumn(updatedColumn));
+    }
   }
 
   return (
