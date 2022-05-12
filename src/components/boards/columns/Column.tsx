@@ -3,14 +3,14 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './Columns.scss';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
-import { columnAction } from '../../../services/columnService';
 import { ColumnData } from '../../../services/interfaces';
+import { putColumn } from '../../../services/columnService';
 
 export function Column(props: { id: string }) {
   const { changeColumn, selectedItem } = columnSlice.actions;
@@ -29,23 +29,20 @@ export function Column(props: { id: string }) {
   };
 
   const confirmClickHandler = async () => {
-    const path = `/boards/${currentBoard.id}/columns/${currentColumn.id}`;
-    const method = 'put';
-    const body = {
-      title: newTitle,
-      order: currentColumn.order,
-    };
-    const updatedColumn = await columnAction({ body, path, method });
+    const updatedColumn = await putColumn(
+      {
+        title: newTitle,
+        order: currentColumn.order,
+      },
+      currentBoard.id,
+      currentColumn.id
+    );
     await dispatch(changeColumn(updatedColumn));
     setIsEdit(false);
   };
 
   const cancelClickHandler = () => {
     setIsEdit(false);
-  };
-
-  const titleChangeHandle = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setNewTitle(e.target.value);
   };
 
   return (
@@ -60,10 +57,11 @@ export function Column(props: { id: string }) {
               <CheckIcon color="success" />
             </IconButton>
             <TextField
-              label={initTitle}
+              label="Column title"
+              defaultValue={initTitle}
               autoFocus={true}
               size="small"
-              onChange={(e) => titleChangeHandle(e)}
+              onChange={(e) => setNewTitle(e.target.value)}
             />
           </>
         ) : (
