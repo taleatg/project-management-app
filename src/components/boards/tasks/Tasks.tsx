@@ -4,7 +4,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import './Tasks.scss';
-import { deleteTask } from '../../../services/taskService';
+import { deleteTask, updateTask } from '../../../services/taskService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
@@ -18,22 +18,21 @@ export function Tasks(props: { columnId: string }) {
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [allTasks, setAllTasks] = useState<TaskData[]>([
-    {
-      id: '',
-      title: '',
-      order: 1,
-      done: false,
-      description: '',
-      userId: '',
-      files: [
-        {
-          filename: '',
-          fileSize: 0,
-        },
-      ],
-    },
-  ]);
+  const [allTasks, setAllTasks] = useState<TaskData[]>([]);
+  const [currentTask, setCurrentTask] = useState<TaskData>({
+    id: '',
+    title: '',
+    order: 1,
+    done: false,
+    description: '',
+    userId: '',
+    files: [
+      {
+        filename: '',
+        fileSize: 0,
+      },
+    ],
+  });
 
   useEffect(() => {
     const getTasks = async () => {
@@ -44,11 +43,36 @@ export function Tasks(props: { columnId: string }) {
     getTasks();
   }, [dispatch, token, currentBoard.id, props.columnId, getAllTasks]);
 
-  const deleteSelectedTask = async (taskId: string) => {
-    await deleteTask({ boardId: currentBoard.id, columnId: props.columnId, taskId: taskId });
+  const deleteSelectedTask = async () => {
+    await deleteTask({
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+      taskId: currentTask?.id ?? '',
+    });
     const tasks = await getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId });
     setAllTasks(tasks);
     handleClose();
+    updateTasksOrder(tasks);
+  };
+
+  const updateTasksOrder = (tasks: TaskData[]) => {
+    const changedTasks = tasks.filter((task) => task.order > currentTask.order);
+
+    changedTasks.map(async (task) => {
+      await updateTask({
+        body: {
+          title: task.title,
+          order: task.order - 1,
+          description: task.description,
+          userId: task.userId,
+          boardId: currentBoard.id,
+          columnId: props.columnId,
+        },
+        boardId: currentBoard.id,
+        columnId: props.columnId,
+        taskId: task.id,
+      });
+    });
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,7 +85,7 @@ export function Tasks(props: { columnId: string }) {
 
   return (
     <>
-      {allTasks.length && allTasks[0].id
+      {allTasks.length
         ? allTasks.map((task) => {
             return (
               <div className="task" key={task.id}>
@@ -81,7 +105,7 @@ export function Tasks(props: { columnId: string }) {
                           aria-expanded={open ? 'true' : undefined}
                           onClick={handleClick}
                         >
-                          <MoreHorizIcon />
+                          <MoreHorizIcon onClick={() => setCurrentTask(task)} />
                         </Button>
                         <Menu
                           id="basic-menu"
@@ -101,15 +125,20 @@ export function Tasks(props: { columnId: string }) {
                           }}
                         >
                           <MenuItem>
-                            <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
-                          </MenuItem>
-                          <MenuItem>
-                            <BorderColorIcon onClick={handleClose} />
-                          </MenuItem>
-                          <MenuItem>
-                            <ConfirmationModal
-                              confirmedAction={() => deleteSelectedTask(task.id)}
+                            <CheckCircleOutlineIcon
+                              color="disabled"
+                              sx={{ justifyContent: 'center' }}
+                              onClick={handleClose}
                             />
+                          </MenuItem>
+                          <MenuItem>
+                            <BorderColorIcon
+                              sx={{ justifyContent: 'center' }}
+                              onClick={handleClose}
+                            />
+                          </MenuItem>
+                          <MenuItem>
+                            <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />
                           </MenuItem>
                         </Menu>
                       </div>

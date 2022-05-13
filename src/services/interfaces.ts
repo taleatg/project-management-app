@@ -7,7 +7,7 @@ export interface ColumnData {
   id: string;
   title: string;
   order: number;
-  tasks: [
+  tasks?: [
     {
       id: string;
       title: string;
@@ -38,6 +38,15 @@ export interface TaskData {
       fileSize: number;
     }
   ];
+}
+
+export interface UpdateTaskData {
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
 }
 
 export interface SignInForm {
