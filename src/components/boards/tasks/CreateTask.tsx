@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useAppSelector } from '../../../store/store';
-import { columnAction } from '../../../services/columnService';
+import { addTask, getTasksInColumn } from '../../../services/taskService';
 
 interface ColumnType {
   title: string;
@@ -19,17 +19,12 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
-    const tasks = await columnAction({
-      body: {},
-      method: 'GET',
-      path: `/boards/${id}/columns/${props.columnId}/tasks`,
-    });
+    const order = (await getTasksInColumn({ boardId: id, columnId: props.columnId })).length + 1;
 
-    const newTask = await columnAction({
-      body: { title: data.title, order: tasks.length + 1, description: data.description, userId },
+    await addTask({
+      body: { title: data.title, order: order, description: data.description, userId },
       boardId: id,
-      method: 'POST',
-      path: `/boards/${id}/columns/${props.columnId}/tasks`,
+      columnId: props.columnId,
     });
 
     reset();

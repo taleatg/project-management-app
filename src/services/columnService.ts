@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { boardColumns, ColumnData } from './interfaces';
+import { ColumnData } from './interfaces';
 
 export const getColumnsList = createAsyncThunk(
   'columns/getColumnsList',
@@ -66,18 +66,4 @@ export const deleteColumn = async (boardId: string, columnId: string) => {
     .catch((err) => {
       return err.response.data;
     });
-};
-
-export const columnAction = async ({ body, method, path }: boardColumns) => {
-  return axios({
-    method: method,
-    url: path,
-    data: JSON.stringify(body),
-  })
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        return err.response.data;
-      });
 };

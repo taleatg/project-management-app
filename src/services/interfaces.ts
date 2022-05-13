@@ -58,5 +58,5 @@ export interface boardColumns {
   token?: string;
   columnId?: string;
   path?: string;
-  method: string;
+  method?: string;
 }

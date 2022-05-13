@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { boardColumns } from './interfaces';
 
 export const getTasksInColumn = async ({
   boardId,
@@ -37,5 +38,19 @@ export const deleteTask = async ({
     })
     .catch((error) => {
       return error.response.data;
+    });
+};
+
+export const addTask = async ({ body, boardId, columnId }: boardColumns) => {
+  return axios({
+    method: 'post',
+    url: `/boards/${boardId}/columns/${columnId}/tasks`,
+    data: JSON.stringify(body),
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
     });
 };

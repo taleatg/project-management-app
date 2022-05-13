@@ -17,7 +17,7 @@ const styleTextField = {
   width: '160px',
 };
 
-export function Column(props: { id: string, column: ColumnData }) {
+export function Column(props: { id: string; column: ColumnData }) {
   const { changeColumn, removeColumn } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');

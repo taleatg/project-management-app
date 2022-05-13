@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import './Tasks.scss';
 import { deleteTask } from '../../../services/taskService';
-// import ConfirmationModal from '../../ConfirmationModal';
+import ConfirmationModal from '../../ConfirmationModal';
 import { getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { TaskData } from '../../../services/interfaces';
@@ -108,13 +107,8 @@ export function Tasks(props: { columnId: string }) {
                             <BorderColorIcon onClick={handleClose} />
                           </MenuItem>
                           <MenuItem>
-                            {/*<ConfirmationModal*/}
-                            {/*  textButton="delete task"*/}
-                            {/*  confirmedAction={deleteSelectedTask}*/}
-                            {/*>/*/}
-                            <DeleteIcon
-                              sx={{ color: 'red' }}
-                              onClick={() => deleteSelectedTask(task.id)}
+                            <ConfirmationModal
+                              confirmedAction={() => deleteSelectedTask(task.id)}
                             />
                           </MenuItem>
                         </Menu>
