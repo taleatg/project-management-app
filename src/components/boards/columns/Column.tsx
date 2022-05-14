@@ -45,9 +45,8 @@ export function Column(props: ColumnProps) {
     );
   }, [dispatch, token, currentBoard.id, props.column.id]);
 
-  const initTitle = (allColumns.find((column) => column.id === props.column.id) as ColumnData)
-    .title;
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
+  const initTitle = currentColumn.title;
 
   const titleClickHandler = () => {
     setIsEdit(true);
