@@ -8,55 +8,64 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { LoginPage } from './pages/LoginPage';
 import { HomePage } from './pages/HomePage';
 import { EditProfilePage } from './pages/EditProfilePage';
-import { Provider } from 'react-redux';
-import store from './store/store';
+import { useAppDispatch } from './store/store';
 import { PrivateRoute } from './components/PrivateRoute';
 import './axiosConfig';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { authSlice } from './store/reducers/authenticationSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const [cookies] = useCookies(['token']);
+  const { switchAuthorization } = authSlice.actions;
+
+  if (cookies.token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`;
+    dispatch(switchAuthorization(true));
+  }
+
   return (
     <BrowserRouter>
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route
-              index
-              element={
-                <PrivateRoute>
-                  <HomePage />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/welcome" element={<WelcomePage />} />
-            <Route
-              path="/home"
-              element={
-                <PrivateRoute>
-                  <HomePage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/edit"
-              element={
-                <PrivateRoute>
-                  <EditProfilePage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/board"
-              element={
-                <PrivateRoute>
-                  <BoardPage />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-      </Provider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route
+            index
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit"
+            element={
+              <PrivateRoute>
+                <EditProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/board"
+            element={
+              <PrivateRoute>
+                <BoardPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
