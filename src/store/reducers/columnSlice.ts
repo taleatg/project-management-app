@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ColumnData } from '../../services/interfaces';
 import { getColumnsList } from '../../services/columnService';
+import { getTasksInColumn } from '../../services/taskService';
 
 interface ColumnState {
   status: string | null;
@@ -40,9 +41,6 @@ export const columnSlice = createSlice({
   name: 'columns',
   initialState: columnState,
   reducers: {
-    getAllTasks(state, action) {
-      state.currentColumn.tasks = action.payload;
-    },
     selectedColumn(state, action: PayloadAction<ColumnData>) {
       state.currentColumn = action.payload;
     },
@@ -60,6 +58,19 @@ export const columnSlice = createSlice({
     removeColumn(state, action: PayloadAction<string>) {
       state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);
     },
+    addTask(state, action) {
+      state.allColumns
+        .filter((column) => column.id === action.payload?.columnId)[0]
+        .tasks?.push(action.payload.data);
+    },
+    removeTask(state, action) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks = //TODO: как записать правильно, чтобы ts не ругался?
+        state.allColumns
+          .filter((column) => column.id === action.payload.columnId)[0]
+          .tasks.filter((task) => task.id !== action.payload.taskId);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {
@@ -71,6 +82,15 @@ export const columnSlice = createSlice({
       state.allColumns = action.payload;
     });
     builder.addCase(getColumnsList.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload as Error;
+    });
+    builder.addCase(getTasksInColumn.fulfilled, (state, action) => {
+      state.status = 'resolved';
+      state.allColumns.filter((column) => column.id === action.payload?.columnId)[0].tasks =
+        action.payload?.tasks;
+    });
+    builder.addCase(getTasksInColumn.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.payload as Error;
     });
