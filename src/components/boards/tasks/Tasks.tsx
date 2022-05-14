@@ -1,53 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
+import React from 'react';
+import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import './Tasks.scss';
 import { deleteTask } from '../../../services/taskService';
-import ConfirmationModal from '../../ConfirmationModal';
-import { getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
+import { Card, Divider, Menu } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import ConfirmationModal from '../../ConfirmationModal';
 
-export function Tasks(props: { columnId: string }) {
+interface TaskProps {
+  task: TaskData;
+  columnId: string;
+}
+
+export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
-  const { getAllTasks } = columnSlice.actions;
-  const { token } = useAppSelector((state) => state.authReducer);
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
+  const { removeTask } = columnSlice.actions;
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [allTasks, setAllTasks] = useState<TaskData[]>([
-    {
-      id: '',
-      title: '',
-      order: 1,
-      done: false,
-      description: '',
-      userId: '',
-      files: [
-        {
-          filename: '',
-          fileSize: 0,
-        },
-      ],
-    },
-  ]);
 
-  useEffect(() => {
-    const getTasks = async () => {
-      const tasks = await getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId });
-      setAllTasks(tasks);
-      return dispatch(getAllTasks(tasks));
-    };
-    getTasks();
-  }, [dispatch, token, currentBoard.id, props.columnId, getAllTasks]);
-
-  const deleteSelectedTask = async (taskId: string) => {
-    await deleteTask({ boardId: currentBoard.id, columnId: props.columnId, taskId: taskId });
-    const tasks = await getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId });
-    setAllTasks(tasks);
+  const deleteSelectedTask = async () => {
+    const data = await deleteTask({
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+      taskId: props.task.id,
+    });
+    dispatch(removeTask(data));
     handleClose();
   };
 
@@ -61,69 +46,57 @@ export function Tasks(props: { columnId: string }) {
 
   return (
     <>
-      {allTasks.length && allTasks[0].id
-        ? allTasks.map((task) => {
-            return (
-              <div className="task" key={task.id}>
-                <>
-                  <Card key={task.id} className="card">
-                    <div className="title-task">
-                      <Typography variant="h5" component="div">
-                        {task.title}
-                      </Typography>
-                      <div>
-                        <Button
-                          className="show-more"
-                          sx={{ minWidth: '20px', minHeight: '20px' }}
-                          id="basic-button"
-                          aria-controls={open ? 'basic-menu' : undefined}
-                          aria-haspopup="true"
-                          aria-expanded={open ? 'true' : undefined}
-                          onClick={handleClick}
-                        >
-                          <MoreHorizIcon />
-                        </Button>
-                        <Menu
-                          id="basic-menu"
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                          }}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                          }}
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                          }}
-                        >
-                          <MenuItem>
-                            <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
-                          </MenuItem>
-                          <MenuItem>
-                            <BorderColorIcon onClick={handleClose} />
-                          </MenuItem>
-                          <MenuItem>
-                            <ConfirmationModal
-                              confirmedAction={() => deleteSelectedTask(task.id)}
-                            />
-                          </MenuItem>
-                        </Menu>
-                      </div>
-                    </div>
-                    <Divider />
-                    <Typography className="description" component="p">
-                      {task.description}
-                    </Typography>
-                  </Card>
-                </>
-              </div>
-            );
-          })
-        : null}
+      <Card key={props.task.id} className="card">
+        <div className="title-task">
+          <Typography variant="h5" component="div">
+            {props.task.title}
+          </Typography>
+          <div>
+            <Button
+              className="show-more"
+              sx={{ minWidth: '20px', minHeight: '20px' }}
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <MoreHorizIcon />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem>
+                <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
+              </MenuItem>
+              <MenuItem>
+                <BorderColorIcon onClick={handleClose} />
+              </MenuItem>
+              <MenuItem>
+                <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />
+              </MenuItem>
+            </Menu>
+          </div>
+        </div>
+        <Divider />
+        <Typography className="description" component="p">
+          {props.task.description}
+        </Typography>
+      </Card>
     </>
   );
 }
