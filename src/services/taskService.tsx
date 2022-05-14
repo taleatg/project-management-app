@@ -1,24 +1,24 @@
 import axios from 'axios';
 import { boardColumns } from './interfaces';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const getTasksInColumn = async ({
-  boardId,
-  columnId,
-}: {
-  boardId: string;
-  columnId: string;
-}) => {
-  return axios({
-    method: 'get',
-    url: `/boards/${boardId}/columns/${columnId}/tasks`,
-  })
-    .then((res) => {
-      return res.data;
+export const getTasksInColumn = createAsyncThunk(
+  'columns/getTasksInColumn',
+  async ({ boardId, columnId }: { boardId: string; columnId: string }, { rejectWithValue }) => {
+    return axios({
+      method: 'get',
+      url: `/boards/${boardId}/columns/${columnId}/tasks`,
     })
-    .catch((err) => {
-      return err.response.data;
-    });
-};
+      .then((res) => {
+        return { tasks: res.data, columnId: columnId };
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          return rejectWithValue(error.message);
+        }
+      });
+  }
+);
 
 export const deleteTask = async ({
   boardId,
@@ -33,22 +33,22 @@ export const deleteTask = async ({
     method: 'delete',
     url: `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
   })
-    .then((res) => {
-      return res.data;
+    .then(() => {
+      return { columnId: columnId, taskId: taskId };
     })
     .catch((error) => {
       return error.response.data;
     });
 };
 
-export const addTask = async ({ body, boardId, columnId }: boardColumns) => {
+export const postTask = async ({ body, boardId, columnId }: boardColumns) => {
   return axios({
     method: 'post',
     url: `/boards/${boardId}/columns/${columnId}/tasks`,
     data: JSON.stringify(body),
   })
     .then((res) => {
-      return res.data;
+      return { data: res.data, boardId: boardId, columnId: columnId };
     })
     .catch((err) => {
       return err.response.data;
