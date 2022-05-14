@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ColumnData } from '../../services/interfaces';
 import { getColumnsList } from '../../services/columnService';
+import { getTasksInColumn } from '../../services/taskService';
 
 interface ColumnState {
   status: string | null;
@@ -9,13 +10,29 @@ interface ColumnState {
   allColumns: ColumnData[];
 }
 
-const columnState: ColumnState = {
+export const columnState: ColumnState = {
   status: null,
   error: null,
   currentColumn: {
     id: '',
     title: '',
     order: 0,
+    tasks: [
+      {
+        id: '',
+        title: '',
+        order: 1,
+        done: false,
+        description: '',
+        userId: '',
+        files: [
+          {
+            filename: '',
+            fileSize: 0,
+          },
+        ],
+      },
+    ],
   },
   allColumns: [],
 };
@@ -24,11 +41,12 @@ export const columnSlice = createSlice({
   name: 'columns',
   initialState: columnState,
   reducers: {
-    selectedItem(state, action: PayloadAction<ColumnData>) {
+    selectedColumn(state, action: PayloadAction<ColumnData>) {
       state.currentColumn = action.payload;
     },
-    addItem(state, action: PayloadAction<ColumnData>) {
+    addColumn(state, action: PayloadAction<ColumnData>) {
       state.allColumns = [...state.allColumns, action.payload];
+      state.currentColumn = action.payload;
     },
     changeColumn(state, action: PayloadAction<ColumnData>) {
       state.currentColumn = action.payload;
@@ -39,6 +57,17 @@ export const columnSlice = createSlice({
     },
     removeColumn(state, action: PayloadAction<string>) {
       state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);
+    },
+    addTask(state, action) {
+      state.allColumns
+        .filter((column) => column.id === action.payload?.columnId)[0]
+        .tasks?.push(action.payload.data);
+    },
+    removeTask(state, action) {
+      state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks =
+        state.allColumns
+          .filter((column) => column.id === action.payload.columnId)[0]
+          .tasks.filter((task) => task.id !== action.payload.taskId);
     },
   },
   extraReducers: (builder) => {
@@ -51,6 +80,15 @@ export const columnSlice = createSlice({
       state.allColumns = action.payload;
     });
     builder.addCase(getColumnsList.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload as Error;
+    });
+    builder.addCase(getTasksInColumn.fulfilled, (state, action) => {
+      state.status = 'resolved';
+      state.allColumns.filter((column) => column.id === action.payload?.columnId)[0].tasks =
+        action.payload?.tasks;
+    });
+    builder.addCase(getTasksInColumn.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.payload as Error;
     });

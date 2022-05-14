@@ -7,10 +7,22 @@ export interface ColumnData {
   id: string;
   title: string;
   order: number;
-  description?: string;
-  userId?: string;
-  boardId?: string;
-  columnId?: string;
+  tasks: TaskData[];
+}
+
+export interface TaskData {
+  id: string;
+  title: string;
+  order: 1;
+  done: false;
+  description: string;
+  userId: string;
+  files: [
+    {
+      filename: string;
+      fileSize: number;
+    }
+  ];
 }
 
 export interface SignInForm {
@@ -24,10 +36,12 @@ export interface boardColumns {
   body?: {
     title?: string;
     order?: number;
+    description?: string;
+    userId?: string;
   };
   boardId?: string;
+  token?: string;
   columnId?: string;
   path?: string;
-  token?: string;
-  method: string;
+  method?: string;
 }

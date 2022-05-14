@@ -17,13 +17,9 @@ export const BoardPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  async function fetchData(): Promise<void> {
-    await dispatch(getColumnsList(id));
-  }
-
   useEffect(() => {
-    fetchData();
-  }, [dispatch, token]);
+    dispatch(getColumnsList(id));
+  }, [dispatch, token, id]);
 
   return (
     <Container maxWidth="xl">
@@ -53,7 +49,7 @@ export const BoardPage = () => {
       >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
-          allColumns.map((column) => <Column key={column.id} id={column.id} />)}
+          allColumns.map((column) => <Column key={column.id} column={column} />)}
       </Grid>
       {status === 'rejected' && (
         <BackendResponse backendErrors="Error! Something went wrong :(" type="error" />

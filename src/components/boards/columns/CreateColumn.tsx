@@ -16,7 +16,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
   const { allColumns } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
-  const { addItem } = columnSlice.actions;
+  const { addColumn } = columnSlice.actions;
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
@@ -24,7 +24,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
     const title = data.title;
     const order = allColumns.length + 1;
     const newColumn = await postColumn({ title: title, order: order }, id);
-    dispatch(addItem(newColumn));
+    dispatch(addColumn(newColumn));
     reset();
   };
 

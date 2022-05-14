@@ -1,0 +1,27 @@
+.task {
+  display: flex;
+  padding: 10px 0px 10px 10px;
+
+  .card {
+    width: 12rem;
+    min-height: 4rem;
+    background: seashell;
+    word-break: break-word;
+    padding: 2px 8px 8px;
+
+    .title-task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .show-more {
+        margin: 5px;
+        padding: 5px;
+      }
+    }
+
+    .description {
+      margin-top: 5px;
+    }
+  }
+}
