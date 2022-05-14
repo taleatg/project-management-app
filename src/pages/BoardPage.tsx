@@ -6,12 +6,16 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { CreateColumn } from '../components/boards/columns/CreateColumn';
 import { Column } from '../components/boards/columns/Column';
 import { BackendResponse } from '../components/authorization form/BackendResponse';
+import Button from '@mui/material/Button';
+import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from 'react-router-dom';
 
 export const BoardPage = () => {
   const { id, title } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { token } = useAppSelector((state) => state.authReducer);
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   async function fetchData(): Promise<void> {
     await dispatch(getColumnsList(id));
@@ -23,7 +27,12 @@ export const BoardPage = () => {
 
   return (
     <Container maxWidth="xl">
-      <h2>{title}</h2>
+      <div className="topBoardPage">
+        <h2>{title}</h2>
+        <Button variant={'contained'} startIcon={<HomeIcon />} onClick={() => navigate('/home')}>
+          Back to Home Page
+        </Button>
+      </div>
       <div className="columnButtons">
         <CreateColumn
           button={

@@ -21,3 +21,9 @@ code {
 main {
   flex: 1;
 }
+
+@mixin flex-row-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

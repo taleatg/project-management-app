@@ -1,11 +1,11 @@
+@import '../index';
+
 .boardList {
   width: 320px;
 
   .boardList_item {
-    display: flex;
+    @include flex-row-space-between;
     width: 400px;
-    justify-content: space-between;
-    align-items: center;
 
     .boardList_board {
       width: 200px;
@@ -16,14 +16,17 @@
 
 .columnButtons {
   width: 320px;
-  display: flex;
-  justify-content: space-between;
+  @include flex-row-space-between;
 }
 
 .columnList {
   overflow-x: scroll;
   width: 100% !important;
   margin: 0 10px 0 0 !important;
+}
+
+.topBoardPage {
+  @include flex-row-space-between;
 }
 
 ::-webkit-scrollbar {
