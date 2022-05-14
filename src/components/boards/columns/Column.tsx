@@ -43,7 +43,6 @@ export function Column(props: ColumnProps) {
     );
   }, [dispatch, token, currentBoard.id, props.column.id]);
 
-  // change column's title
   const initTitle = (allColumns.find((column) => column.id === props.column.id) as ColumnData)
     .title;
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;

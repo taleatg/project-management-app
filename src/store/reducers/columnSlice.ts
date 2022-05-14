@@ -64,9 +64,7 @@ export const columnSlice = createSlice({
         .tasks?.push(action.payload.data);
     },
     removeTask(state, action) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks = //TODO: как записать правильно, чтобы ts не ругался?
+      state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks =
         state.allColumns
           .filter((column) => column.id === action.payload.columnId)[0]
           .tasks.filter((task) => task.id !== action.payload.taskId);

@@ -7,22 +7,7 @@ export interface ColumnData {
   id: string;
   title: string;
   order: number;
-  tasks: [
-    {
-      id: string;
-      title: string;
-      order: 1;
-      done: false;
-      description: string;
-      userId: string;
-      files: [
-        {
-          filename: string;
-          fileSize: number;
-        }
-      ];
-    }
-  ];
+  tasks: TaskData[];
 }
 
 export interface TaskData {
