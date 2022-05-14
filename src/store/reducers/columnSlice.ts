@@ -53,7 +53,9 @@ export const columnSlice = createSlice({
       const upgradeColumnIndex = state.allColumns.findIndex(
         (column: ColumnData) => column.id === action.payload.id
       );
-      state.allColumns[upgradeColumnIndex] = action.payload;
+      state.allColumns[upgradeColumnIndex].id = action.payload.id;
+      state.allColumns[upgradeColumnIndex].title = action.payload.title;
+      state.allColumns[upgradeColumnIndex].order = action.payload.order;
     },
     removeColumn(state, action: PayloadAction<string>) {
       state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);

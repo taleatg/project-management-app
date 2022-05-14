@@ -60,12 +60,6 @@ export function Column(props: ColumnProps) {
       currentColumn.id
     );
     await dispatch(changeColumn(updatedColumn));
-    await dispatch(
-      getTasksInColumn({
-        boardId: currentBoard.id,
-        columnId: props.column.id,
-      })
-    );
     setIsEdit(false);
   };
 
