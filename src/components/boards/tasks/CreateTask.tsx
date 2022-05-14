@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useAppSelector } from '../../../store/store';
-import { addTask, getTasksInColumn } from '../../../services/taskService';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { getTasksInColumn, postTask } from '../../../services/taskService';
+import { columnSlice } from '../../../store/reducers/columnSlice';
 
 interface ColumnType {
   title: string;
@@ -16,17 +17,19 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
   const { userId } = useAppSelector((state) => state.authReducer);
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
+  const { addTask } = columnSlice.actions;
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
     const order = (await getTasksInColumn({ boardId: id, columnId: props.columnId })).length + 1;
 
-    await addTask({
+    const newTask = await postTask({
       body: { title: data.title, order: order, description: data.description, userId },
       boardId: id,
       columnId: props.columnId,
     });
-
+    dispatch(addTask(newTask));
     reset();
   };
 
