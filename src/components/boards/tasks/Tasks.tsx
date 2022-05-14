@@ -3,15 +3,17 @@ import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { deleteTask } from '../../../services/taskService';
+import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { TaskData } from '../../../services/interfaces';
+import { ColumnType, TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { Card, Divider, Menu } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import ConfirmationModal from '../../ConfirmationModal';
+import { CreateTask } from './CreateTask';
+import { UnpackNestedValue } from 'react-hook-form';
 
 interface TaskProps {
   task: TaskData;
@@ -22,7 +24,6 @@ export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
   const { removeTask } = columnSlice.actions;
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -34,6 +35,29 @@ export function Task(props: TaskProps) {
     });
     dispatch(removeTask(data));
     handleClose();
+  };
+
+  const markTheTaskAsCompleted = async () => {
+    handleClose();
+  };
+
+  const updateTask = async (data: UnpackNestedValue<ColumnType>) => {
+    handleClose();
+    const body = {
+      title: data.title,
+      order: props.task.order,
+      description: data.description,
+      userId: props.task.userId,
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+    };
+    await editTask({
+      body,
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+      taskId: props.task.id,
+    });
+    dispatch(getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId }));
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,10 +105,17 @@ export function Task(props: TaskProps) {
               }}
             >
               <MenuItem sx={{ justifyContent: 'center' }}>
-                <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
+                <CheckCircleOutlineIcon color="disabled" onClick={markTheTaskAsCompleted} />
               </MenuItem>
               <MenuItem sx={{ justifyContent: 'center' }}>
-                <BorderColorIcon onClick={handleClose} />
+                {/*<EditTask task={props.task} action={() => updateTask()} />*/}
+                <CreateTask
+                  task={props.task}
+                  columnId={props.columnId}
+                  button={<BorderColorIcon />}
+                  action={(data) => updateTask(data)}
+                  textAction="Update"
+                />
               </MenuItem>
               <MenuItem>
                 <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />

@@ -10,6 +10,13 @@ export interface ColumnData {
   tasks: TaskData[];
 }
 
+export interface ColumnType {
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+}
+
 export interface TaskData {
   id: string;
   title: string;
@@ -17,6 +24,22 @@ export interface TaskData {
   done: false;
   description: string;
   userId: string;
+  files: [
+    {
+      filename: string;
+      fileSize: number;
+    }
+  ];
+}
+
+export interface UpdateTaskData {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
   files: [
     {
       filename: string;
@@ -44,4 +67,5 @@ export interface boardColumns {
   columnId?: string;
   path?: string;
   method?: string;
+  taskId?: string;
 }

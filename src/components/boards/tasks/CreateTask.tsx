@@ -1,35 +1,23 @@
 import * as React from 'react';
 import { Box, Button, Typography, Modal, TextField } from '@mui/material';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { getTasksInColumn, postTask } from '../../../services/taskService';
-import { columnSlice } from '../../../store/reducers/columnSlice';
+import { useForm, Controller, SubmitHandler, UnpackNestedValue } from 'react-hook-form';
+import { ColumnType, TaskData } from '../../../services/interfaces';
 
-interface ColumnType {
-  title: string;
-  order: number;
-  description: string;
-  userId: string;
+interface EditTaskProps {
+  task?: TaskData;
+  action: (data: UnpackNestedValue<ColumnType>) => void;
+  button: JSX.Element;
+  columnId: string;
+  textAction: string;
 }
 
-export function CreateTask(props: { button: JSX.Element; columnId: string }) {
-  const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
-  const { userId } = useAppSelector((state) => state.authReducer);
+export function CreateTask(props: EditTaskProps) {
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
-  const { addTask } = columnSlice.actions;
-  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
-    const order = (await getTasksInColumn({ boardId: id, columnId: props.columnId })).length + 1;
-
-    const newTask = await postTask({
-      body: { title: data.title, order: order, description: data.description, userId },
-      boardId: id,
-      columnId: props.columnId,
-    });
-    dispatch(addTask(newTask));
+    props.action(data);
     reset();
   };
 
@@ -37,7 +25,7 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
 
   const handleClose = () => setOpen(false);
 
-  const getTaskData = (type: 'title' | 'description', text: string) => {
+  const getTaskData = (type: 'title' | 'description', text: string, currentState = '') => {
     return (
       <div className="title-wrap">
         <Typography variant="h6" component="div" gutterBottom noWrap>
@@ -46,7 +34,7 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
         <Controller
           control={control}
           name={type}
-          defaultValue=""
+          defaultValue={currentState}
           rules={{
             required: `Enter ${type}`,
           }}
@@ -66,9 +54,13 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
 
   return (
     <>
-      <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
-        {props.button}
-      </Button>
+      {props.textAction === 'Add' ? (
+        <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
+          {props.button}
+        </Button>
+      ) : (
+        <div onClick={handleOpen}>{props.button}</div>
+      )}
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
@@ -77,13 +69,13 @@ export function CreateTask(props: { button: JSX.Element; columnId: string }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box className="modal-wrapper">
             <Typography id="modal-modal-title" variant="h5" component="h5" align="center">
-              Add Task
+              {`${props.textAction} Task`}
             </Typography>
-            {getTaskData('title', 'Enter the task title:')}
-            {getTaskData('description', 'Enter the task description:')}
+            {getTaskData('title', 'Enter the task title:', props.task?.title)}
+            {getTaskData('description', 'Enter the task description:', props.task?.description)}
             <div className="button-container">
               <Button type="submit" variant="contained">
-                Add
+                {props.textAction}
               </Button>
               <Button variant="outlined" onClick={handleClose}>
                 Close
