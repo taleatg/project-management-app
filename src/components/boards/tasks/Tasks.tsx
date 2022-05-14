@@ -45,7 +45,7 @@ export function Task(props: TaskProps) {
   };
 
   return (
-    <>
+    <div className="task">
       <Card key={props.task.id} className="card">
         <div className="title-task">
           <Typography variant="h5" component="div">
@@ -80,10 +80,10 @@ export function Task(props: TaskProps) {
                 horizontal: 'right',
               }}
             >
-              <MenuItem>
+              <MenuItem sx={{ justifyContent: 'center' }}>
                 <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
               </MenuItem>
-              <MenuItem>
+              <MenuItem sx={{ justifyContent: 'center' }}>
                 <BorderColorIcon onClick={handleClose} />
               </MenuItem>
               <MenuItem>
@@ -97,6 +97,6 @@ export function Task(props: TaskProps) {
           {props.task.description}
         </Typography>
       </Card>
-    </>
+    </div>
   );
 }

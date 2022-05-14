@@ -131,7 +131,6 @@ export function Column(props: ColumnProps) {
             </>
           }
         />
-        {/*<div>{status === 'resolved' ? <Tasks columnId={props.column.id} /> : null}</div>*/}
         <div>
           {status === 'resolved' &&
             tasks &&
