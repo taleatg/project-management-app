@@ -90,13 +90,10 @@ export function Column(props: ColumnProps) {
   }
 
   const createTask = async (data: UnpackNestedValue<ColumnType>) => {
-    const order =
-      (await getTasksInColumn({ boardId: currentBoard.id, columnId: props.column.id })).length + 1;
-
     const newTask = await postTask({
       body: {
         title: data.title,
-        order: order,
+        order: tasks.length ? tasks.length + 1 : 1,
         description: data.description,
         userId: userId,
       },

@@ -71,10 +71,6 @@ export const columnSlice = createSlice({
           .filter((column) => column.id === action.payload.columnId)[0]
           .tasks.filter((task) => task.id !== action.payload.taskId);
     },
-    // editTask(state, action) {
-    //   state.allColumns
-    //     .filter((column) => )
-    // },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {

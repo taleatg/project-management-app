@@ -108,7 +108,6 @@ export function Task(props: TaskProps) {
                 <CheckCircleOutlineIcon color="disabled" onClick={markTheTaskAsCompleted} />
               </MenuItem>
               <MenuItem sx={{ justifyContent: 'center' }}>
-                {/*<EditTask task={props.task} action={() => updateTask()} />*/}
                 <CreateTask
                   task={props.task}
                   columnId={props.columnId}

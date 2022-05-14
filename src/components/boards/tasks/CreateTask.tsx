@@ -6,7 +6,7 @@ import { ColumnType, TaskData } from '../../../services/interfaces';
 interface EditTaskProps {
   task?: TaskData;
   action: (data: UnpackNestedValue<ColumnType>) => void;
-  button: JSX.Element;
+  button?: JSX.Element;
   columnId: string;
   textAction: string;
 }
@@ -25,7 +25,12 @@ export function CreateTask(props: EditTaskProps) {
 
   const handleClose = () => setOpen(false);
 
-  const getTaskData = (type: 'title' | 'description', text: string, currentState = '') => {
+  const getTaskData = (
+    type: 'title' | 'description',
+    text: string,
+    currentState = '',
+    rows = 1
+  ) => {
     return (
       <div className="title-wrap">
         <Typography variant="h6" component="div" gutterBottom noWrap>
@@ -43,6 +48,8 @@ export function CreateTask(props: EditTaskProps) {
               label={type}
               className="auth-input"
               fullWidth
+              multiline
+              rows={rows}
               onChange={(e) => field.onChange(e)}
               value={field.value}
             />
@@ -72,7 +79,7 @@ export function CreateTask(props: EditTaskProps) {
               {`${props.textAction} Task`}
             </Typography>
             {getTaskData('title', 'Enter the task title:', props.task?.title)}
-            {getTaskData('description', 'Enter the task description:', props.task?.description)}
+            {getTaskData('description', 'Enter the task description:', props.task?.description, 3)}
             <div className="button-container">
               <Button type="submit" variant="contained">
                 {props.textAction}
