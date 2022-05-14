@@ -1,7 +1,7 @@
 import { Grid, Paper, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import './Columns.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
@@ -11,22 +11,42 @@ import { ColumnData } from '../../../services/interfaces';
 import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateTask } from '../tasks/CreateTask';
-import { Tasks } from '../tasks/Tasks';
+import { Task } from '../tasks/Tasks';
+import { getTasksInColumn } from '../../../services/taskService';
 
 const styleTextField = {
   width: '160px',
 };
 
-export function Column(props: { id: string; column: ColumnData }) {
+interface ColumnProps {
+  column: ColumnData;
+}
+
+export function Column(props: ColumnProps) {
   const { changeColumn, removeColumn } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
+  const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
+  const { tasks } = useAppSelector(
+    (state) => state.columnReducer.allColumns.filter((column) => column.id === props.column.id)[0]
+  );
 
-  const initTitle = (allColumns.find((column) => column.id === props.id) as ColumnData).title;
-  const currentColumn = allColumns.find((column) => column.id === props.id) as ColumnData;
+  useEffect(() => {
+    dispatch(
+      getTasksInColumn({
+        boardId: currentBoard.id,
+        columnId: props.column.id,
+      })
+    );
+  }, [dispatch, token, currentBoard.id, props.column.id]);
+
+  // change column's title
+  const initTitle = (allColumns.find((column) => column.id === props.column.id) as ColumnData)
+    .title;
+  const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
 
   const titleClickHandler = () => {
     setIsEdit(true);
@@ -97,7 +117,7 @@ export function Column(props: { id: string; column: ColumnData }) {
             </div>
             <ConfirmationModal
               textButton={''}
-              confirmedAction={() => deleteClickHandler(currentBoard.id, props.id)}
+              confirmedAction={() => deleteClickHandler(currentBoard.id, props.column.id)}
             />
           </>
         )}
@@ -111,7 +131,12 @@ export function Column(props: { id: string; column: ColumnData }) {
             </>
           }
         />
-        <div>{status === 'resolved' ? <Tasks columnId={props.column.id} /> : null}</div>
+        {/*<div>{status === 'resolved' ? <Tasks columnId={props.column.id} /> : null}</div>*/}
+        <div>
+          {status === 'resolved' &&
+            tasks &&
+            tasks.map((task) => <Task key={task.id} task={task} columnId={props.column.id} />)}
+        </div>
       </Paper>
     </Grid>
   );
