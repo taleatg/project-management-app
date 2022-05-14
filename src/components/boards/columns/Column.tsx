@@ -43,9 +43,8 @@ export function Column(props: ColumnProps) {
     );
   }, [dispatch, token, currentBoard.id, props.column.id]);
 
-  const initTitle = (allColumns.find((column) => column.id === props.column.id) as ColumnData)
-    .title;
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
+  const initTitle = currentColumn.title;
 
   const titleClickHandler = () => {
     setIsEdit(true);
@@ -61,6 +60,12 @@ export function Column(props: ColumnProps) {
       currentColumn.id
     );
     await dispatch(changeColumn(updatedColumn));
+    await dispatch(
+      getTasksInColumn({
+        boardId: currentBoard.id,
+        columnId: props.column.id,
+      })
+    );
     setIsEdit(false);
   };
 
