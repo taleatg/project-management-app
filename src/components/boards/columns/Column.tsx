@@ -10,7 +10,7 @@ import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData, ColumnType } from '../../../services/interfaces';
 import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
-import { CreateTask } from '../tasks/CreateTask';
+import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
 import { getTasksInColumn, postTask } from '../../../services/taskService';
 import { UnpackNestedValue } from 'react-hook-form';
@@ -89,7 +89,9 @@ export function Column(props: ColumnProps) {
     }
   }
 
-  const createTask = async (data: UnpackNestedValue<ColumnType>) => {
+  const createTask = async (data: UnpackNestedValue<ColumnType> | false) => {
+    if (!data) return;
+
     const newTask = await postTask({
       body: {
         title: data.title,
@@ -137,7 +139,7 @@ export function Column(props: ColumnProps) {
         )}
       </div>
       <Paper className="column__body">
-        <CreateTask
+        <CreateAndUpdateTask
           columnId={props.column.id}
           textAction="Add"
           action={(data) => createTask(data)}

@@ -3,16 +3,17 @@ import { Box, Button, Typography, Modal, TextField } from '@mui/material';
 import { useForm, Controller, SubmitHandler, UnpackNestedValue } from 'react-hook-form';
 import { ColumnType, TaskData } from '../../../services/interfaces';
 
-interface EditTaskProps {
+interface TaskProps {
   task?: TaskData;
-  action: (data: UnpackNestedValue<ColumnType>) => void;
+  action: (data: UnpackNestedValue<ColumnType> | false) => void;
   button?: JSX.Element;
   columnId: string;
   textAction: string;
+  open?: boolean;
 }
 
-export function CreateTask(props: EditTaskProps) {
-  const [open, setOpen] = React.useState(false);
+export function CreateAndUpdateTask(props: TaskProps) {
+  const [open, setOpen] = React.useState(props?.open || false);
   const { handleSubmit, control, reset } = useForm<ColumnType>();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
@@ -23,7 +24,10 @@ export function CreateTask(props: EditTaskProps) {
 
   const handleOpen = () => setOpen(true);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    props.action(false);
+  };
 
   const getTaskData = (
     type: 'title' | 'description',
@@ -65,9 +69,7 @@ export function CreateTask(props: EditTaskProps) {
         <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
           {props.button}
         </Button>
-      ) : (
-        <div onClick={handleOpen}>{props.button}</div>
-      )}
+      ) : null}
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"

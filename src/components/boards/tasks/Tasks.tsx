@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import ConfirmationModal from '../../ConfirmationModal';
-import { CreateTask } from './CreateTask';
+import { CreateAndUpdateTask } from './CreateAndUpdateTask';
 import { UnpackNestedValue } from 'react-hook-form';
 
 interface TaskProps {
@@ -27,6 +27,7 @@ export function Task(props: TaskProps) {
   const { removeTask, changedTask } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [isEdit, setIsEdit] = useState(false);
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -47,8 +48,10 @@ export function Task(props: TaskProps) {
     handleClose();
   };
 
-  const updateTask = async (data: UnpackNestedValue<ColumnType>) => {
-    handleClose();
+  const updateTask = async (data: UnpackNestedValue<ColumnType> | false) => {
+    setIsEdit(false);
+    if (!data) return;
+
     const body = {
       title: data.title,
       order: props.task.order,
@@ -133,14 +136,14 @@ export function Task(props: TaskProps) {
               <MenuItem sx={{ justifyContent: 'center' }}>
                 <CheckCircleOutlineIcon color="disabled" onClick={markTheTaskAsCompleted} />
               </MenuItem>
-              <MenuItem sx={{ justifyContent: 'center' }}>
-                <CreateTask
-                  task={props.task}
-                  columnId={props.columnId}
-                  button={<BorderColorIcon />}
-                  action={(data) => updateTask(data)}
-                  textAction="Update"
-                />
+              <MenuItem
+                sx={{ justifyContent: 'center' }}
+                onClick={() => {
+                  setIsEdit(true);
+                  handleClose();
+                }}
+              >
+                <BorderColorIcon />
               </MenuItem>
               <MenuItem>
                 <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />
@@ -148,6 +151,16 @@ export function Task(props: TaskProps) {
             </Menu>
           </div>
         </div>
+        {isEdit ? (
+          <CreateAndUpdateTask
+            task={props.task}
+            columnId={props.columnId}
+            // button={<BorderColorIcon />}
+            action={(data) => updateTask(data)}
+            textAction="Update"
+            open={true}
+          />
+        ) : null}
         <Divider />
         <Typography className="description" component="p">
           {props.task.description}
