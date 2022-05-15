@@ -49,7 +49,7 @@ export const AuthForm = () => {
       const decoded = parseJwt(signin.token);
       navigate('/home');
       dispatch(switchAuthorization(true));
-      setCookie('token', signin.token, { path: '/' });
+      setCookie('token', signin.token, { path: '/', maxAge: 24 * 3600 });
       dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);
