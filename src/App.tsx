@@ -55,7 +55,7 @@ function App() {
             }
           />
           <Route
-            path="/board"
+            path="/board/:boardId/"
             element={
               <PrivateRoute>
                 <BoardPage />

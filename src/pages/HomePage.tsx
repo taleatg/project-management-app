@@ -35,7 +35,7 @@ export const HomePage = () => {
             allBoard.length !== 0 &&
             allBoard.map((board) => (
               <Grid item key={board.id} className="boardList_item">
-                <Link to={`/board`} className="link">
+                <Link to={`/board/${board.id}`} className="link">
                   <Paper className="boardList_board">
                     <BoardPreview board={board} />
                   </Paper>

@@ -8,17 +8,21 @@ import { Column } from '../components/boards/columns/Column';
 import { BackendResponse } from '../components/authorization form/BackendResponse';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getBoardById } from '../services/boardService';
 
 export const BoardPage = () => {
-  const { id, title } = useAppSelector((state) => state.boardReducer.currentBoard);
+  const { title } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const params = useParams();
+  const boardId: string = params.boardId as string;
 
   useEffect(() => {
-    dispatch(getColumnsList(id));
-  }, [dispatch, id]);
+    dispatch(getBoardById(boardId));
+    dispatch(getColumnsList(boardId));
+  }, [dispatch, boardId]);
 
   return (
     <Container maxWidth="xl">
