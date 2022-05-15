@@ -9,12 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.scss';
 import LangSelect from '../LangSelect';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
+import { useCookies } from 'react-cookie';
 
 type IPages = {
   [key: string]: string;
@@ -22,9 +23,11 @@ type IPages = {
 
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { switchAuthorization } = authSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const pages: IPages = isAuthenticated
     ? {
@@ -42,6 +45,13 @@ export const Header = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const clickLogoutHandler = () => {
+    navigate('/welcome');
+    removeCookie('token');
+    dispatch(switchAuthorization(false));
+    console.log('token remove');
   };
 
   return (
@@ -131,11 +141,9 @@ export const Header = () => {
           </Box>
           <LangSelect />
           {isAuthenticated ? (
-            <Link to={`/welcome`} className="link link__menu">
-              <Button color="inherit" onClick={() => dispatch(switchAuthorization(false))}>
-                Logout
-              </Button>
-            </Link>
+            <Button color="inherit" onClick={clickLogoutHandler}>
+              Logout
+            </Button>
           ) : (
             <Link to={`/login`} className="link link__menu">
               <Button color="inherit">Login / Sign Up</Button>

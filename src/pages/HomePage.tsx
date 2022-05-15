@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
 import './Pages.scss';
 import { BoardPreview } from '../components/BoardPreview';
+import { useCookies } from 'react-cookie';
 
 export const HomePage = () => {
-  const { token } = useAppSelector((state) => state.authReducer);
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
+  const [cookies] = useCookies(['token']);
   const dispatch = useAppDispatch();
 
   async function deleteData(id: string): Promise<void> {
@@ -17,8 +18,8 @@ export const HomePage = () => {
   }
 
   useEffect(() => {
-    dispatch(getBoardsList(token));
-  }, [dispatch, token]);
+    dispatch(getBoardsList(cookies.token));
+  }, [dispatch, cookies.token]);
 
   return (
     <Container maxWidth="xl">

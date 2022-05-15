@@ -12,14 +12,13 @@ import { useNavigate } from 'react-router-dom';
 
 export const BoardPage = () => {
   const { id, title } = useAppSelector((state) => state.boardReducer.currentBoard);
-  const { token } = useAppSelector((state) => state.authReducer);
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getColumnsList(id));
-  }, [dispatch, token, id]);
+  }, [dispatch, id]);
 
   return (
     <Container maxWidth="xl">

@@ -13,7 +13,6 @@ import { authSlice } from '../../store/reducers/authenticationSlice';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.authReducer);
   const { switchAuthorization } = authSlice.actions;
   const { handleSubmit, control, reset } = useForm<SignInForm>();
   const { errors } = useFormState({ control });
@@ -34,7 +33,6 @@ export function EditProfile() {
         body: body,
         path: `users/${userId}`,
         method: 'PUT',
-        token: token,
       });
       reset();
 

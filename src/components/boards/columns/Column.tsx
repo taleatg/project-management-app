@@ -28,7 +28,6 @@ export function Column(props: ColumnProps) {
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
-  const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector(
     (state) => state.columnReducer.allColumns.filter((column) => column.id === props.column.id)[0]
@@ -41,7 +40,7 @@ export function Column(props: ColumnProps) {
         columnId: props.column.id,
       })
     );
-  }, [dispatch, token, currentBoard.id, props.column.id]);
+  }, [dispatch, currentBoard.id, props.column.id]);
 
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
   const initTitle = currentColumn.title;
