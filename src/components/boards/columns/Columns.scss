@@ -50,8 +50,12 @@
 
   &__body {
     width: 96%;
-    height: calc(100vh - 20rem);
+    height: calc(100vh - 21rem);
     margin: 5px 0 15px;
     overflow-y: scroll;
+
+    @media(max-width: 520px) {
+      height: calc(100vh - 25rem);
+    }
   }
 }

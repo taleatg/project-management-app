@@ -37,6 +37,7 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
     <div>
       {props.textButton ? (
         <Button
+          className="button"
           variant="contained"
           color="error"
           startIcon={<DeleteIcon />}

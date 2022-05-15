@@ -25,6 +25,10 @@
     margin-top: 10px;
     justify-content: space-around;
   }
+
+  @media(max-width: 520px) {
+    width: 16rem;
+  }
 }
 
 .MuiCollapse-wrapperInner {
