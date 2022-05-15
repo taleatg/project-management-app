@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ColumnData } from '../../services/interfaces';
+import { ColumnData, UpdateTask } from '../../services/interfaces';
 import { getColumnsList } from '../../services/columnService';
 import { getTasksInColumn } from '../../services/taskService';
 
@@ -62,7 +62,7 @@ export const columnSlice = createSlice({
     },
     addTask(state, action) {
       const column = state.allColumns.filter((column) => column.id === action.payload?.columnId);
-      if (column[0]) {
+      if (column[0].tasks) {
         column[0].tasks = [...column[0].tasks, action.payload.data];
       }
     },
@@ -71,6 +71,20 @@ export const columnSlice = createSlice({
         state.allColumns
           .filter((column) => column.id === action.payload.columnId)[0]
           .tasks.filter((task) => task.id !== action.payload.taskId);
+    },
+    changedTask(state, action: PayloadAction<UpdateTask>) {
+      const upgradeTaskIndex: number = state.allColumns
+        .filter((column) => column.id === action.payload.columnId)[0]
+        .tasks.findIndex((task) => task.id === action.payload.id);
+
+      state.allColumns.map((column) => {
+        if (column.id === action.payload.columnId) {
+          column.tasks[upgradeTaskIndex].id = action.payload.id;
+          column.tasks[upgradeTaskIndex].title = action.payload.title;
+          column.tasks[upgradeTaskIndex].description = action.payload.description;
+          column.tasks[upgradeTaskIndex].order = action.payload.order;
+        }
+      });
     },
   },
   extraReducers: (builder) => {

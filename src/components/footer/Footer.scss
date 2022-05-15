@@ -1,13 +1,18 @@
 .footer {
-  font-size: 2em;
-  padding: 1em 0;
-  text-shadow: 0 0 10px #1976d2;
+  font-size: 16px;
+  padding: 0.5em 0;
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
 }
 
 .footer-container {
   display: flex;
   justify-content: space-between;
-  padding: 0 10%;
+  padding: 0 24px;
+  align-items: center;
 }
 
 .year {
@@ -18,22 +23,28 @@
 .github-wrap {
   display: flex;
   justify-content: space-between;
+
+  @media(max-width: 520px) {
+    display: flex;
+    flex-wrap: wrap;
+    width: 140px;
+  }
 }
 
 .creator {
-  background: url('../../public/gh-cat.svg') no-repeat left;
+  background: url('../../../public/gh-cat.svg') no-repeat left;
   background-size: 1.2em 1.2em;
   display: flex;
   align-items: center;
-  margin: 0 0.5em;
+  margin: 0.5em;
   padding-left: 1.2em;
   transition: .3s;
 }
 
 .rs-school {
-  width: 90px;
+  width: 70px;
   height: 50px;
-  background: url('../../public/rs-text-logo.svg') no-repeat center;
+  background: url('../../../public/rs-text-logo.svg') no-repeat center;
   background-size: contain;
   transition: .3s;
 }

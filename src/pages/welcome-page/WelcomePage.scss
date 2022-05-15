@@ -23,6 +23,11 @@
   flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 5em;
+
+  @media(max-width: 964px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 .team-lead {
@@ -36,6 +41,10 @@
   flex-direction: column;
   align-items: center;
   padding: 2em 0;
+
+  @media(max-width: 964px) {
+    margin: 0 15px;
+  }
 }
 
 .avatar {
