@@ -63,11 +63,8 @@ export const columnSlice = createSlice({
     addTask(state, action) {
       const column = state.allColumns.filter((column) => column.id === action.payload?.columnId);
       if (column[0]) {
-        column[0].tasks.push(action.payload.data);
+        column[0].tasks = [...column[0].tasks, action.payload.data];
       }
-      // state.allColumns
-      //   .filter((column) => column.id === action.payload?.columnId)[0]
-      //   .tasks?.push(action.payload.data);
     },
     removeTask(state, action) {
       state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks =
