@@ -61,9 +61,10 @@ export const columnSlice = createSlice({
       state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);
     },
     addTask(state, action) {
-      state.allColumns
-        .filter((column) => column.id === action.payload?.columnId)[0]
-        .tasks?.push(action.payload.data);
+      const column = state.allColumns.filter((column) => column.id === action.payload?.columnId);
+      if (column[0].tasks) {
+        column[0].tasks = [...column[0].tasks, action.payload.data];
+      }
     },
     removeTask(state, action) {
       state.allColumns.filter((column) => column.id === action.payload.columnId)[0].tasks =
@@ -101,8 +102,10 @@ export const columnSlice = createSlice({
     });
     builder.addCase(getTasksInColumn.fulfilled, (state, action) => {
       state.status = 'resolved';
-      state.allColumns.filter((column) => column.id === action.payload?.columnId)[0].tasks =
-        action.payload?.tasks;
+      const column = state.allColumns.filter((column) => column.id === action.payload?.columnId);
+      if (column[0]) {
+        column[0].tasks = action.payload?.tasks;
+      }
     });
     builder.addCase(getTasksInColumn.rejected, (state, action) => {
       state.status = 'rejected';
