@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
@@ -42,10 +41,6 @@ export function Task(props: TaskProps) {
       .filter((column) => column.id === props.columnId)[0]
       .tasks.filter((task) => task.order > props.task.order);
     updateTasksOrder(changedTasks);
-  };
-
-  const markTheTaskAsCompleted = async () => {
-    handleClose();
   };
 
   const updateTask = async (data: UnpackNestedValue<ColumnType> | false) => {
@@ -134,9 +129,6 @@ export function Task(props: TaskProps) {
                 horizontal: 'right',
               }}
             >
-              <MenuItem sx={{ justifyContent: 'center' }}>
-                <CheckCircleOutlineIcon color="disabled" onClick={markTheTaskAsCompleted} />
-              </MenuItem>
               <MenuItem sx={{ justifyContent: 'center' }} onClick={() => setIsEdit(true)}>
                 <BorderColorIcon />
               </MenuItem>
