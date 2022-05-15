@@ -10,9 +10,11 @@ import { Card, Divider, Menu } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import PersonIcon from '@mui/icons-material/Person';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from './CreateAndUpdateTask';
 import { UnpackNestedValue } from 'react-hook-form';
+import { getUserName } from '../../../services/authorizationService';
 
 interface TaskProps {
   task: TaskData;
@@ -27,6 +29,7 @@ export function Task(props: TaskProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEdit, setIsEdit] = useState(false);
+  const [userName, setUserName] = useState('');
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -93,6 +96,13 @@ export function Task(props: TaskProps) {
     setAnchorEl(null);
   };
 
+  const getName = async () => {
+    const name = await getUserName(props.task.userId);
+    setUserName(name.name);
+    return name;
+  };
+  getName();
+
   return (
     <div className="task">
       <Card key={props.task.id} className="card">
@@ -154,6 +164,10 @@ export function Task(props: TaskProps) {
         <Typography className="description" component="p">
           {props.task.description}
         </Typography>
+        <div className="assign">
+          <PersonIcon sx={{ fontSize: '16px', mr: '5px' }} />
+          <Typography component="p">{userName}</Typography>
+        </div>
       </Card>
     </div>
   );
