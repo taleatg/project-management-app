@@ -51,7 +51,6 @@ export const Header = () => {
     navigate('/welcome');
     removeCookie('token');
     dispatch(switchAuthorization(false));
-    console.log('token remove');
   };
 
   return (
