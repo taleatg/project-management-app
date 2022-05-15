@@ -10,6 +10,7 @@ import { IconButton } from '@mui/material';
 
 interface ConfirmModalProps {
   textButton?: string;
+  unconfirmedAction?: () => void;
   confirmedAction: () => void;
 }
 
@@ -21,6 +22,9 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
   };
 
   const handleCancel = () => {
+    if (props.unconfirmedAction) {
+      props.unconfirmedAction();
+    }
     setOpen(false);
   };
 

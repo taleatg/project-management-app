@@ -49,6 +49,7 @@ export function Task(props: TaskProps) {
   };
 
   const updateTask = async (data: UnpackNestedValue<ColumnType> | false) => {
+    handleClose();
     setIsEdit(false);
     if (!data) return;
 
@@ -136,17 +137,14 @@ export function Task(props: TaskProps) {
               <MenuItem sx={{ justifyContent: 'center' }}>
                 <CheckCircleOutlineIcon color="disabled" onClick={markTheTaskAsCompleted} />
               </MenuItem>
-              <MenuItem
-                sx={{ justifyContent: 'center' }}
-                onClick={() => {
-                  setIsEdit(true);
-                  handleClose();
-                }}
-              >
+              <MenuItem sx={{ justifyContent: 'center' }} onClick={() => setIsEdit(true)}>
                 <BorderColorIcon />
               </MenuItem>
               <MenuItem>
-                <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />
+                <ConfirmationModal
+                  confirmedAction={() => deleteSelectedTask()}
+                  unconfirmedAction={handleClose}
+                />
               </MenuItem>
             </Menu>
           </div>
@@ -155,7 +153,6 @@ export function Task(props: TaskProps) {
           <CreateAndUpdateTask
             task={props.task}
             columnId={props.columnId}
-            // button={<BorderColorIcon />}
             action={(data) => updateTask(data)}
             textAction="Update"
             open={true}
