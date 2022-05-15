@@ -7,12 +7,13 @@ import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
-import { ColumnData } from '../../../services/interfaces';
+import { ColumnData, ColumnType } from '../../../services/interfaces';
 import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
-import { CreateTask } from '../tasks/CreateTask';
+import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
-import { getTasksInColumn } from '../../../services/taskService';
+import { getTasksInColumn, postTask } from '../../../services/taskService';
+import { UnpackNestedValue } from 'react-hook-form';
 
 const styleTextField = {
   width: '160px',
@@ -28,11 +29,12 @@ export function Column(props: ColumnProps) {
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
-  const { token } = useAppSelector((state) => state.authReducer);
+  const { token, userId } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector(
     (state) => state.columnReducer.allColumns.filter((column) => column.id === props.column.id)[0]
   );
+  const { addTask } = columnSlice.actions;
 
   useEffect(() => {
     dispatch(
@@ -87,6 +89,22 @@ export function Column(props: ColumnProps) {
     }
   }
 
+  const createTask = async (data: UnpackNestedValue<ColumnType> | false) => {
+    if (!data) return;
+
+    const newTask = await postTask({
+      body: {
+        title: data.title,
+        order: tasks.length ? tasks.length + 1 : 1,
+        description: data.description,
+        userId: userId,
+      },
+      boardId: currentBoard.id,
+      columnId: props.column.id,
+    });
+    dispatch(addTask(newTask));
+  };
+
   return (
     <Grid item className="column">
       <div className="column__header">
@@ -121,8 +139,10 @@ export function Column(props: ColumnProps) {
         )}
       </div>
       <Paper className="column__body">
-        <CreateTask
+        <CreateAndUpdateTask
           columnId={props.column.id}
+          textAction="Add"
+          action={(data) => createTask(data)}
           button={
             <>
               <AddIcon fontSize="small" /> Add task

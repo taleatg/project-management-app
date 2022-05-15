@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { deleteTask } from '../../../services/taskService';
+import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { TaskData } from '../../../services/interfaces';
+import { ColumnType, TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { Card, Divider, Menu } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import ConfirmationModal from '../../ConfirmationModal';
+import { CreateAndUpdateTask } from './CreateAndUpdateTask';
+import { UnpackNestedValue } from 'react-hook-form';
 
 interface TaskProps {
   task: TaskData;
@@ -21,10 +22,11 @@ interface TaskProps {
 export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
   const { currentBoard } = useAppSelector((state) => state.boardReducer);
-  const { removeTask } = columnSlice.actions;
-
+  const { allColumns } = useAppSelector((state) => state.columnReducer);
+  const { removeTask, changedTask } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const [isEdit, setIsEdit] = useState(false);
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -34,6 +36,53 @@ export function Task(props: TaskProps) {
     });
     dispatch(removeTask(data));
     handleClose();
+
+    const changedTasks = allColumns
+      .filter((column) => column.id === props.columnId)[0]
+      .tasks.filter((task) => task.order > props.task.order);
+    updateTasksOrder(changedTasks);
+  };
+
+  const updateTask = async (data: UnpackNestedValue<ColumnType> | false) => {
+    handleClose();
+    setIsEdit(false);
+    if (!data) return;
+
+    const body = {
+      title: data.title,
+      order: props.task.order,
+      description: data.description,
+      userId: props.task.userId,
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+    };
+    await editTask({
+      body,
+      boardId: currentBoard.id,
+      columnId: props.columnId,
+      taskId: props.task.id,
+    });
+    dispatch(getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId }));
+  };
+
+  const updateTasksOrder = (tasks: TaskData[]) => {
+    tasks.map(async (task) => {
+      const updateTask = await editTask({
+        body: {
+          title: task.title,
+          order: task.order - 1,
+          description: task.description,
+          userId: task.userId,
+          boardId: currentBoard.id,
+          columnId: props.columnId,
+        },
+        boardId: currentBoard.id,
+        columnId: props.columnId,
+        taskId: task.id,
+      });
+
+      dispatch(changedTask(updateTask));
+    });
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,18 +129,27 @@ export function Task(props: TaskProps) {
                 horizontal: 'right',
               }}
             >
-              <MenuItem sx={{ justifyContent: 'center' }}>
-                <CheckCircleOutlineIcon color="disabled" onClick={handleClose} />
-              </MenuItem>
-              <MenuItem sx={{ justifyContent: 'center' }}>
-                <BorderColorIcon onClick={handleClose} />
+              <MenuItem sx={{ justifyContent: 'center' }} onClick={() => setIsEdit(true)}>
+                <BorderColorIcon />
               </MenuItem>
               <MenuItem>
-                <ConfirmationModal confirmedAction={() => deleteSelectedTask()} />
+                <ConfirmationModal
+                  confirmedAction={() => deleteSelectedTask()}
+                  unconfirmedAction={handleClose}
+                />
               </MenuItem>
             </Menu>
           </div>
         </div>
+        {isEdit ? (
+          <CreateAndUpdateTask
+            task={props.task}
+            columnId={props.columnId}
+            action={(data) => updateTask(data)}
+            textAction="Update"
+            open={true}
+          />
+        ) : null}
         <Divider />
         <Typography className="description" component="p">
           {props.task.description}

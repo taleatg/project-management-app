@@ -10,6 +10,13 @@ export interface ColumnData {
   tasks: TaskData[];
 }
 
+export interface ColumnType {
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+}
+
 export interface TaskData {
   id: string;
   title: string;
@@ -25,6 +32,16 @@ export interface TaskData {
   ];
 }
 
+export interface UpdateTask {
+  id: string;
+  title: string;
+  order: 1;
+  description: string;
+  userId: string;
+  columnId: string;
+  boardId: string;
+}
+
 export interface SignInForm {
   name: string;
   login: string;
@@ -38,10 +55,13 @@ export interface boardColumns {
     order?: number;
     description?: string;
     userId?: string;
+    boardId?: string;
+    columnId?: string;
   };
   boardId?: string;
   token?: string;
   columnId?: string;
   path?: string;
   method?: string;
+  taskId?: string;
 }
