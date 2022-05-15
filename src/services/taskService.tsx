@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { boardColumns } from './interfaces';
+import { boardColumns, ColumnData } from './interfaces';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getTasksInColumn = createAsyncThunk(
@@ -10,7 +10,10 @@ export const getTasksInColumn = createAsyncThunk(
       url: `/boards/${boardId}/columns/${columnId}/tasks`,
     })
       .then((res) => {
-        return { tasks: res.data, columnId: columnId };
+        return {
+          tasks: res.data.sort((a: ColumnData, b: ColumnData) => (a.order > b.order ? 1 : -1)),
+          columnId: columnId,
+        };
       })
       .catch((error) => {
         if (error instanceof Error) {

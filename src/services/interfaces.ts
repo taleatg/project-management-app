@@ -32,20 +32,14 @@ export interface TaskData {
   ];
 }
 
-export interface UpdateTaskData {
+export interface UpdateTask {
   id: string;
   title: string;
-  order: number;
+  order: 1;
   description: string;
   userId: string;
-  boardId: string;
   columnId: string;
-  files: [
-    {
-      filename: string;
-      fileSize: number;
-    }
-  ];
+  boardId: string;
 }
 
 export interface SignInForm {
@@ -61,6 +55,8 @@ export interface boardColumns {
     order?: number;
     description?: string;
     userId?: string;
+    boardId?: string;
+    columnId?: string;
   };
   boardId?: string;
   token?: string;
