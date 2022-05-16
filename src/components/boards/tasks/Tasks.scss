@@ -23,5 +23,12 @@
     .description {
       margin-top: 5px;
     }
+
+    .assign {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      align-self: center;
+    }
   }
 }

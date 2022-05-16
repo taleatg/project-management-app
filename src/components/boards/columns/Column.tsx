@@ -15,6 +15,8 @@ import { Task } from '../tasks/Tasks';
 import { getTasksInColumn, postTask } from '../../../services/taskService';
 import { UnpackNestedValue } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { getUsers } from '../../../services/authorizationService';
+import { authSlice } from '../../../store/reducers/authenticationSlice';
 
 const styleTextField = {
   width: '160px',
@@ -37,6 +39,7 @@ export function Column(props: ColumnProps) {
   const { addTask } = columnSlice.actions;
   const params = useParams();
   const boardId: string = params.boardId as string;
+  const { setUsers } = authSlice.actions;
 
   useEffect(() => {
     dispatch(
@@ -45,7 +48,11 @@ export function Column(props: ColumnProps) {
         columnId: props.column.id,
       })
     );
-  }, [dispatch, boardId, props.column.id]);
+    const showUsers = async () => {
+      dispatch(setUsers(await getUsers()));
+    };
+    showUsers();
+  }, [dispatch, boardId, props.column.id, setUsers]);
 
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
   const initTitle = currentColumn.title;
