@@ -9,12 +9,13 @@ import { FormField } from './FormFields';
 import { BackendResponse } from './BackendResponse';
 import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
-import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();
-  const { switchAuthorization, setToken, setUserId } = authSlice.actions;
+  const { switchAuthorization, setUserId } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
+  const [cookies, setCookie] = useCookies(['token', 'userId']);
   const [authorization, setAuthorization] = useState('signin');
   const [backendErrors, setBackendErrors] = useState('');
   const { errors } = useFormState({ control });
@@ -48,8 +49,8 @@ export const AuthForm = () => {
       const decoded = parseJwt(signin.token);
       navigate('/home');
       dispatch(switchAuthorization(true));
-      dispatch(setToken(signin.token));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${signin.token}`;
+      setCookie('token', signin.token, { path: '/', maxAge: 24 * 3600 });
+      setCookie('userId', decoded.userId, { path: '/', maxAge: 24 * 3600 });
       dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);

@@ -14,6 +14,7 @@ import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
 import { getTasksInColumn, postTask } from '../../../services/taskService';
 import { UnpackNestedValue } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 const styleTextField = {
   width: '160px',
@@ -28,22 +29,23 @@ export function Column(props: ColumnProps) {
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
-  const { currentBoard } = useAppSelector((state) => state.boardReducer);
-  const { token, userId } = useAppSelector((state) => state.authReducer);
+  const { userId } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const { tasks } = useAppSelector(
     (state) => state.columnReducer.allColumns.filter((column) => column.id === props.column.id)[0]
   );
   const { addTask } = columnSlice.actions;
+  const params = useParams();
+  const boardId: string = params.boardId as string;
 
   useEffect(() => {
     dispatch(
       getTasksInColumn({
-        boardId: currentBoard.id,
+        boardId: boardId,
         columnId: props.column.id,
       })
     );
-  }, [dispatch, token, currentBoard.id, props.column.id]);
+  }, [dispatch, boardId, props.column.id]);
 
   const currentColumn = allColumns.find((column) => column.id === props.column.id) as ColumnData;
   const initTitle = currentColumn.title;
@@ -58,7 +60,7 @@ export function Column(props: ColumnProps) {
         title: newTitle,
         order: currentColumn.order,
       },
-      currentBoard.id,
+      boardId,
       currentColumn.id
     );
     await dispatch(changeColumn(updatedColumn));
@@ -82,7 +84,7 @@ export function Column(props: ColumnProps) {
           title: changedColumns[i].title,
           order: changedColumns[i].order - 1,
         },
-        currentBoard.id,
+        boardId,
         changedColumns[i].id
       );
       await dispatch(changeColumn(updatedColumn));
@@ -99,7 +101,7 @@ export function Column(props: ColumnProps) {
         description: data.description,
         userId: userId,
       },
-      boardId: currentBoard.id,
+      boardId: boardId,
       columnId: props.column.id,
     });
     dispatch(addTask(newTask));
@@ -133,7 +135,7 @@ export function Column(props: ColumnProps) {
             </div>
             <ConfirmationModal
               textButton={''}
-              confirmedAction={() => deleteClickHandler(currentBoard.id, props.column.id)}
+              confirmedAction={() => deleteClickHandler(boardId, props.column.id)}
             />
           </>
         )}

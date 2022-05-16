@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from './CreateAndUpdateTask';
 import { UnpackNestedValue } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 interface TaskProps {
   task: TaskData;
@@ -21,16 +22,17 @@ interface TaskProps {
 
 export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
-  const { currentBoard } = useAppSelector((state) => state.boardReducer);
   const { allColumns } = useAppSelector((state) => state.columnReducer);
   const { removeTask, changedTask } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEdit, setIsEdit] = useState(false);
+  const params = useParams();
+  const boardId: string = params.boardId as string;
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
-      boardId: currentBoard.id,
+      boardId: boardId,
       columnId: props.columnId,
       taskId: props.task.id,
     });
@@ -53,16 +55,16 @@ export function Task(props: TaskProps) {
       order: props.task.order,
       description: data.description,
       userId: props.task.userId,
-      boardId: currentBoard.id,
+      boardId: boardId,
       columnId: props.columnId,
     };
     await editTask({
       body,
-      boardId: currentBoard.id,
+      boardId: boardId,
       columnId: props.columnId,
       taskId: props.task.id,
     });
-    dispatch(getTasksInColumn({ boardId: currentBoard.id, columnId: props.columnId }));
+    dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
   };
 
   const updateTasksOrder = (tasks: TaskData[]) => {
@@ -73,10 +75,10 @@ export function Task(props: TaskProps) {
           order: task.order - 1,
           description: task.description,
           userId: task.userId,
-          boardId: currentBoard.id,
+          boardId: boardId,
           columnId: props.columnId,
         },
-        boardId: currentBoard.id,
+        boardId: boardId,
         columnId: props.columnId,
         taskId: task.id,
       });

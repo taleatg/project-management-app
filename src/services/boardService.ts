@@ -19,6 +19,24 @@ export const getBoardsList = createAsyncThunk(
   }
 );
 
+export const getBoardById = createAsyncThunk(
+  'board/getBoardById',
+  async (id: string, { rejectWithValue }) => {
+    return axios({
+      method: 'get',
+      url: `/boards/${id}`,
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          return rejectWithValue(error.message);
+        }
+      });
+  }
+);
+
 export const postBoard = createAsyncThunk(
   'board/postBoard',
   async (title: string, { rejectWithValue }) => {
