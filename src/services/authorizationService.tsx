@@ -33,3 +33,12 @@ export const updateUser = async ({ body, path, method }: signIn) => {
     .then((res) => res.data)
     .catch((err) => err.response.data);
 };
+
+export const getUser = async (userId: string) => {
+  return axios({
+    method: 'GET',
+    url: `/users/${userId}`,
+  })
+    .then((res) => res.data)
+    .catch((err) => err.response.data);
+};

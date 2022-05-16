@@ -65,3 +65,9 @@ export interface boardColumns {
   method?: string;
   taskId?: string;
 }
+
+export interface UserInfo {
+  id: string;
+  name: string;
+  login: string;
+}
