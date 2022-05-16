@@ -167,7 +167,7 @@ export function Task(props: TaskProps) {
           {props.task.description}
         </Typography>
         <div className="assign">
-          <UserAssignment />
+          <UserAssignment currentResponsible={userName} />
           <Typography sx={{ fontSize: '14px' }} component="p">
             {userName}
           </Typography>

@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../store/store';
 
 const ITEM_HEIGHT = 25;
 
-export default function UserAssignment() {
+export default function UserAssignment(props: { currentResponsible: string }) {
   const { users } = useAppSelector((state) => state.authReducer);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -47,7 +47,12 @@ export default function UserAssignment() {
         }}
       >
         {users.map((user) => (
-          <MenuItem key={user.id} onClick={handleClose} sx={{ fontSize: '14px' }}>
+          <MenuItem
+            key={user.id}
+            onClick={handleClose}
+            selected={user.name === props.currentResponsible}
+            sx={{ fontSize: '14px' }}
+          >
             {user.name}
           </MenuItem>
         ))}
