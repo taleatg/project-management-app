@@ -99,9 +99,11 @@ export function Task(props: TaskProps) {
   };
 
   const getName = async () => {
-    const name = await getUserName(props.task.userId);
-    setUserName(name.name);
-    return name;
+    if (props.task?.userId) {
+      const name = await getUserName(props.task.userId);
+      setUserName(name.name);
+      return name;
+    }
   };
   getName();
 
