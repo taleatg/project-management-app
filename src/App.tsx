@@ -14,6 +14,7 @@ import './axiosConfig';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
+import { SignupPage } from './pages/SignupPage';
 
 function App() {
   const { setUserId } = authSlice.actions;
@@ -64,7 +65,8 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signin" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

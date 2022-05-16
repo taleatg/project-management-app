@@ -2,10 +2,10 @@ import React from 'react';
 import { Container } from '@mui/material';
 import { AuthForm } from '../components/authorization form/AuthForm';
 
-export const LoginPage = () => {
+export const SignupPage = () => {
   return (
     <Container maxWidth="xl">
-      <AuthForm whichPage="signin" />
+      <AuthForm whichPage="signup" />
     </Container>
   );
 };

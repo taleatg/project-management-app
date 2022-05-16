@@ -11,18 +11,19 @@ import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import { useCookies } from 'react-cookie';
 
-export const AuthForm = () => {
+export const AuthForm = (props: { whichPage: string }) => {
   const dispatch = useAppDispatch();
   const { switchAuthorization, setUserId } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
   const [cookies, setCookie] = useCookies(['token', 'userId']);
-  const [authorization, setAuthorization] = useState('signin');
+  const [authorization, setAuthorization] = useState(props.whichPage);
   const [backendErrors, setBackendErrors] = useState('');
   const { errors } = useFormState({ control });
   const navigate = useNavigate();
 
   const authorizationSwitch = () => {
     setAuthorization(authorization === 'signin' ? 'signup' : 'signin');
+    navigate(authorization === 'signin' ? '/signup' : '/signin');
   };
 
   const parseJwt = (token: string) => {
@@ -102,7 +103,7 @@ export const AuthForm = () => {
               Submit
             </Button>
             <Button variant="outlined" onClick={authorizationSwitch}>
-              {authorization === 'signin' ? 'Sign up' : 'Login'}
+              {authorization === 'signin' ? 'Sign up' : 'Sign in'}
             </Button>
           </div>
         </form>

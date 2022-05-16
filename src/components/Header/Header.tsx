@@ -144,9 +144,14 @@ export const Header = () => {
               Logout
             </Button>
           ) : (
-            <Link to={`/login`} className="link link__menu">
-              <Button color="inherit">Login / Sign Up</Button>
-            </Link>
+            <>
+              <Link to={`/signin`} className="link link__menu">
+                <Button color="inherit">Sign In</Button>
+              </Link>
+              <Link to={`/signup`} className="link link__menu">
+                <Button color="inherit">Sign Up</Button>
+              </Link>
+            </>
           )}
         </Toolbar>
       </Container>
