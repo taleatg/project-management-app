@@ -42,3 +42,12 @@ export const getUserName = async (id: string) => {
     .then((res) => res.data)
     .catch((err) => err.response.data);
 };
+
+export const getUsers = async () => {
+  return axios({
+    method: 'get',
+    url: '/users',
+  })
+    .then((res) => res.data)
+    .catch((err) => err.response.data);
+};

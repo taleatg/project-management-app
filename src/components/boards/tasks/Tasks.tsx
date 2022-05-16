@@ -10,12 +10,12 @@ import { Card, Divider, Menu } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import PersonIcon from '@mui/icons-material/Person';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from './CreateAndUpdateTask';
 import { UnpackNestedValue } from 'react-hook-form';
 import { getUserName } from '../../../services/authorizationService';
 import { useParams } from 'react-router-dom';
+import UserAssignment from './UserAssignment';
 
 interface TaskProps {
   task: TaskData;
@@ -167,8 +167,10 @@ export function Task(props: TaskProps) {
           {props.task.description}
         </Typography>
         <div className="assign">
-          <PersonIcon sx={{ fontSize: '16px', mr: '5px' }} />
-          <Typography component="p">{userName}</Typography>
+          <UserAssignment />
+          <Typography sx={{ fontSize: '14px' }} component="p">
+            {userName}
+          </Typography>
         </div>
       </Card>
     </div>
