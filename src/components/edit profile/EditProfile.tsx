@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { Button, Typography } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { FormField } from '../authorization form/FormFields';
 import { SignInForm } from '../../services/interfaces';
 import './EditProfile.scss';
@@ -21,7 +24,7 @@ export function EditProfile() {
   const [backendErrors, setBackendErrors] = useState('');
   const [isSuccessfulUpdate, setIsSuccessfulUpdate] = useState(false);
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId']);
+  const removeCookie = useCookies(['token', 'userId'])[2];
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     const body: Record<string, string> = {
@@ -80,7 +83,8 @@ export function EditProfile() {
               'name',
               /^[A-Za-zА-Яа-я_]{2,}/,
               'Enter at least two letters',
-              'text'
+              'text',
+              <PersonIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
@@ -93,7 +97,8 @@ export function EditProfile() {
               'login',
               /^[A-Za-z0-9]{5,}/,
               'Login must contain at least 5 Latin letters or numbers',
-              'text'
+              'text',
+              <AlternateEmailIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
@@ -106,7 +111,8 @@ export function EditProfile() {
               'password',
               /^[a-zA-Z0-9_]{8,}/,
               'Password must contain at least 8 characters',
-              'password'
+              'password',
+              <LockIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
@@ -119,7 +125,8 @@ export function EditProfile() {
               'repeatPassword',
               /^[a-zA-Z0-9_]{8,}/,
               'Password must contain at least 8 characters',
-              'password'
+              'password',
+              <LockIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="button-container">
