@@ -16,13 +16,15 @@ import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
 
 function App() {
+  const { setUserId } = authSlice.actions;
   const dispatch = useAppDispatch();
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(['token', 'userId']);
   const { switchAuthorization } = authSlice.actions;
 
   if (cookies.token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`;
     dispatch(switchAuthorization(true));
+    dispatch(setUserId(cookies.userId));
   }
 
   return (

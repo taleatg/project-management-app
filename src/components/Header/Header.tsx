@@ -27,7 +27,7 @@ export const Header = () => {
   const { switchAuthorization } = authSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId']);
 
   const pages: IPages = isAuthenticated
     ? {
@@ -50,6 +50,7 @@ export const Header = () => {
   const clickLogoutHandler = () => {
     navigate('/welcome');
     removeCookie('token');
+    removeCookie('userId');
     dispatch(switchAuthorization(false));
   };
 

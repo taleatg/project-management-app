@@ -15,7 +15,7 @@ export const AuthForm = () => {
   const dispatch = useAppDispatch();
   const { switchAuthorization, setUserId } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
-  const [cookies, setCookie] = useCookies(['token']);
+  const [cookies, setCookie] = useCookies(['token', 'userId']);
   const [authorization, setAuthorization] = useState('signin');
   const [backendErrors, setBackendErrors] = useState('');
   const { errors } = useFormState({ control });
@@ -50,6 +50,7 @@ export const AuthForm = () => {
       navigate('/home');
       dispatch(switchAuthorization(true));
       setCookie('token', signin.token, { path: '/', maxAge: 24 * 3600 });
+      setCookie('userId', decoded.userId, { path: '/', maxAge: 24 * 3600 });
       dispatch(setUserId(decoded.userId));
     } else if (signin.message) {
       setBackendErrors(signin.message);
