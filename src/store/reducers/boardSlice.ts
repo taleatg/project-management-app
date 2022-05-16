@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { BoardData } from '../../services/interfaces';
-import { deleteBoard, getBoardsList, postBoard } from '../../services/boardService';
+import { deleteBoard, getBoardById, getBoardsList, postBoard } from '../../services/boardService';
 
 interface BoardState {
   status: string | null;
@@ -32,9 +32,14 @@ export const boardSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getBoardsList.pending, (state) => {
-      state.status = 'pending';
-      state.error = null;
+    builder.addCase(getBoardById.fulfilled, (state, action) => {
+      state.status = 'resolved';
+      state.currentBoard.id = action.payload.id;
+      state.currentBoard.title = action.payload.title;
+    });
+    builder.addCase(getBoardById.rejected, (state, action) => {
+      state.status = 'rejected';
+      state.error = action.payload as Error;
     });
     builder.addCase(getBoardsList.fulfilled, (state, action) => {
       state.status = 'resolved';
