@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
+import { ProfileIcon } from '../Profile/ProfileIcon';
 
 type IPages = {
   [key: string]: string;
@@ -141,9 +142,12 @@ export const Header = () => {
           </Box>
           <LangSelect />
           {isAuthenticated ? (
-            <Button color="inherit" onClick={clickLogoutHandler}>
-              Logout
-            </Button>
+            <>
+              <ProfileIcon />
+              <Button color="inherit" onClick={clickLogoutHandler}>
+                Logout
+              </Button>
+            </>
           ) : (
             <Link to={`/login`} className="link link__menu">
               <Button color="inherit">Login / Sign Up</Button>
