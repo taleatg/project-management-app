@@ -66,7 +66,7 @@ export interface boardColumns {
   taskId?: string;
 }
 
-export interface UserInfo {
+export interface UserData {
   id: string;
   name: string;
   login: string;

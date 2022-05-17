@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfo } from '../../services/interfaces';
+import { UserData } from '../../services/interfaces';
 
 interface AuthState {
   isAuthenticated: boolean;
   userId: string;
-  currentUser: UserInfo;
+  currentUserData: UserData;
 }
 
 const authState: AuthState = {
   isAuthenticated: false,
   userId: '',
-  currentUser: {
+  currentUserData: {
     id: '',
     name: '',
     login: '',
@@ -27,10 +27,10 @@ export const authSlice = createSlice({
     setUserId(state, action: PayloadAction<string>) {
       state.userId = action.payload;
     },
-    setUserInfo(state, action: PayloadAction<UserInfo>) {
-      state.currentUser.id = action.payload.id;
-      state.currentUser.name = action.payload.name;
-      state.currentUser.login = action.payload.login;
+    setCurrentUserData(state, action: PayloadAction<UserData>) {
+      state.currentUserData.id = action.payload.id;
+      state.currentUserData.name = action.payload.name;
+      state.currentUserData.login = action.payload.login;
     },
   },
 });
