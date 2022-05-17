@@ -1,3 +1,5 @@
+@import '../../../index';
+
 .column-wrapper {
   display: flex;
   overflow-x: scroll;
@@ -16,11 +18,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 18rem;
+  width: 250px;
   background: white;
-  border: 2px solid #000;
-  box-shadow: 0 0 5px;
-  padding: 20px;
+  border-radius: 5px;
+  padding: 32px;
 
   .title-wrap {
     margin-top: 15px;
@@ -37,9 +38,7 @@
   min-width: 265px;
 
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex-row-space-between;
   }
 
   &__title {
