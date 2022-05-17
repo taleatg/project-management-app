@@ -12,11 +12,12 @@ export const ProfilePage = () => {
           Profile
         </Typography>
         <Paper className="profile__info">
-          <Typography variant="h6" component="div" gutterBottom noWrap>
-            Name: {currentUserData.name}
+          <div className="profile__avatar" />
+          <Typography variant="h5" component="div" gutterBottom noWrap className="profile__name">
+            {currentUserData.name}
           </Typography>
-          <Typography variant="h6" component="div" gutterBottom noWrap>
-            Login: {currentUserData.login}
+          <Typography variant="h5" component="div" gutterBottom noWrap className="profile__login">
+            {currentUserData.login}
           </Typography>
         </Paper>
       </div>

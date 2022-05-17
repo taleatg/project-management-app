@@ -54,34 +54,38 @@
   top: 50%;
   transform: translate(-50%, -50%);
 
-  .profile__info {
-    padding: 25px;
-    margin: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: calc(100% - 20px);
-    min-width: 16rem;
-
-    .edit-value {
-      margin: 15px 0;
-    }
-
-    .button-container {
+  .profile {
+    &__info {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      margin-top: 20px;
-    }
-
-    @media(max-width: 520px) {
+      padding: 25px;
+      margin: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: calc(100% - 20px);
       min-width: 16rem;
-      padding: 15px;
-      margin: 0;
-
-      .button-container {
-        .button {
-          width: 150px;
-        }
+      color: black;
+    }
+    &__avatar {
+      background-image: url("../../public/avatar.png");
+      background-size: contain;
+      width: 3rem;
+      height: 3rem;
+    }
+    &__name{
+      &:before {
+        content: "Name: ";
+        font-size: large;
+        color: $secontTextColor;
+      }
+    }
+    &__login{
+      &:before {
+        content: "Login: ";
+        font-size: large;
+        color: $secontTextColor;
       }
     }
   }
