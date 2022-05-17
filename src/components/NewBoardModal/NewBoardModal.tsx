@@ -24,14 +24,6 @@ const style = {
   p: 4,
 };
 
-const style_submit = {
-  marginTop: '20px',
-};
-
-const style_textfield = {
-  marginTop: '30px',
-};
-
 export interface FormValues {
   'Board title': string;
 }
@@ -46,12 +38,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const { register, reset, handleSubmit } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const title = data['Board title'];
@@ -80,7 +67,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
         <Box sx={style} className="new-board__modal">
           <div className="new-board__title">
             <Typography id="modal-modal-title" variant="h6" component="p">
-              Create new board
+              New board
             </Typography>
             <IconButton
               aria-label="close"
@@ -100,16 +87,15 @@ export default function NewBoardModal(props: NewBoardModalProps) {
               {...register('Board title', { required: true })}
               fullWidth
               margin="normal"
-              sx={style_textfield}
+              sx={{ marginTop: '30px' }}
+              label="Board title"
+              variant="outlined"
             />
-            <div className="new-board__error">
-              {errors['Board title']?.type === 'required' ? 'Please enter board title' : ''}
-            </div>
             <Button
               type="submit"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              sx={style_submit}
+              sx={{ marginTop: '20px' }}
             >
               Create
             </Button>

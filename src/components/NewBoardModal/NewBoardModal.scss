@@ -1,11 +1,11 @@
+@import "../../index";
+
 .new-board {
   &__button {
     color: white;
   }
   &__title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    @include flex-row-space-between;
   }
   &__modal {
     width: 310px;
