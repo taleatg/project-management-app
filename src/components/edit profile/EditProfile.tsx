@@ -57,11 +57,11 @@ export function EditProfile() {
 
   const deleteAccount = async () => {
     await deleteUser(`users/${userId}`);
-    removeCookie('token');
-    removeCookie('userId');
     localStorage.removeItem('userData');
     navigate('/home');
     dispatch(switchAuthorization(false));
+    removeCookie('token');
+    removeCookie('userId');
   };
 
   return (

@@ -13,7 +13,9 @@ import MenuItem from '@mui/material/MenuItem';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from './CreateAndUpdateTask';
 import { UnpackNestedValue } from 'react-hook-form';
+import { getUserName } from '../../../services/authorizationService';
 import { useParams } from 'react-router-dom';
+import UserAssignment from './UserAssignment';
 
 interface TaskProps {
   task: TaskData;
@@ -29,6 +31,7 @@ export function Task(props: TaskProps) {
   const [isEdit, setIsEdit] = useState(false);
   const params = useParams();
   const boardId: string = params.boardId as string;
+  const [userName, setUserName] = useState('');
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -95,6 +98,15 @@ export function Task(props: TaskProps) {
     setAnchorEl(null);
   };
 
+  const getName = async () => {
+    if (props.task?.userId) {
+      const name = await getUserName(props.task.userId);
+      setUserName(name.name);
+      return name;
+    }
+  };
+  getName();
+
   return (
     <div className="task">
       <Card key={props.task.id} className="card">
@@ -156,6 +168,16 @@ export function Task(props: TaskProps) {
         <Typography className="description" component="p">
           {props.task.description}
         </Typography>
+        <div className="assign">
+          <UserAssignment
+            currentResponsible={userName}
+            task={props.task}
+            columnId={props.columnId}
+          />
+          <Typography sx={{ fontSize: '14px' }} component="p">
+            {userName}
+          </Typography>
+        </div>
       </Card>
     </div>
   );

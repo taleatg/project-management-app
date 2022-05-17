@@ -35,6 +35,24 @@ export const updateUser = async ({ body, path, method }: signIn) => {
     .catch((err) => err.response.data);
 };
 
+export const getUserName = async (id: string) => {
+  return axios({
+    method: 'get',
+    url: `/users/${id}`,
+  })
+    .then((res) => res.data)
+    .catch((err) => err.response.data);
+};
+
+export const getUsers = async () => {
+  return axios({
+    method: 'get',
+    url: '/users',
+  })
+    .then((res) => res.data)
+    .catch((err) => err.response.data);
+};
+
 export const getUserById = async (userId: string) => {
   return axios({
     method: 'GET',

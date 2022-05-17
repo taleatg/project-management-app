@@ -5,6 +5,7 @@ interface AuthState {
   isAuthenticated: boolean;
   userId: string;
   currentUserData: UserData;
+  users: UserData[];
 }
 
 const authState: AuthState = {
@@ -15,6 +16,7 @@ const authState: AuthState = {
     name: '',
     login: '',
   },
+  users: [],
 };
 
 export const authSlice = createSlice({
@@ -26,6 +28,9 @@ export const authSlice = createSlice({
     },
     setUserId(state, action: PayloadAction<string>) {
       state.userId = action.payload;
+    },
+    setUsers(state, action: PayloadAction<UserData[]>) {
+      state.users = action.payload;
     },
     setCurrentUserData(state, action: PayloadAction<UserData>) {
       state.currentUserData.id = action.payload.id;
