@@ -1,5 +1,4 @@
 import { Grid, Paper, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import './Columns.scss';
 import React, { useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
@@ -17,10 +16,6 @@ import { UnpackNestedValue } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getUsers } from '../../../services/authorizationService';
 import { authSlice } from '../../../store/reducers/authenticationSlice';
-
-const styleTextField = {
-  width: '160px',
-};
 
 interface ColumnProps {
   column: ColumnData;
@@ -130,7 +125,7 @@ export function Column(props: ColumnProps) {
               defaultValue={initTitle}
               autoFocus={true}
               margin={'none'}
-              sx={styleTextField}
+              sx={{ width: '160px' }}
               size="small"
               onChange={(e) => setNewTitle(e.target.value)}
             />
@@ -150,13 +145,8 @@ export function Column(props: ColumnProps) {
       <Paper className="column__body">
         <CreateAndUpdateTask
           columnId={props.column.id}
-          textAction="Add"
+          textAction="Create"
           action={(data) => createTask(data)}
-          button={
-            <>
-              <AddIcon fontSize="small" /> Add task
-            </>
-          }
         />
         <div>
           {status === 'resolved' &&
