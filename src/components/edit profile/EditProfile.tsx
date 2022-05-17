@@ -10,6 +10,7 @@ import ConfirmationModal from '../ConfirmationModal';
 import { BackendResponse } from '../authorization form/BackendResponse';
 import { useNavigate } from 'react-router-dom';
 import { authSlice } from '../../store/reducers/authenticationSlice';
+import { useCookies } from 'react-cookie';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export function EditProfile() {
   const [backendErrors, setBackendErrors] = useState('');
   const [isSuccessfulUpdate, setIsSuccessfulUpdate] = useState(false);
   const navigate = useNavigate();
+  const removeCookie = useCookies(['token', 'userId'])[2];
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     const body: Record<string, string> = {
@@ -55,6 +57,9 @@ export function EditProfile() {
 
   const deleteAccount = async () => {
     await deleteUser(`users/${userId}`);
+    removeCookie('token');
+    removeCookie('userId');
+    localStorage.removeItem('userData');
     navigate('/home');
     dispatch(switchAuthorization(false));
   };
