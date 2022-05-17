@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
+import { Avatar, IconButton, Menu, MenuItem, Tooltip, Zoom } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
+import { getUserData } from '../../services/authorizationService';
 import { authSlice } from '../../store/reducers/authenticationSlice';
-import { getUser } from '../../services/authorizationService';
 
-export const ProfileIcon = () => {
-  const navigate = useNavigate();
+const ProfileIcon = () => {
+  const { setCurrentUserData } = authSlice.actions;
   const dispatch = useAppDispatch();
-  const { setUserInfo } = authSlice.actions;
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { userId, currentUser } = useAppSelector((state) => state.authReducer);
+  const { userId, currentUserData } = useAppSelector((state) => state.authReducer);
 
-  const getUserInfo = async () => {
-    const info = await getUser(userId);
-    dispatch(setUserInfo(info));
+  const updateUserData = async () => {
+    const userData = await getUserData(userId);
+    dispatch(setCurrentUserData(userData));
   };
 
-  useEffect(() => {
-    getUserInfo();
-  }, [getUserInfo]);
+  updateUserData();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -41,7 +39,7 @@ export const ProfileIcon = () => {
 
   return (
     <div>
-      <Tooltip title={currentUser.name}>
+      <Tooltip TransitionComponent={Zoom} title={currentUserData.name} arrow>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -50,7 +48,7 @@ export const ProfileIcon = () => {
           onClick={handleMenu}
           color="inherit"
         >
-          <Avatar>{currentUser.name.slice(0, 2)}</Avatar>
+          <Avatar>{currentUserData.name.slice(0, 2)}</Avatar>
         </IconButton>
       </Tooltip>
       <Menu
@@ -74,3 +72,5 @@ export const ProfileIcon = () => {
     </div>
   );
 };
+
+export default ProfileIcon;
