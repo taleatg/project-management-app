@@ -43,29 +43,27 @@ export function CreateColumn(props: { button: JSX.Element }) {
         aria-describedby="modal-modal-description"
       >
         <Box className="modal-wrapper" sx={{ boxShadow: 24 }}>
-          <div className="new-column__title">
-            <Typography id="modal-modal-title" variant="h6" component="p">
-              New column
-            </Typography>
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <Typography id="modal-modal-title" variant="h6" component="p">
+            New column
+          </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <form>
             <TextField
               {...register('title', { required: true })}
               fullWidth
               margin="normal"
-              sx={{ marginTop: '30px' }}
+              sx={{ marginTop: '20px' }}
               label="Column title"
               variant="outlined"
             />
