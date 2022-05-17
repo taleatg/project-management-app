@@ -14,6 +14,7 @@ import './axiosConfig';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
+import { ProfilePage } from './pages/ProfilePage';
 
 function App() {
   const { setUserId } = authSlice.actions;
@@ -53,6 +54,14 @@ function App() {
             element={
               <PrivateRoute>
                 <EditProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
               </PrivateRoute>
             }
           />

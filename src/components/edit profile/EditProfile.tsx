@@ -21,7 +21,7 @@ export function EditProfile() {
   const [backendErrors, setBackendErrors] = useState('');
   const [isSuccessfulUpdate, setIsSuccessfulUpdate] = useState(false);
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId']);
+  const removeCookie = useCookies(['token', 'userId'])[2];
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     const body: Record<string, string> = {
@@ -57,6 +57,7 @@ export function EditProfile() {
 
   const deleteAccount = async () => {
     await deleteUser(`users/${userId}`);
+    localStorage.removeItem('userData');
     navigate('/home');
     dispatch(switchAuthorization(false));
     removeCookie('token');

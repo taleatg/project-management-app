@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
+import { ProfileIcon } from '../Profile/ProfileIcon';
 
 type IPages = {
   [key: string]: string;
@@ -27,7 +28,7 @@ export const Header = () => {
   const { switchAuthorization } = authSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(['token', 'userId']);
+  const removeCookie = useCookies(['token', 'userId'])[2];
 
   const pages: IPages = isAuthenticated
     ? {
@@ -51,6 +52,7 @@ export const Header = () => {
     navigate('/welcome');
     removeCookie('token');
     removeCookie('userId');
+    localStorage.removeItem('userData');
     dispatch(switchAuthorization(false));
   };
 
@@ -140,9 +142,12 @@ export const Header = () => {
           </Box>
           <LangSelect />
           {isAuthenticated ? (
-            <Button color="inherit" onClick={clickLogoutHandler}>
-              Logout
-            </Button>
+            <>
+              <ProfileIcon />
+              <Button color="inherit" onClick={clickLogoutHandler}>
+                Logout
+              </Button>
+            </>
           ) : (
             <Link to={`/login`} className="link link__menu">
               <Button color="inherit">Login / Sign Up</Button>
