@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
 import './NewBoardModal.scss';
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { postBoard } from '../../services/boardService';
 import { useAppDispatch } from '../../store/store';
@@ -77,9 +78,23 @@ export default function NewBoardModal(props: NewBoardModalProps) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="new-board__modal">
-          <Typography id="modal-modal-title" variant="h6" component="p">
-            Create new board
-          </Typography>
+          <div className="new-board__title">
+            <Typography id="modal-modal-title" variant="h6" component="p">
+              Create new board
+            </Typography>
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
           <form>
             <TextField
               {...register('Board title', { required: true })}
