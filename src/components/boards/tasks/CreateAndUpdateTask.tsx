@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Box, Button, Typography, Modal, TextField } from '@mui/material';
-import { useForm, Controller, SubmitHandler, UnpackNestedValue } from 'react-hook-form';
+import { Box, Button, Typography, Modal, TextField, IconButton } from '@mui/material';
+import { useForm, SubmitHandler, UnpackNestedValue } from 'react-hook-form';
 import { ColumnType, TaskData } from '../../../services/interfaces';
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
 
 interface TaskProps {
   task?: TaskData;
@@ -14,7 +16,7 @@ interface TaskProps {
 
 export function CreateAndUpdateTask(props: TaskProps) {
   const [open, setOpen] = React.useState(props?.open || false);
-  const { handleSubmit, control, reset } = useForm<ColumnType>();
+  const { handleSubmit, reset, register } = useForm<ColumnType>();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
@@ -29,69 +31,62 @@ export function CreateAndUpdateTask(props: TaskProps) {
     props.action(false);
   };
 
-  const getTaskData = (
-    type: 'title' | 'description',
-    text: string,
-    currentState = '',
-    rows = 1
-  ) => {
+  const getTaskData = (type: 'title' | 'description', rows = 1) => {
     return (
-      <div className="title-wrap">
-        <Typography variant="h6" component="div" gutterBottom noWrap>
-          {text}
-        </Typography>
-        <Controller
-          control={control}
-          name={type}
-          defaultValue={currentState}
-          rules={{
-            required: `Enter ${type}`,
-          }}
-          render={({ field }) => (
-            <TextField
-              label={type}
-              className="auth-input"
-              fullWidth
-              multiline
-              rows={rows}
-              onChange={(e) => field.onChange(e)}
-              value={field.value}
-            />
-          )}
-        />
-      </div>
+      <TextField
+        {...register(`${type}`, { required: true })}
+        label={'Task ' + type}
+        sx={{ marginTop: '20px' }}
+        fullWidth
+        defaultValue={props.task ? props.task[`${type}`] : ''}
+        multiline
+        rows={rows}
+      />
     );
   };
 
   return (
     <>
-      {props.textAction === 'Add' ? (
+      {props.textAction === 'Create' ? (
         <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
-          {props.button}
+          <AddIcon fontSize="small" /> Add task
         </Button>
       ) : null}
       <Modal
         open={open}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box className="modal-wrapper">
-            <Typography id="modal-modal-title" variant="h5" component="h5" align="center">
-              {`${props.textAction} Task`}
-            </Typography>
-            {getTaskData('title', 'Enter the task title:', props.task?.title)}
-            {getTaskData('description', 'Enter the task description:', props.task?.description, 3)}
-            <div className="button-container">
-              <Button type="submit" variant="contained">
-                {props.textAction}
-              </Button>
-              <Button variant="outlined" onClick={handleClose}>
-                Close
-              </Button>
-            </div>
-          </Box>
-        </form>
+        <Box className="modal-wrapper">
+          <Typography id="modal-modal-title" variant="h6" component="p">
+            {`${props.textAction} task`}
+          </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <form>
+            {getTaskData('title')}
+            {getTaskData('description', 3)}
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={handleSubmit(onSubmit)}
+              sx={{ marginTop: '20px' }}
+            >
+              {props.textAction}
+            </Button>
+          </form>
+        </Box>
       </Modal>
     </>
   );
