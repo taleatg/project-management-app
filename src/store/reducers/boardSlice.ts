@@ -41,6 +41,10 @@ export const boardSlice = createSlice({
       state.status = 'rejected';
       state.error = action.payload as Error;
     });
+    builder.addCase(getBoardsList.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
     builder.addCase(getBoardsList.fulfilled, (state, action) => {
       state.status = 'resolved';
       state.allBoard = action.payload;

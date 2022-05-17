@@ -16,19 +16,30 @@ export default function LangSelect() {
     dispatch(selectLang(event.target.value));
   };
 
+  const style = {
+    minWidth: '80px',
+    position: 'absolute' as const,
+    right: '150px',
+  };
+
+  const style_select = {
+    color: 'white',
+  };
+
   return (
-    <Box sx={{ minWidth: 100 }}>
+    <Box sx={style}>
       <FormControl fullWidth>
         <InputLabel id="select-lang">Language</InputLabel>
         <Select
+          sx={style_select}
           labelId="select-lang"
           id="select-lang"
           value={lang}
           label="Language"
           onChange={handleChange}
         >
-          <MenuItem value={'English'}>English</MenuItem>
-          <MenuItem value={'Russian'}>Russian</MenuItem>
+          <MenuItem value={'English'}>EN</MenuItem>
+          <MenuItem value={'Russian'}>RU</MenuItem>
         </Select>
       </FormControl>
     </Box>

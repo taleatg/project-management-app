@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
-import { signIn } from '../../services/authorizationService';
+import { setUserDataInLocalStorage, signIn } from '../../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
@@ -13,6 +13,7 @@ import { BackendResponse } from './BackendResponse';
 import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 export const AuthForm = (props: { whichPage: string }) => {
   const dispatch = useAppDispatch();
@@ -52,10 +53,12 @@ export const AuthForm = (props: { whichPage: string }) => {
     if (signin.token) {
       const decoded = parseJwt(signin.token);
       navigate('/home');
+      dispatch(setUserId(decoded.userId));
       dispatch(switchAuthorization(true));
       setCookie('token', signin.token, { path: '/', maxAge: 24 * 3600 });
       setCookie('userId', decoded.userId, { path: '/', maxAge: 24 * 3600 });
-      dispatch(setUserId(decoded.userId));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${signin.token}`;
+      setUserDataInLocalStorage(decoded.userId);
     } else if (signin.message) {
       setBackendErrors(signin.message);
       setTimeout(() => {
