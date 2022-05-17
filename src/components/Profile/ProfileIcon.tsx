@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getUserData } from '../../services/authorizationService';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 
-const ProfileIcon = () => {
+export const ProfileIcon = () => {
   const { setCurrentUserData } = authSlice.actions;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -72,5 +72,3 @@ const ProfileIcon = () => {
     </div>
   );
 };
-
-export default ProfileIcon;
