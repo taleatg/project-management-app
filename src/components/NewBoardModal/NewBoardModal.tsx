@@ -65,29 +65,27 @@ export default function NewBoardModal(props: NewBoardModalProps) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="new-board__modal">
-          <div className="new-board__title">
-            <Typography id="modal-modal-title" variant="h6" component="p">
-              New board
-            </Typography>
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <Typography id="modal-modal-title" variant="h6" component="p">
+            New board
+          </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <form>
             <TextField
               {...register('Board title', { required: true })}
               fullWidth
               margin="normal"
-              sx={{ marginTop: '30px' }}
+              sx={{ marginTop: '20px' }}
               label="Board title"
               variant="outlined"
             />
