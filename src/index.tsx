@@ -11,9 +11,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
     <CookiesProvider>
-        <Suspense fallback={<div>Loading...</div>}>
-      <App />
-        </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <App />
+      </Suspense>
     </CookiesProvider>
   </Provider>
 );

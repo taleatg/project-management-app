@@ -9,14 +9,14 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    debug: true,
+    debug: false,
     detection: {
       order: ['cookie', 'localStorage'],
       caches: ['cookie'],
     },
-      interpolation: {
-        escapeValue: false,
-      }
+    interpolation: {
+      escapeValue: false,
+    },
   });
 
 export default i18n;
