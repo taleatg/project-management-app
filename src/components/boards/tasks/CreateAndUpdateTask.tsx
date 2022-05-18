@@ -1,6 +1,14 @@
 import * as React from 'react';
-import { Box, Button, Typography, Modal, TextField, IconButton } from '@mui/material';
-import { useForm, SubmitHandler, UnpackNestedValue } from 'react-hook-form';
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  TextField,
+  IconButton,
+  FormHelperText,
+} from '@mui/material';
+import { useForm, SubmitHandler, UnpackNestedValue, Controller } from 'react-hook-form';
 import { ColumnType, TaskData } from '../../../services/interfaces';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
@@ -16,7 +24,12 @@ interface TaskProps {
 
 export function CreateAndUpdateTask(props: TaskProps) {
   const [open, setOpen] = React.useState(props?.open || false);
-  const { handleSubmit, reset, register } = useForm<ColumnType>();
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<ColumnType>();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
@@ -29,18 +42,34 @@ export function CreateAndUpdateTask(props: TaskProps) {
   const handleClose = () => {
     setOpen(false);
     props.action(false);
+    reset();
   };
 
-  const getTaskData = (type: 'title' | 'description', rows = 1) => {
+  const getTaskData = (type: 'title' | 'description', currentState = '', rows = 1) => {
     return (
-      <TextField
-        {...register(`${type}`, { required: true })}
-        label={'Task ' + type}
-        sx={{ marginTop: '20px' }}
-        fullWidth
-        defaultValue={props.task ? props.task[`${type}`] : ''}
-        multiline
-        rows={rows}
+      <Controller
+        control={control}
+        name={type}
+        defaultValue={currentState}
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => (
+          <>
+            <TextField
+              label={'Task ' + type}
+              sx={{ marginTop: '20px' }}
+              fullWidth
+              multiline
+              rows={rows}
+              onChange={(e) => field.onChange(e)}
+              value={field.value}
+            />
+            <FormHelperText error sx={{ height: '10px' }}>
+              {errors[`${type}`] && `${type[0].toLocaleUpperCase() + type.slice(1)} is required`}
+            </FormHelperText>
+          </>
+        )}
       />
     );
   };
@@ -75,8 +104,8 @@ export function CreateAndUpdateTask(props: TaskProps) {
             <CloseIcon />
           </IconButton>
           <form>
-            {getTaskData('title')}
-            {getTaskData('description', 3)}
+            {getTaskData('title', props.task?.title)}
+            {getTaskData('description', props.task?.description, 3)}
             <Button
               type="submit"
               variant="contained"
