@@ -6,6 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,6 +19,7 @@ import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
+import { Tooltip, Zoom } from '@mui/material';
 
 type IPages = {
   [key: string]: string;
@@ -54,6 +57,10 @@ export const Header = () => {
     removeCookie('userId');
     localStorage.removeItem('userData');
     dispatch(switchAuthorization(false));
+  };
+
+  const clickBackToMainHandler = () => {
+    navigate('/home');
   };
 
   return (
@@ -99,11 +106,9 @@ export const Header = () => {
             >
               {keys.map((key) => (
                 <MenuItem key={key} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link to={`/${key}`} className={'link link__burger-menu'}>
-                      {pages[key]}
-                    </Link>
-                  </Typography>
+                  <Link to={`/${key}`} className={'link link__burger-menu'}>
+                    {pages[key]}
+                  </Link>
                 </MenuItem>
               ))}
               {isAuthenticated && (
@@ -120,9 +125,7 @@ export const Header = () => {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            LOGO
-          </Typography>
+          />
           <Box
             sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, color: 'red' }}
             className="menu-buttons-box"
@@ -143,15 +146,39 @@ export const Header = () => {
           <LangSelect />
           {isAuthenticated ? (
             <>
+              <Tooltip
+                title="go to main page"
+                TransitionComponent={Zoom}
+                arrow
+                color="inherit"
+                onClick={clickBackToMainHandler}
+              >
+                <IconButton>
+                  <DirectionsRunIcon sx={{ transform: 'scale(-1, 1)' }} />
+                </IconButton>
+              </Tooltip>
               <ProfileIcon />
-              <Button color="inherit" onClick={clickLogoutHandler}>
-                Logout
-              </Button>
+              <Tooltip
+                title="Sign Out"
+                TransitionComponent={Zoom}
+                arrow
+                color="inherit"
+                onClick={clickLogoutHandler}
+              >
+                <IconButton>
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
             </>
           ) : (
-            <Link to={`/login`} className="link link__menu">
-              <Button color="inherit">Login / Sign Up</Button>
-            </Link>
+            <>
+              <Link to={`/signin`} className="link link__menu">
+                <Button color="inherit">Sign In</Button>
+              </Link>
+              <Link to={`/signup`} className="link link__menu">
+                <Button color="inherit">Sign Up</Button>
+              </Link>
+            </>
           )}
         </Toolbar>
       </Container>
