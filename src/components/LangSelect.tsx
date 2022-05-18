@@ -5,7 +5,6 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { langSlice } from '../store/reducers/langSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
-import { Tooltip, Zoom } from '@mui/material';
 
 export default function LangSelect() {
   const { selectLang } = langSlice.actions;
@@ -24,20 +23,18 @@ export default function LangSelect() {
   return (
     <Box>
       <FormControl fullWidth variant="standard">
-        <Tooltip title="language" TransitionComponent={Zoom} arrow color="inherit">
-          <Select
-            sx={style_select}
-            labelId="select-lang"
-            id="select-lang"
-            value={lang}
-            label="Language"
-            onChange={handleChange}
-            disableUnderline
-          >
-            <MenuItem value={'English'}>EN</MenuItem>
-            <MenuItem value={'Russian'}>RU</MenuItem>
-          </Select>
-        </Tooltip>
+        <Select
+          sx={style_select}
+          labelId="select-lang"
+          id="select-lang"
+          value={lang}
+          label="Language"
+          onChange={handleChange}
+          disableUnderline
+        >
+          <MenuItem value={'English'}>EN</MenuItem>
+          <MenuItem value={'Russian'}>RU</MenuItem>
+        </Select>
       </FormControl>
     </Box>
   );
