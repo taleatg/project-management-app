@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import LockIcon from '@mui/icons-material/Lock';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
 import { getUserData, signIn } from '../../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
@@ -11,18 +14,19 @@ import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import { useCookies } from 'react-cookie';
 
-export const AuthForm = () => {
+export const AuthForm = (props: { whichPage: string }) => {
   const dispatch = useAppDispatch();
   const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
-  const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
+  const { handleSubmit, control, reset } = useForm<SignInForm>();
   const setCookie = useCookies(['token', 'userId'])[1];
-  const [authorization, setAuthorization] = useState('signin');
+  const [authorization, setAuthorization] = useState(props.whichPage);
   const [backendErrors, setBackendErrors] = useState('');
   const { errors } = useFormState({ control });
   const navigate = useNavigate();
 
   const authorizationSwitch = () => {
     setAuthorization(authorization === 'signin' ? 'signup' : 'signin');
+    navigate(authorization === 'signin' ? '/signup' : '/signin');
   };
 
   const parseJwt = (token: string) => {
@@ -63,8 +67,7 @@ export const AuthForm = () => {
       }, 5000);
     } else if (signin.id) {
       setAuthorization('signin');
-      setValue('login', data.login);
-      setValue('password', data.password);
+      navigate('/signin');
     }
   };
 
@@ -82,7 +85,8 @@ export const AuthForm = () => {
                 'name',
                 /^[A-Za-zА-Яа-я_]{2,}/,
                 'Enter at least two letters',
-                'text'
+                'text',
+                <PersonIcon sx={{ fontSize: '18px' }} />
               )
             : null}
           {FormField(
@@ -91,7 +95,8 @@ export const AuthForm = () => {
             'login',
             /^[A-Za-z0-9]{5,}/,
             'Login must contain at least 5 Latin letters or numbers',
-            'text'
+            'text',
+            <AlternateEmailIcon sx={{ fontSize: '18px' }} />
           )}
           {FormField(
             control,
@@ -99,14 +104,15 @@ export const AuthForm = () => {
             'password',
             /^[a-zA-Z0-9_]{8,}/,
             'Password must contain at least 8 characters',
-            'password'
+            'password',
+            <LockIcon sx={{ fontSize: '18px' }} />
           )}
           <div className="button-container">
             <Button type="submit" variant="contained">
               Submit
             </Button>
             <Button variant="outlined" onClick={authorizationSwitch}>
-              {authorization === 'signin' ? 'Sign up' : 'Login'}
+              {authorization === 'signin' ? 'Sign up' : 'Sign in'}
             </Button>
           </div>
         </form>

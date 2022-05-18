@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { WelcomePage } from './pages/welcome-page/WelcomePage';
 import { BoardPage } from './pages/BoardPage';
 import { Layout } from './components/Layout';
@@ -14,6 +14,7 @@ import './axiosConfig';
 import axios, { AxiosRequestTransformer } from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
+import { SignupPage } from './pages/SignupPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { getCookie } from './services/authorizationService';
 
@@ -22,10 +23,9 @@ type CommonHeaders = {
 };
 
 function App() {
-  const { setUserId, setCurrentUserData } = authSlice.actions;
+  const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
   const dispatch = useAppDispatch();
   const [cookies] = useCookies(['token', 'userId']);
-  const { switchAuthorization } = authSlice.actions;
 
   axios.defaults.transformRequest = ((data, headers: CommonHeaders) => {
     const token = getCookie('token');
@@ -86,7 +86,11 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signin" element={cookies.token ? <Navigate to="/home" /> : <LoginPage />} />
+          <Route
+            path="/signup"
+            element={cookies.token ? <Navigate to="/home" /> : <SignupPage />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
