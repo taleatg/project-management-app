@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { useForm, SubmitHandler, useFormState } from 'react-hook-form';
-import { setUserDataInLocalStorage, signIn } from '../../services/authorizationService';
+import { getUserData, signIn } from '../../services/authorizationService';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
@@ -10,11 +10,10 @@ import { BackendResponse } from './BackendResponse';
 import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import { useCookies } from 'react-cookie';
-import axios from 'axios';
 
 export const AuthForm = () => {
   const dispatch = useAppDispatch();
-  const { switchAuthorization, setUserId } = authSlice.actions;
+  const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
   const { handleSubmit, control, reset, setValue } = useForm<SignInForm>();
   const setCookie = useCookies(['token', 'userId'])[1];
   const [authorization, setAuthorization] = useState('signin');
@@ -50,11 +49,13 @@ export const AuthForm = () => {
       const decoded = parseJwt(signin.token);
       navigate('/home');
       dispatch(setUserId(decoded.userId));
-      dispatch(switchAuthorization(true));
       setCookie('token', signin.token, { path: '/', maxAge: 24 * 3600 });
       setCookie('userId', decoded.userId, { path: '/', maxAge: 24 * 3600 });
-      axios.defaults.headers.common['Authorization'] = `Bearer ${signin.token}`;
-      setUserDataInLocalStorage(decoded.userId);
+      setTimeout(async () => {
+        const userData = await getUserData(decoded.userId);
+        dispatch(setCurrentUserData(userData));
+      }, 10);
+      dispatch(switchAuthorization(true));
     } else if (signin.message) {
       setBackendErrors(signin.message);
       setTimeout(() => {

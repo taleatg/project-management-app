@@ -11,21 +11,32 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { useAppDispatch } from './store/store';
 import { PrivateRoute } from './components/PrivateRoute';
 import './axiosConfig';
-import axios from 'axios';
+import axios, { AxiosRequestTransformer } from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
 import { ProfilePage } from './pages/ProfilePage';
 
+type CommonHeaders = {
+  [key: string]: string;
+};
+
 function App() {
-  const { setUserId } = authSlice.actions;
+  const { setUserId, setCurrentUserData } = authSlice.actions;
   const dispatch = useAppDispatch();
   const [cookies] = useCookies(['token', 'userId']);
   const { switchAuthorization } = authSlice.actions;
 
+  axios.defaults.transformRequest = ((data, headers: CommonHeaders) => {
+    (headers.common as unknown as CommonHeaders)['Authorization'] = `Bearer ${cookies.token}`;
+    return data;
+  }) as AxiosRequestTransformer;
+
   if (cookies.token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`;
-    dispatch(switchAuthorization(true));
     dispatch(setUserId(cookies.userId));
+    if (localStorage.getItem('userData')) {
+      dispatch(setCurrentUserData(JSON.parse(localStorage.getItem('userData') as string)));
+    }
+    dispatch(switchAuthorization(true));
   }
 
   return (
