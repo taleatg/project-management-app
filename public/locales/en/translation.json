@@ -1,6 +1,10 @@
 {
   "welcome": {
-
+    "title": "welcome",
+    "project_name": "Project management app — ",
+    "project_description": "organizes work so teams know what to do, why it matters, and how to get it.",
+    "plan": "Plan",
+    "plan_description": "Break big ideas into manageable chunks of work and share them across teams with user stories, tasks, and assignments."
   },
   "home": {
 

@@ -1,8 +1,11 @@
 import { Typography, createTheme, Link, ThemeProvider } from '@mui/material';
 import React from 'react';
 import './WelcomePage.scss';
+import { useTranslation } from 'react-i18next';
 
 export const WelcomePage: React.FC = () => {
+  const { t } = useTranslation();
+
   const myTheme = createTheme({
     typography: {
       fontSize: 25,
@@ -15,8 +18,8 @@ export const WelcomePage: React.FC = () => {
   return (
     <div className="welcome-container">
       <h2 className="welcome-header">
-        <b>PM App</b> organizes work so teams know what to do, why it matters, and how to get it
-        done.
+        <b>{t('welcome.project_name')}</b>
+        {t('welcome.project_description')}
       </h2>
       <ThemeProvider theme={myTheme}>
         <Typography variant="h3" color="primary" align="center">
