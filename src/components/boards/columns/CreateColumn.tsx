@@ -1,7 +1,15 @@
 import * as React from 'react';
-import { Box, Button, Typography, Modal, TextField, IconButton } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  TextField,
+  IconButton,
+  FormHelperText,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import './Columns.scss';
 import { columnSlice } from '../../../store/reducers/columnSlice';
@@ -16,7 +24,12 @@ export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
   const { allColumns } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
-  const { handleSubmit, register, reset } = useForm<ColumnType>();
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<ColumnType>();
   const { addColumn } = columnSlice.actions;
   const dispatch = useAppDispatch();
 
@@ -31,7 +44,10 @@ export function CreateColumn(props: { button: JSX.Element }) {
 
   const handleOpen = () => setOpen(true);
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    reset();
+  };
 
   return (
     <div>
@@ -59,13 +75,30 @@ export function CreateColumn(props: { button: JSX.Element }) {
             <CloseIcon />
           </IconButton>
           <form>
-            <TextField
-              {...register('title', { required: true })}
-              fullWidth
-              margin="normal"
-              sx={{ marginTop: '20px' }}
-              label="Column title"
-              variant="outlined"
+            <Controller
+              control={control}
+              name="title"
+              defaultValue=""
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <>
+                  <TextField
+                    label="Column title"
+                    sx={{ marginTop: '20px' }}
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                  />
+                  <FormHelperText error sx={{ height: '10px' }}>
+                    {errors.title && `Column title is required`}
+                  </FormHelperText>
+                </>
+              )}
             />
             <Button
               type="submit"
