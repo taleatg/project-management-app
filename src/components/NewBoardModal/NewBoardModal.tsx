@@ -5,8 +5,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import './NewBoardModal.scss';
-import { IconButton, TextField } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormHelperText, IconButton, TextField } from '@mui/material';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { postBoard } from '../../services/boardService';
 import { useAppDispatch } from '../../store/store';
 
@@ -36,9 +36,17 @@ export default function NewBoardModal(props: NewBoardModalProps) {
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    reset();
+  };
 
-  const { register, reset, handleSubmit } = useForm<FormValues>();
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const title = data['Board title'];
@@ -81,13 +89,30 @@ export default function NewBoardModal(props: NewBoardModalProps) {
             <CloseIcon />
           </IconButton>
           <form>
-            <TextField
-              {...register('Board title', { required: true })}
-              fullWidth
-              margin="normal"
-              sx={{ marginTop: '20px' }}
-              label="Board title"
-              variant="outlined"
+            <Controller
+              control={control}
+              name="Board title"
+              defaultValue=""
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <>
+                  <TextField
+                    label="Board title"
+                    sx={{ marginTop: '20px' }}
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                  />
+                  <FormHelperText error sx={{ height: '10px' }}>
+                    {errors['Board title'] && `Column title is required`}
+                  </FormHelperText>
+                </>
+              )}
             />
             <Button
               type="submit"
