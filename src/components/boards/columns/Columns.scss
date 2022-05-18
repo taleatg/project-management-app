@@ -1,3 +1,5 @@
+@import '../../../index';
+
 .column-wrapper {
   display: flex;
   overflow-x: scroll;
@@ -16,30 +18,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 18rem;
+  width: 250px;
   background: white;
-  border: 2px solid #000;
-  box-shadow: 0 0 5px;
-  padding: 20px;
-
-  .title-wrap {
-    margin-top: 15px;
-  }
-
-  .button-container {
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-around;
-  }
+  border-radius: 5px;
+  padding: 24px;
 }
 
 .column {
   min-width: 265px;
 
   &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex-row-space-between;
   }
 
   &__title {

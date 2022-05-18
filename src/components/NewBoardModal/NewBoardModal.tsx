@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import CloseIcon from '@mui/icons-material/Close';
 import './NewBoardModal.scss';
-import { TextField } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormHelperText, IconButton, TextField } from '@mui/material';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { postBoard } from '../../services/boardService';
 import { useAppDispatch } from '../../store/store';
 
@@ -20,15 +21,7 @@ const style = {
   bgcolor: 'background.paper',
   borderRadius: '5px',
   boxShadow: 24,
-  p: 4,
-};
-
-const style_submit = {
-  marginTop: '20px',
-};
-
-const style_textfield = {
-  marginTop: '30px',
+  p: 3,
 };
 
 export interface FormValues {
@@ -43,10 +36,13 @@ export default function NewBoardModal(props: NewBoardModalProps) {
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    reset();
+  };
 
   const {
-    register,
+    control,
     reset,
     handleSubmit,
     formState: { errors },
@@ -78,23 +74,51 @@ export default function NewBoardModal(props: NewBoardModalProps) {
       >
         <Box sx={style} className="new-board__modal">
           <Typography id="modal-modal-title" variant="h6" component="p">
-            Create new board
+            New board
           </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <form>
-            <TextField
-              {...register('Board title', { required: true })}
-              fullWidth
-              margin="normal"
-              sx={style_textfield}
+            <Controller
+              control={control}
+              name="Board title"
+              defaultValue=""
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <>
+                  <TextField
+                    label="Board title"
+                    sx={{ marginTop: '20px' }}
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                  />
+                  <FormHelperText error sx={{ height: '10px' }}>
+                    {errors['Board title'] && `Column title is required`}
+                  </FormHelperText>
+                </>
+              )}
             />
-            <div className="new-board__error">
-              {errors['Board title']?.type === 'required' ? 'Please enter board title' : ''}
-            </div>
             <Button
               type="submit"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              sx={style_submit}
+              sx={{ marginTop: '20px' }}
             >
               Create
             </Button>
