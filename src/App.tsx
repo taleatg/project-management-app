@@ -15,6 +15,7 @@ import axios, { AxiosRequestTransformer } from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
 import { ProfilePage } from './pages/ProfilePage';
+import { getCookie } from './services/authorizationService';
 
 type CommonHeaders = {
   [key: string]: string;
@@ -27,7 +28,8 @@ function App() {
   const { switchAuthorization } = authSlice.actions;
 
   axios.defaults.transformRequest = ((data, headers: CommonHeaders) => {
-    (headers.common as unknown as CommonHeaders)['Authorization'] = `Bearer ${cookies.token}`;
+    const token = getCookie('token');
+    (headers.common as unknown as CommonHeaders)['Authorization'] = `Bearer ${token}`;
     return data;
   }) as AxiosRequestTransformer;
 
