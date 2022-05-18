@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { WelcomePage } from './pages/welcome-page/WelcomePage';
 import { BoardPage } from './pages/BoardPage';
 import { Layout } from './components/Layout';
@@ -14,13 +14,13 @@ import './axiosConfig';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
+import { SignupPage } from './pages/SignupPage';
 import { ProfilePage } from './pages/ProfilePage';
 
 function App() {
-  const { setUserId } = authSlice.actions;
+  const { switchAuthorization, setUserId } = authSlice.actions;
   const dispatch = useAppDispatch();
   const [cookies] = useCookies(['token', 'userId']);
-  const { switchAuthorization } = authSlice.actions;
 
   if (cookies.token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`;
@@ -73,7 +73,11 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signin" element={cookies.token ? <Navigate to="/home" /> : <LoginPage />} />
+          <Route
+            path="/signup"
+            element={cookies.token ? <Navigate to="/home" /> : <SignupPage />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

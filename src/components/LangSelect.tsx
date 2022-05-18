@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -16,20 +15,14 @@ export default function LangSelect() {
     dispatch(selectLang(event.target.value));
   };
 
-  const style = {
-    minWidth: '80px',
-    position: 'absolute' as const,
-    right: '150px',
-  };
-
   const style_select = {
     color: 'white',
+    padding: '0',
   };
 
   return (
-    <Box sx={style}>
-      <FormControl fullWidth>
-        <InputLabel id="select-lang">Language</InputLabel>
+    <Box>
+      <FormControl fullWidth variant="standard">
         <Select
           sx={style_select}
           labelId="select-lang"
@@ -37,6 +30,7 @@ export default function LangSelect() {
           value={lang}
           label="Language"
           onChange={handleChange}
+          disableUnderline
         >
           <MenuItem value={'English'}>EN</MenuItem>
           <MenuItem value={'Russian'}>RU</MenuItem>

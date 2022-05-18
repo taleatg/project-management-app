@@ -1,6 +1,6 @@
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 import { SignInForm } from '../../services/interfaces';
 
 export const FormField = (
@@ -9,7 +9,8 @@ export const FormField = (
   name: 'login' | 'name' | 'password' | 'repeatPassword',
   validate: RegExp,
   error: string,
-  type: string
+  type: string,
+  icon: JSX.Element
 ) => {
   return (
     <Controller
@@ -35,6 +36,9 @@ export const FormField = (
           value={field.value}
           error={!!errorMessage}
           helperText={errorMessage}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
+          }}
         />
       )}
     />
