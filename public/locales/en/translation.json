@@ -4,7 +4,14 @@
     "project_name": "Project management app — ",
     "project_description": "organizes work so teams know what to do, why it matters, and how to get it.",
     "plan": "Plan",
-    "plan_description": "Break big ideas into manageable chunks of work and share them across teams with user stories, tasks, and assignments."
+    "plan_description": "Break big ideas into manageable chunks of work and share them across teams with user stories, tasks, and assignments.",
+    "welcome_information": "When all the information is collected in one place, the work becomes more visual. And it\n        much easier to collaborate.",
+    "team": "Our team",
+    "team_lead": "Team lead:",
+    "tatsiana": "Tatsiana Dashuk",
+    "dina": "Dina Shchobova",
+    "alexander": "Alexander Sivkov",
+    "rs_school": "RS School React - free course for everyone!"
   },
   "home": {
 

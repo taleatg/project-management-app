@@ -20,6 +20,7 @@ import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
 import { Tooltip, Zoom } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type IPages = {
   [key: string]: string;
@@ -32,14 +33,15 @@ export const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
+  const { t } = useTranslation();
 
   const pages: IPages = isAuthenticated
     ? {
-        welcome: 'Welcome',
+        welcome: t('welcome.title'),
         home: 'Home',
         edit: 'Edit profile',
       }
-    : { welcome: 'Welcome' };
+    : { welcome: t('welcome.title') };
 
   const keys = Object.keys(pages);
 
