@@ -58,7 +58,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className="modal-wrapper" sx={{ boxShadow: 24 }}>
+        <Box className="modal-wrapper" sx={{ boxShadow: 24, p: 3 }}>
           <Typography id="modal-modal-title" variant="h6" component="p">
             New column
           </Typography>

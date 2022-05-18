@@ -21,7 +21,7 @@ const style = {
   bgcolor: 'background.paper',
   borderRadius: '5px',
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
 
 export interface FormValues {
