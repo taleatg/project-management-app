@@ -51,7 +51,7 @@ export function EditProfile() {
         setIsSuccessfulUpdate(true);
       }
     } else {
-      setBackendErrors("Passwords don't match");
+      setBackendErrors(t('errors.match_password'));
     }
 
     setTimeout(() => {
@@ -73,12 +73,18 @@ export function EditProfile() {
     <>
       <div className="edit-profile">
         <Typography variant="h4" component="div" gutterBottom>
-          Edit profile
+          {t('profile.edit_profile')}
         </Typography>
         <form className="edit-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="edit-value">
-            <Typography variant="h6" component="div" gutterBottom noWrap>
-              Name:
+            <Typography
+              variant="h6"
+              component="div"
+              gutterBottom
+              noWrap
+              sx={{ textTransform: 'capitalize' }}
+            >
+              {t('authorization.name')}:
             </Typography>
             {FormField(
               control,
@@ -86,14 +92,20 @@ export function EditProfile() {
               'name',
               t('authorization.name'),
               /^[A-Za-zА-Яа-я_]{2,}/,
-              'Enter at least two letters',
+              t('authorization.name_error'),
               'text',
               <PersonIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
-            <Typography variant="h6" component="div" gutterBottom noWrap>
-              Login:
+            <Typography
+              variant="h6"
+              component="div"
+              gutterBottom
+              noWrap
+              sx={{ textTransform: 'capitalize' }}
+            >
+              {t('authorization.login')}:
             </Typography>
             {FormField(
               control,
@@ -101,14 +113,20 @@ export function EditProfile() {
               'login',
               t('authorization.login'),
               /^[A-Za-z0-9]{5,}/,
-              'Login must contain at least 5 Latin letters or numbers',
+              t('authorization.login_error'),
               'text',
               <AlternateEmailIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
-            <Typography variant="h6" component="div" gutterBottom noWrap>
-              Password:
+            <Typography
+              variant="h6"
+              component="div"
+              gutterBottom
+              noWrap
+              sx={{ textTransform: 'capitalize' }}
+            >
+              {t('authorization.password')}:
             </Typography>
             {FormField(
               control,
@@ -116,14 +134,14 @@ export function EditProfile() {
               'password',
               t('authorization.password'),
               /^[a-zA-Z0-9_]{8,}/,
-              'Password must contain at least 8 characters',
+              t('authorization.password_error'),
               'password',
               <LockIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="edit-value">
             <Typography variant="h6" component="div" gutterBottom noWrap>
-              Repeat password:
+              {t('authorization.repeat_password')}:
             </Typography>
             {FormField(
               control,
@@ -131,15 +149,18 @@ export function EditProfile() {
               'repeatPassword',
               t('authorization.password'),
               /^[a-zA-Z0-9_]{8,}/,
-              'Password must contain at least 8 characters',
+              t('authorization.password_error'),
               'password',
               <LockIcon sx={{ fontSize: '18px' }} />
             )}
           </div>
           <div className="button-container">
-            <ConfirmationModal textButton="delete account" confirmedAction={deleteAccount} />
+            <ConfirmationModal
+              textButton={t('button.delete_account')}
+              confirmedAction={deleteAccount}
+            />
             <Button type="submit" variant="contained">
-              Update
+              {t('button.update')}
             </Button>
           </div>
         </form>

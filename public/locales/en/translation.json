@@ -4,7 +4,7 @@
     "project_description": "organizes work so teams know what to do, why it matters, and how to get it.",
     "plan": "Plan",
     "plan_description": "Break big ideas into manageable chunks of work and share them across teams with user stories, tasks, and assignments.",
-    "welcome_information": "When all the information is collected in one place, the work becomes more visual. And it\n        much easier to collaborate.",
+    "welcome_information": "When all the information is collected in one place, the work becomes more visual. And it much easier to collaborate.",
     "team": "Our team",
     "team_lead": "Team lead:",
     "tatsiana": "Tatsiana Dashuk",
@@ -23,6 +23,7 @@
     "login": "login",
     "login_error": "Login must contain at least 5 Latin letters or numbers",
     "password": "password",
+    "repeat_password": "Repeat password",
     "password_error": "Password must contain at least 8 characters",
     "enter": "Enter"
   },
@@ -32,7 +33,8 @@
     "board_title": "Board title"
   },
   "profile": {
-
+    "profile": "Profile",
+    "edit_profile": "Edit profile"
   },
   "button": {
     "welcome": "welcome",
@@ -44,7 +46,12 @@
     "sign_out": "sign out",
     "submit": "submit",
     "create": "create",
+    "update": "update",
+    "delete_account": "delete account",
     "go_to_main": "go to main page"
   },
-  "error": "Error! Something went wrong :("
+  "errors": {
+    "wrong": "Error! Something went wrong :(",
+    "match_password": "Passwords don't match"
+  }
 }
