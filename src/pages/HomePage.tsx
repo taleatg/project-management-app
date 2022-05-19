@@ -7,11 +7,13 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import './Pages.scss';
 import { BoardPreview } from '../components/BoardPreview';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
   const [cookies] = useCookies(['token']);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   async function deleteData(id: string): Promise<void> {
     await dispatch(deleteBoard(id));
@@ -23,7 +25,7 @@ export const HomePage = () => {
 
   return (
     <Container maxWidth="xl">
-      <h2>Boards</h2>
+      <h2>{t('board.board')}</h2>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <Grid
           container
@@ -46,7 +48,7 @@ export const HomePage = () => {
             ))}
         </Grid>
       </Box>
-      {status === 'rejected' && <h4>Error! Something went wrong :( </h4>}
+      {status === 'rejected' && <h4>{t('error')}</h4>}
       {status === 'pending' && <CircularProgress />}
     </Container>
   );

@@ -26,8 +26,10 @@
     "password_error": "Password must contain at least 8 characters",
     "enter": "Enter"
   },
-  "new_board": {
-
+  "board": {
+    "board": "Boards",
+    "new_board": "New board",
+    "board_title": "Board title"
   },
   "profile": {
 
@@ -41,6 +43,8 @@
     "sign_up": "sign up",
     "sign_out": "sign out",
     "submit": "submit",
+    "create": "create",
     "go_to_main": "go to main page"
-  }
+  },
+  "error": "Error! Something went wrong :("
 }
