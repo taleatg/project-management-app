@@ -30,7 +30,14 @@
   "board": {
     "board": "Доски",
     "new_board": "Новая доска",
-    "board_title": "Название доски"
+    "board_title": "Название доски",
+    "add_column": "Добавить колонку",
+    "new_column": "Новая колонка",
+    "column_title": "Заголовок колонки",
+    "add_task": "Добавить задачу",
+    "update_task": "Обновить задачу",
+    "task_title": "Название задачи",
+    "task_description": "Описание задачи"
   },
   "profile": {
     "profile": "Профиль",
@@ -48,10 +55,15 @@
     "create": "создать",
     "update": "обновить",
     "delete_account": "удалить аккаунт",
-    "go_to_main": "перейти на главную страницу"
+    "go_to_main": "перейти на главную страницу",
+    "back_to_main": "Вернуться на главную"
   },
   "errors": {
     "wrong": "Ошибка! Что-то пошло не так :(",
-    "match_password": "Пароли не совпадают"
+    "match_password": "Пароли не совпадают",
+    "board_title_is_required": "Заголовок доски обязателен",
+    "column_title_is_required": "Заголовок колонки обязателен",
+    "title_is_required": "Требуется заголовок",
+    "description_is_required": "Требуется описание"
   }
 }

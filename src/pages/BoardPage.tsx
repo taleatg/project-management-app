@@ -31,7 +31,7 @@ export const BoardPage = () => {
       <div className="topBoardPage">
         <h2>{title}</h2>
         <Button variant={'contained'} startIcon={<HomeIcon />} onClick={() => navigate('/home')}>
-          Back to Home Page
+          {t('button.back_to_main')}
         </Button>
       </div>
       <div className="columnButtons">
@@ -39,7 +39,7 @@ export const BoardPage = () => {
           button={
             <>
               <AddBoxIcon />
-              Add column
+              {t('board.add_column')}
             </>
           }
         />

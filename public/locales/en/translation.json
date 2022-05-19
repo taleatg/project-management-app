@@ -30,7 +30,14 @@
   "board": {
     "board": "Boards",
     "new_board": "New board",
-    "board_title": "Board title"
+    "board_title": "Board title",
+    "add_column": "Add column",
+    "new_column": "New column",
+    "column_title": "Column title",
+    "add_task": "Add task",
+    "update_task": "Update task",
+    "task_title": "Task title",
+    "task_description": "Task description"
   },
   "profile": {
     "profile": "Profile",
@@ -48,10 +55,15 @@
     "create": "create",
     "update": "update",
     "delete_account": "delete account",
-    "go_to_main": "go to main page"
+    "go_to_main": "go to main page",
+    "back_to_main": "Back to main page"
   },
   "errors": {
     "wrong": "Error! Something went wrong :(",
-    "match_password": "Passwords don't match"
+    "match_password": "Passwords don't match",
+    "board_title_is_required": "Board title is required",
+    "column_title_is_required": "Column title is required",
+    "title_is_required": "Title is required",
+    "description_is_required": "Description is required"
   }
 }

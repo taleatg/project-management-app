@@ -113,7 +113,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
                     value={field.value}
                   />
                   <FormHelperText error sx={{ height: '10px' }}>
-                    {errors['Board title'] && `Column title is required`}
+                    {errors['Board title'] && t('errors.board_title_is_required')}
                   </FormHelperText>
                 </>
               )}
