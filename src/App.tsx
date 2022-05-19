@@ -8,7 +8,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { LoginPage } from './pages/LoginPage';
 import { HomePage } from './pages/HomePage';
 import { EditProfilePage } from './pages/EditProfilePage';
-import { useAppDispatch } from './store/store';
+import { useAppDispatch, useAppSelector } from './store/store';
 import { PrivateRoute } from './components/PrivateRoute';
 import './axiosConfig';
 import axios, { AxiosRequestTransformer } from 'axios';
@@ -24,6 +24,7 @@ type CommonHeaders = {
 
 function App() {
   const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const [cookies] = useCookies(['token', 'userId']);
 
@@ -86,10 +87,13 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/signin" element={cookies.token ? <Navigate to="/home" /> : <LoginPage />} />
+          <Route
+            path="/signin"
+            element={isAuthenticated ? <Navigate to="/home" /> : <LoginPage />}
+          />
           <Route
             path="/signup"
-            element={cookies.token ? <Navigate to="/home" /> : <SignupPage />}
+            element={isAuthenticated ? <Navigate to="/home" /> : <SignupPage />}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
