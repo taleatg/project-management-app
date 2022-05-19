@@ -40,6 +40,7 @@
     "sign_in": "sign in",
     "sign_up": "sign up",
     "sign_out": "sign out",
-    "submit": "submit"
+    "submit": "submit",
+    "go_to_main": "go to main page"
   }
 }

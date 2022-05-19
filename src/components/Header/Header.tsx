@@ -38,8 +38,8 @@ export const Header = () => {
   const pages: IPages = isAuthenticated
     ? {
         welcome: t('button.welcome'),
-        home: 'Home',
-        edit: 'Edit profile',
+        home: t('button.main'),
+        edit: t('button.edit_profile'),
       }
     : { welcome: t('button.welcome') };
 
@@ -149,7 +149,7 @@ export const Header = () => {
           {isAuthenticated ? (
             <>
               <Tooltip
-                title="go to main page"
+                title={t('button.go_to_main')}
                 TransitionComponent={Zoom}
                 arrow
                 color="inherit"
@@ -161,7 +161,7 @@ export const Header = () => {
               </Tooltip>
               <ProfileIcon />
               <Tooltip
-                title="Sign Out"
+                title={t('button.sign_out')}
                 TransitionComponent={Zoom}
                 arrow
                 color="inherit"
@@ -175,10 +175,10 @@ export const Header = () => {
           ) : (
             <>
               <Link to={`/signin`} className="link link__menu">
-                <Button color="inherit">Sign In</Button>
+                <Button color="inherit">{t('button.sign_in')}</Button>
               </Link>
               <Link to={`/signup`} className="link link__menu">
-                <Button color="inherit">Sign Up</Button>
+                <Button color="inherit">{t('button.sign_up')}</Button>
               </Link>
             </>
           )}
