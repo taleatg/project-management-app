@@ -33,7 +33,7 @@ function App() {
     return data;
   }) as AxiosRequestTransformer;
 
-  if (cookies.token) {
+  if (getCookie('token')) {
     dispatch(setUserId(cookies.userId));
     if (localStorage.getItem('userData')) {
       dispatch(setCurrentUserData(JSON.parse(localStorage.getItem('userData') as string)));
