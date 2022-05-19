@@ -13,6 +13,7 @@ export function PrivateRoute({ children }: { children: JSX.Element }) {
       checkTokenTimer = setTimeout(check, 5000);
     } else {
       dispatch(switchAuthorization(false));
+      clearTimeout(checkTokenTimer);
     }
   }, 5000);
 
