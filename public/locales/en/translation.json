@@ -43,6 +43,10 @@
     "profile": "Profile",
     "edit_profile": "Edit profile"
   },
+  "confirmation_modal": {
+    "ask_sure": "'Are you sure?'",
+    "ask_title": "Do you really want to delete it?"
+  },
   "button": {
     "welcome": "welcome",
     "main": "main",
@@ -54,6 +58,8 @@
     "submit": "submit",
     "create": "create",
     "update": "update",
+    "cancel": "cancel",
+    "confirm": "confirm",
     "delete_account": "delete account",
     "go_to_main": "go to main page",
     "back_to_main": "Back to main page"
