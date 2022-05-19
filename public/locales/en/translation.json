@@ -1,0 +1,75 @@
+{
+  "welcome": {
+    "project_name": "Project management app — ",
+    "project_description": "organizes work so teams know what to do, why it matters, and how to get it.",
+    "plan": "Plan",
+    "plan_description": "Break big ideas into manageable chunks of work and share them across teams with user stories, tasks, and assignments.",
+    "welcome_information": "When all the information is collected in one place, the work becomes more visual. And it much easier to collaborate.",
+    "team": "Our team",
+    "team_lead": "Team lead:",
+    "tatsiana": "Tatsiana Dashuk",
+    "dina": "Dina Shchobova",
+    "alexander": "Alexander Sivkov",
+    "rs_school": "RS School React - free course for everyone!"
+  },
+  "home": {
+
+  },
+  "authorization": {
+    "authorization": "Authorization",
+    "registration": "Registration",
+    "name": "name",
+    "name_error": "Enter at least two letters",
+    "login": "login",
+    "login_error": "Login must contain at least 5 Latin letters or numbers",
+    "password": "password",
+    "repeat_password": "Repeat password",
+    "password_error": "Password must contain at least 8 characters",
+    "enter": "Enter"
+  },
+  "board": {
+    "board": "Boards",
+    "new_board": "New board",
+    "board_title": "Board title",
+    "add_column": "Add column",
+    "new_column": "New column",
+    "column_title": "Column title",
+    "add_task": "Add task",
+    "update_task": "Update task",
+    "task_title": "Task title",
+    "task_description": "Task description"
+  },
+  "profile": {
+    "profile": "Profile",
+    "edit_profile": "Edit profile"
+  },
+  "confirmation_modal": {
+    "ask_sure": "Are you sure?",
+    "ask_title": "Do you really want to delete it?"
+  },
+  "button": {
+    "welcome": "welcome",
+    "main": "main",
+    "edit_profile": "edit profile",
+    "new_board": "new board",
+    "sign_in": "sign in",
+    "sign_up": "sign up",
+    "sign_out": "sign out",
+    "submit": "submit",
+    "create": "create",
+    "update": "update",
+    "cancel": "cancel",
+    "confirm": "confirm",
+    "delete_account": "delete account",
+    "go_to_main": "go to main page",
+    "back_to_main": "Back to main page"
+  },
+  "errors": {
+    "wrong": "Error! Something went wrong :(",
+    "match_password": "Passwords don't match",
+    "board_title_is_required": "Board title is required",
+    "column_title_is_required": "Column title is required",
+    "title_is_required": "Title is required",
+    "description_is_required": "Description is required"
+  }
+}

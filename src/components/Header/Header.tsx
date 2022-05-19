@@ -20,6 +20,7 @@ import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
 import { Tooltip, Zoom } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type IPages = {
   [key: string]: string;
@@ -32,14 +33,15 @@ export const Header = () => {
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
+  const { t } = useTranslation();
 
   const pages: IPages = isAuthenticated
     ? {
-        welcome: 'Welcome',
-        home: 'Home',
-        edit: 'Edit profile',
+        welcome: t('button.welcome'),
+        home: t('button.main'),
+        edit: t('button.edit_profile'),
       }
-    : { welcome: 'Welcome' };
+    : { welcome: t('button.welcome') };
 
   const keys = Object.keys(pages);
 
@@ -147,7 +149,7 @@ export const Header = () => {
           {isAuthenticated ? (
             <>
               <Tooltip
-                title="go to main page"
+                title={t('button.go_to_main')}
                 TransitionComponent={Zoom}
                 arrow
                 color="inherit"
@@ -159,7 +161,7 @@ export const Header = () => {
               </Tooltip>
               <ProfileIcon />
               <Tooltip
-                title="Sign Out"
+                title={t('button.sign_out')}
                 TransitionComponent={Zoom}
                 arrow
                 color="inherit"
@@ -173,10 +175,10 @@ export const Header = () => {
           ) : (
             <>
               <Link to={`/signin`} className="link link__menu">
-                <Button color="inherit">Sign In</Button>
+                <Button color="inherit">{t('button.sign_in')}</Button>
               </Link>
               <Link to={`/signup`} className="link link__menu">
-                <Button color="inherit">Sign Up</Button>
+                <Button color="inherit">{t('button.sign_up')}</Button>
               </Link>
             </>
           )}

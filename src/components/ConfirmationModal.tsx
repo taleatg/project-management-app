@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmModalProps {
   textButton?: string;
@@ -16,6 +17,7 @@ interface ConfirmModalProps {
 
 export default function ConfirmationModal(props: ConfirmModalProps) {
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,18 +58,18 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{t('confirmation_modal.ask_sure')}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Do you really want to {props.textButton ? props.textButton.toLowerCase() : 'detele it'}?
+            {t('confirmation_modal.ask_title')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color={'error'}>
-            Cancel
+            {t('button.cancel')}
           </Button>
           <Button onClick={handleConfirm} autoFocus color={'success'}>
-            Confirm
+            {t('button.confirm')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getUserData } from '../../services/authorizationService';
 import { authSlice } from '../../store/reducers/authenticationSlice';
+import { useTranslation } from 'react-i18next';
 
 export const ProfileIcon = () => {
   const { setCurrentUserData } = authSlice.actions;
@@ -11,6 +12,7 @@ export const ProfileIcon = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { userId, currentUserData } = useAppSelector((state) => state.authReducer);
+  const { t } = useTranslation();
 
   const updateUserData = async () => {
     const userData = await getUserData(userId);
@@ -66,8 +68,8 @@ export const ProfileIcon = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-        <MenuItem onClick={handleEditProfileClick}>Edit profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>{t('profile.profile')}</MenuItem>
+        <MenuItem onClick={handleEditProfileClick}>{t('profile.edit_profile')}</MenuItem>
       </Menu>
     </div>
   );
