@@ -14,6 +14,7 @@ import { SignInForm } from '../../services/interfaces';
 import './AuthForm.scss';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 export const AuthForm = (props: { whichPage: string }) => {
   const dispatch = useAppDispatch();
@@ -24,11 +25,7 @@ export const AuthForm = (props: { whichPage: string }) => {
   const [backendErrors, setBackendErrors] = useState('');
   const { errors } = useFormState({ control });
   const navigate = useNavigate();
-
-  const authorizationSwitch = () => {
-    setAuthorization(authorization === 'signin' ? 'signup' : 'signin');
-    navigate(authorization === 'signin' ? '/signup' : '/signin');
-  };
+  const { t } = useTranslation();
 
   const parseJwt = (token: string) => {
     try {
@@ -74,7 +71,9 @@ export const AuthForm = (props: { whichPage: string }) => {
     <>
       <div className="auth-form">
         <Typography variant="h4" component="div" gutterBottom>
-          {authorization === 'signin' ? 'Authorization' : 'Registration'}
+          {authorization === 'signin'
+            ? t('authorization.authorization')
+            : t('authorization.registration')}
         </Typography>
         <form className="auth-form__form" onSubmit={handleSubmit(onSubmit)}>
           {authorization === 'signup'
@@ -82,8 +81,9 @@ export const AuthForm = (props: { whichPage: string }) => {
                 control,
                 errors.name?.message,
                 'name',
+                t('authorization.name'),
                 /^[A-Za-zА-Яа-я_]{2,}/,
-                'Enter at least two letters',
+                t('authorization.name_error'),
                 'text',
                 <PersonIcon sx={{ fontSize: '18px' }} />
               )
@@ -92,8 +92,9 @@ export const AuthForm = (props: { whichPage: string }) => {
             control,
             errors.login?.message,
             'login',
+            t('authorization.login'),
             /^[A-Za-z0-9]{5,}/,
-            'Login must contain at least 5 Latin letters or numbers',
+            t('authorization.login_error'),
             'text',
             <AlternateEmailIcon sx={{ fontSize: '18px' }} />
           )}
@@ -101,17 +102,15 @@ export const AuthForm = (props: { whichPage: string }) => {
             control,
             errors.password?.message,
             'password',
+            t('authorization.password'),
             /^[a-zA-Z0-9_]{8,}/,
-            'Password must contain at least 8 characters',
+            t('authorization.password_error'),
             'password',
             <LockIcon sx={{ fontSize: '18px' }} />
           )}
           <div className="button-container">
             <Button type="submit" variant="contained">
-              Submit
-            </Button>
-            <Button variant="outlined" onClick={authorizationSwitch}>
-              {authorization === 'signin' ? 'Sign up' : 'Sign in'}
+              {t('button.submit')}
             </Button>
           </div>
         </form>

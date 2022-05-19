@@ -14,6 +14,7 @@ import { BackendResponse } from '../authorization form/BackendResponse';
 import { useNavigate } from 'react-router-dom';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ export function EditProfile() {
   const [isSuccessfulUpdate, setIsSuccessfulUpdate] = useState(false);
   const navigate = useNavigate();
   const removeCookie = useCookies(['token', 'userId'])[2];
+  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     const body: Record<string, string> = {
@@ -82,6 +84,7 @@ export function EditProfile() {
               control,
               errors.name?.message,
               'name',
+              t('authorization.name'),
               /^[A-Za-zА-Яа-я_]{2,}/,
               'Enter at least two letters',
               'text',
@@ -96,6 +99,7 @@ export function EditProfile() {
               control,
               errors.login?.message,
               'login',
+              t('authorization.login'),
               /^[A-Za-z0-9]{5,}/,
               'Login must contain at least 5 Latin letters or numbers',
               'text',
@@ -110,6 +114,7 @@ export function EditProfile() {
               control,
               errors.password?.message,
               'password',
+              t('authorization.password'),
               /^[a-zA-Z0-9_]{8,}/,
               'Password must contain at least 8 characters',
               'password',
@@ -124,6 +129,7 @@ export function EditProfile() {
               control,
               errors.repeatPassword?.message,
               'repeatPassword',
+              t('authorization.password'),
               /^[a-zA-Z0-9_]{8,}/,
               'Password must contain at least 8 characters',
               'password',

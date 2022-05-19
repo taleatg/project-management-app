@@ -37,11 +37,11 @@ export const Header = () => {
 
   const pages: IPages = isAuthenticated
     ? {
-        welcome: t('welcome.title'),
+        welcome: t('button.welcome'),
         home: 'Home',
         edit: 'Edit profile',
       }
-    : { welcome: t('welcome.title') };
+    : { welcome: t('button.welcome') };
 
   const keys = Object.keys(pages);
 

@@ -1,6 +1,5 @@
 {
   "welcome": {
-    "title": "welcome",
     "project_name": "Project management app — ",
     "project_description": "organizes work so teams know what to do, why it matters, and how to get it.",
     "plan": "Plan",
@@ -16,8 +15,16 @@
   "home": {
 
   },
-  "edit_profile": {
-
+  "authorization": {
+    "authorization": "Authorization",
+    "registration": "Registration",
+    "name": "name",
+    "name_error": "Enter at least two letters",
+    "login": "login",
+    "login_error": "Login must contain at least 5 Latin letters or numbers",
+    "password": "password",
+    "password_error": "Password must contain at least 8 characters",
+    "enter": "Enter"
   },
   "new_board": {
 
@@ -26,6 +33,13 @@
 
   },
   "button": {
-
+    "welcome": "welcome",
+    "main": "main",
+    "edit_profile": "edit profile",
+    "new_board": "new board",
+    "sign_in": "sign in",
+    "sign_up": "sign up",
+    "sign_out": "sign out",
+    "submit": "submit"
   }
 }
