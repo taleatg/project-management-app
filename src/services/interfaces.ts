@@ -71,7 +71,3 @@ export interface UserData {
   name: string;
   login: string;
 }
-
-export type CommonHeaders = {
-  [key: string]: string;
-};

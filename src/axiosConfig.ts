@@ -1,10 +1,9 @@
 import axios, { AxiosRequestTransformer } from 'axios';
 import { getCookie } from './services/authorizationService';
-import { CommonHeaders } from './services/interfaces';
 
-axios.defaults.transformRequest = ((data, headers: CommonHeaders) => {
+axios.defaults.transformRequest = ((data, headers: Record<string, string>) => {
   const token = getCookie('token');
-  (headers.common as unknown as CommonHeaders)['Authorization'] = `Bearer ${token}`;
+  (headers.common as unknown as Record<string, string>)['Authorization'] = `Bearer ${token}`;
   return data;
 }) as AxiosRequestTransformer;
 
