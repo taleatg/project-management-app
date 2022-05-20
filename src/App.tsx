@@ -24,7 +24,7 @@ function App() {
   const dispatch = useAppDispatch();
   const [cookies] = useCookies(['token', 'userId']);
 
-  if (getCookie('token')) {
+  if (getCookie('token') && !isAuthenticated) {
     dispatch(setUserId(cookies.userId));
     if (localStorage.getItem('userData')) {
       dispatch(setCurrentUserData(JSON.parse(localStorage.getItem('userData') as string)));
