@@ -41,6 +41,9 @@ export const BoardPreview = (props: BoardPreviewProps) => {
         <ListItemText primary={props.board.title} />
       </ListItem>
       <ListItem sx={{ p: '0 16px' }}>
+        <ListItemText primary={props.board.description} />
+      </ListItem>
+      <ListItem sx={{ p: '0 16px' }}>
         <ListItemText secondary={`columns: ${columns}`} />
         <ListItemText secondary={`tasks: ${tasks}`} />
       </ListItem>

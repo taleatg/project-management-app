@@ -23,7 +23,6 @@ interface ColumnType {
 
 export function CreateColumn(props: { button: JSX.Element }) {
   const { id } = useAppSelector((state) => state.boardReducer.currentBoard);
-  const { allColumns } = useAppSelector((state) => state.columnReducer);
   const [open, setOpen] = React.useState(false);
   const {
     handleSubmit,
@@ -38,8 +37,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
     const title = data.title;
-    const order = allColumns.length + 1;
-    const newColumn = await postColumn({ title: title, order: order }, id);
+    const newColumn = await postColumn(title, id);
     dispatch(addColumn(newColumn));
     reset();
   };
