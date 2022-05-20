@@ -25,7 +25,7 @@ export function Redirect({ children }: { children: JSX.Element }) {
 
   async function check() {
     const response = await getUserById(userId);
-    if (response.statusCode !== 401) {
+    if (response?.statusCode !== 401) {
       timer.current = setTimeout(check, 1000 * 10);
     } else {
       clearTimeout(timer.current as NodeJS.Timeout);
