@@ -31,6 +31,7 @@ export const FormField = (
       }}
       render={({ field }) => (
         <TextField
+          size="small"
           label={name}
           type={type}
           className="auth-input"

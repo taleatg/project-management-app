@@ -67,3 +67,16 @@ export const deleteColumn = async (boardId: string, columnId: string) => {
       return err.response.data;
     });
 };
+
+export const getColumns = async (boardId: string) => {
+  return axios({
+    method: 'get',
+    url: `/boards/${boardId}/columns`,
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};

@@ -26,6 +26,13 @@ type IPages = {
   [key: string]: string;
 };
 
+const header_outer = {
+  height: '75px',
+  position: 'sticky',
+  top: '-25px',
+  transition: '0.3s',
+};
+
 export const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -66,8 +73,8 @@ export const Header = () => {
   };
 
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl">
+    <AppBar sx={header_outer}>
+      <Container maxWidth="xl" className="header-inner">
         <Toolbar disableGutters>
           <Typography
             className="logo"

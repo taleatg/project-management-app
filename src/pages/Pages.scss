@@ -8,8 +8,8 @@
     width: 400px;
 
     .boardList_board {
-      width: 200px;
-      height: 60px;
+      width: 280px;
+      word-break: break-all;
     }
   }
 }
@@ -64,16 +64,11 @@
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: calc(100% - 20px);
-      min-width: 16rem;
+      width: calc(100% - 40px);
+      min-width: 14rem;
       color: black;
     }
     &__avatar {
-      background: url(http://localhost:3000/static/media/avatar.10691648d79aa2f92514.png) no-repeat;
-      background-size: contain;
-      width: 8rem;
-      height: 8rem;
-      padding-bottom: 10px;
       margin: 0 auto;
     }
     &__text{
