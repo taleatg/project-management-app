@@ -11,7 +11,6 @@ import { EditProfilePage } from './pages/EditProfilePage';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { PrivateRoute } from './components/PrivateRoute';
 import './axiosConfig';
-import { useCookies } from 'react-cookie';
 import { authSlice } from './store/reducers/authenticationSlice';
 import { SignupPage } from './pages/SignupPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -22,10 +21,9 @@ function App() {
   const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
-  const [cookies] = useCookies(['token', 'userId']);
 
   if (getCookie('token') && !isAuthenticated) {
-    dispatch(setUserId(cookies.userId));
+    dispatch(setUserId(getCookie('userId') as string));
     if (localStorage.getItem('userData')) {
       dispatch(setCurrentUserData(JSON.parse(localStorage.getItem('userData') as string)));
     }
