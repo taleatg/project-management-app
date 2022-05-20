@@ -1,6 +1,6 @@
 .logo {
   background: url('../../../public/project-management-app.svg') no-repeat center;
-  background-size: 2.5em 2.5em;
+  background-size: 2.2em 2.2em;
   width: 2.5em;
   height: 2.5em;
 }
@@ -17,4 +17,11 @@
 
 .menu-buttons-box {
   align-items: center;
+}
+
+.header-inner {
+  height: 60px;
+  position: sticky;
+  top: 5px;
+  transition: 0.3s;
 }
