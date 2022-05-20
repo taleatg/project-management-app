@@ -13,11 +13,11 @@ export function Redirect({ children }: { children: JSX.Element }) {
 
   // проверка при каждом запросе: если ошибка "не авторизован" - редирект и логаут
   axios.defaults.transformResponse = (data) => {
-    if (JSON.parse(data).statusCode === 401) {
-      dispatch(switchAuthorization(false));
-      navigate('/welcome');
-    } else {
-      if (data) {
+    if (data) {
+      if (JSON.parse(data).statusCode === 401) {
+        dispatch(switchAuthorization(false));
+        navigate('/welcome');
+      } else {
         return JSON.parse(data);
       }
     }
