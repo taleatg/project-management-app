@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 import { Avatar, IconButton, Menu, MenuItem, Tooltip, Zoom } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { getUserData } from '../../services/authorizationService';
+import { authSlice } from '../../store/reducers/authenticationSlice';
+import { useTranslation } from 'react-i18next';
 
 export const ProfileIcon = () => {
+  const { setCurrentUserData } = authSlice.actions;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { currentUserData } = useAppSelector((state) => state.authReducer);
+  const { userId, currentUserData } = useAppSelector((state) => state.authReducer);
+  const { t } = useTranslation();
+
+  const updateUserData = async () => {
+    const userData = await getUserData(userId);
+    dispatch(setCurrentUserData(userData));
+  };
+  updateUserData();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -59,8 +71,8 @@ export const ProfileIcon = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-        <MenuItem onClick={handleEditProfileClick}>Edit profile</MenuItem>
+        <MenuItem onClick={handleProfileClick}>{t('profile.profile')}</MenuItem>
+        <MenuItem onClick={handleEditProfileClick}>{t('profile.edit_profile')}</MenuItem>
       </Menu>
     </div>
   );

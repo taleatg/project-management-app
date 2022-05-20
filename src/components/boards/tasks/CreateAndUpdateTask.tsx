@@ -12,6 +12,7 @@ import { useForm, SubmitHandler, UnpackNestedValue, Controller } from 'react-hoo
 import { ColumnType, TaskData } from '../../../services/interfaces';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
+import { useTranslation } from 'react-i18next';
 
 interface TaskProps {
   task?: TaskData;
@@ -30,6 +31,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
     control,
     formState: { errors },
   } = useForm<ColumnType>();
+  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
@@ -57,7 +59,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
         render={({ field }) => (
           <>
             <TextField
-              label={'Task ' + type}
+              label={type === 'title' ? t('board.task_title') : t('board.task_description')}
               sx={{ marginTop: '20px' }}
               fullWidth
               multiline
@@ -66,7 +68,10 @@ export function CreateAndUpdateTask(props: TaskProps) {
               value={field.value}
             />
             <FormHelperText error sx={{ height: '10px' }}>
-              {errors[`${type}`] && `${type[0].toLocaleUpperCase() + type.slice(1)} is required`}
+              {errors[`${type}`] &&
+                (type === 'title'
+                  ? t('errors.title_is_required')
+                  : t('errors.description_is_required'))}
             </FormHelperText>
           </>
         )}
@@ -78,7 +83,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
     <>
       {props.textAction === 'Create' ? (
         <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
-          <AddIcon fontSize="small" /> Add task
+          <AddIcon fontSize="small" /> {t('board.add_task')}
         </Button>
       ) : null}
       <Modal
@@ -89,7 +94,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
       >
         <Box className="modal-wrapper">
           <Typography id="modal-modal-title" variant="h6" component="p">
-            {`${props.textAction} task`}
+            {props.textAction === 'Update' ? t('board.update_task') : t('board.add_task')}
           </Typography>
           <IconButton
             aria-label="close"
@@ -112,7 +117,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
               onClick={handleSubmit(onSubmit)}
               sx={{ marginTop: '20px' }}
             >
-              {props.textAction}
+              {props.textAction === 'Update' ? t('button.update') : t('button.create')}
             </Button>
           </form>
         </Box>

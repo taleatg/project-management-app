@@ -9,6 +9,7 @@ import { FormHelperText, IconButton, TextField } from '@mui/material';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { postBoard } from '../../services/boardService';
 import { useAppDispatch } from '../../store/store';
+import { useTranslation } from 'react-i18next';
 
 const style = {
   display: 'flex',
@@ -35,7 +36,10 @@ interface NewBoardModalProps {
 export default function NewBoardModal(props: NewBoardModalProps) {
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation();
+
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
     reset();
@@ -59,11 +63,11 @@ export default function NewBoardModal(props: NewBoardModalProps) {
     <div>
       {props.place === 'menu' ? (
         <Button onClick={handleOpen}>
-          <span className="link link__menu">New board</span>
+          <span className="link link__menu">{t('board.new_board')}</span>
         </Button>
       ) : (
         <Typography textAlign="center" onClick={handleOpen}>
-          New board
+          {t('board.new_board')}
         </Typography>
       )}
       <Modal
@@ -74,7 +78,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
       >
         <Box sx={style} className="new-board__modal">
           <Typography id="modal-modal-title" variant="h6" component="p">
-            New board
+            {t('board.new_board')}
           </Typography>
           <IconButton
             aria-label="close"
@@ -99,7 +103,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
               render={({ field }) => (
                 <>
                   <TextField
-                    label="Board title"
+                    label={t('board.board_title')}
                     sx={{ marginTop: '20px' }}
                     margin="normal"
                     fullWidth
@@ -109,7 +113,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
                     value={field.value}
                   />
                   <FormHelperText error sx={{ height: '10px' }}>
-                    {errors['Board title'] && `Column title is required`}
+                    {errors['Board title'] && t('errors.board_title_is_required')}
                   </FormHelperText>
                 </>
               )}
@@ -120,7 +124,7 @@ export default function NewBoardModal(props: NewBoardModalProps) {
               onClick={handleSubmit(onSubmit)}
               sx={{ marginTop: '20px' }}
             >
-              Create
+              {t('button.create')}
             </Button>
           </form>
         </Box>

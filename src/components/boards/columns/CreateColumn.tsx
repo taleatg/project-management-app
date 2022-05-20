@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/store';
 import './Columns.scss';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { postColumn } from '../../../services/columnService';
+import { useTranslation } from 'react-i18next';
 
 interface ColumnType {
   title: string;
@@ -32,6 +33,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
   } = useForm<ColumnType>();
   const { addColumn } = columnSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ColumnType> = async (data) => {
     setOpen(false);
@@ -60,7 +62,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
       >
         <Box className="modal-wrapper" sx={{ boxShadow: 24, p: 3 }}>
           <Typography id="modal-modal-title" variant="h6" component="p">
-            New column
+            {t('board.new_column')}
           </Typography>
           <IconButton
             aria-label="close"
@@ -85,7 +87,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
               render={({ field }) => (
                 <>
                   <TextField
-                    label="Column title"
+                    label={t('board.column_title')}
                     sx={{ marginTop: '20px' }}
                     margin="normal"
                     fullWidth
@@ -95,7 +97,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
                     value={field.value}
                   />
                   <FormHelperText error sx={{ height: '10px' }}>
-                    {errors.title && `Column title is required`}
+                    {errors.title && t('errors.column_title_is_required')}
                   </FormHelperText>
                 </>
               )}
@@ -106,7 +108,7 @@ export function CreateColumn(props: { button: JSX.Element }) {
               onClick={handleSubmit(onSubmit)}
               sx={{ marginTop: '20px' }}
             >
-              Create
+              {t('button.create')}
             </Button>
           </form>
         </Box>

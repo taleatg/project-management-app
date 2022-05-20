@@ -69,23 +69,20 @@
       color: black;
     }
     &__avatar {
-      background-image: url("../../public/avatar.png");
+      background: url(http://localhost:3000/static/media/avatar.10691648d79aa2f92514.png) no-repeat;
       background-size: contain;
-      width: 3rem;
-      height: 3rem;
+      width: 8rem;
+      height: 8rem;
+      padding-bottom: 10px;
+      margin: 0 auto;
     }
-    &__name{
-      &:before {
-        content: "Name: ";
-        font-size: large;
-        color: $secontTextColor;
-      }
-    }
-    &__login{
-      &:before {
-        content: "Login: ";
-        font-size: large;
-        color: $secontTextColor;
+    &__text{
+      display: flex;
+      align-items: center;
+
+      .title {
+        margin: 0 10px 0 0;
+        text-transform: capitalize;
       }
     }
   }

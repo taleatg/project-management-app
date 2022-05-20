@@ -1,8 +1,11 @@
 import { Typography, createTheme, Link, ThemeProvider } from '@mui/material';
 import React from 'react';
 import './WelcomePage.scss';
+import { useTranslation } from 'react-i18next';
 
 export const WelcomePage: React.FC = () => {
+  const { t } = useTranslation();
+
   const myTheme = createTheme({
     typography: {
       fontSize: 25,
@@ -15,24 +18,20 @@ export const WelcomePage: React.FC = () => {
   return (
     <div className="welcome-container">
       <h2 className="welcome-header">
-        <b>PM App</b> organizes work so teams know what to do, why it matters, and how to get it
-        done.
+        <b>{t('welcome.project_name')}</b>
+        {t('welcome.project_description')}
       </h2>
       <ThemeProvider theme={myTheme}>
         <Typography variant="h3" color="primary" align="center">
-          Plan
+          {t('welcome.plan')}
         </Typography>
         <Typography paragraph={true} align="center" color="primary" gutterBottom={true}>
-          Break big ideas into manageable chunks of work and share them across teams with user
-          stories, tasks, and assignments.
+          {t('welcome.plan_description')}
         </Typography>
       </ThemeProvider>
-      <h2 className="welcome-information">
-        When all the information is collected in one place, the work becomes more visual. And it
-        much easier to collaborate.
-      </h2>
+      <h2 className="welcome-information">{t('welcome.welcome_information')}</h2>
       <Typography variant="h3" align="center" color="primary" gutterBottom>
-        Our team
+        {t('welcome.team')}
       </Typography>
       <div className="our-team">
         <div className="team-member">
@@ -44,8 +43,8 @@ export const WelcomePage: React.FC = () => {
               rel="noreferrer"
             >
               <div className="avatar tatsiana"></div>
-              <span className="team-lead">Team lead:</span>
-              <span className="name">Tatsiana Dashuk</span>
+              <span className="team-lead">{t('welcome.team_lead')}</span>
+              <span className="name">{t('welcome.tatsiana')}</span>
             </Link>
           </div>
         </div>
@@ -58,7 +57,7 @@ export const WelcomePage: React.FC = () => {
               rel="noreferrer"
             >
               <div className="avatar dina"></div>
-              <span className="name">Dina Shchobova</span>
+              <span className="name">{t('welcome.dina')}</span>
             </Link>
           </div>
         </div>
@@ -66,7 +65,7 @@ export const WelcomePage: React.FC = () => {
           <div className="title link">
             <Link href="https://github.com/Alexivkov" underline="hover" target="blank">
               <div className="avatar alexander"></div>
-              <span className="name">Alexander Sivkov</span>
+              <span className="name">{t('welcome.alexander')}</span>
             </Link>
           </div>
         </div>
@@ -82,7 +81,7 @@ export const WelcomePage: React.FC = () => {
           rel="noreferrer"
         >
           <img src="rs-logo.svg" alt="" />
-          <span>RS School React - free course for everyone</span>
+          <span>{t('welcome.rs_school')}</span>
         </Link>
       </div>
     </div>
