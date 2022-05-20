@@ -71,3 +71,16 @@ export const editTask = async ({ body, boardId, columnId, taskId }: boardColumns
       return err.response.data;
     });
 };
+
+export const getTasks = async ({ boardId, columnId }: { boardId: string; columnId: string }) => {
+  return axios({
+    method: 'get',
+    url: `/boards/${boardId}/columns/${columnId}/tasks`,
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};

@@ -72,7 +72,7 @@ export function EditProfile() {
   return (
     <>
       <div className="edit-profile">
-        <Typography variant="h4" component="div" gutterBottom>
+        <Typography variant="h4" component="div" gutterBottom sx={{ mb: '0' }}>
           {t('profile.edit_profile')}
         </Typography>
         <form className="edit-form" onSubmit={handleSubmit(onSubmit)}>
