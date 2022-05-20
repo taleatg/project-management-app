@@ -115,7 +115,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
               type="submit"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              sx={{ marginTop: '20px' }}
+              sx={{ mt: '20px', left: '50%', transform: 'translate(-50%, 0)' }}
             >
               {props.textAction === 'Update' ? t('button.update') : t('button.create')}
             </Button>
