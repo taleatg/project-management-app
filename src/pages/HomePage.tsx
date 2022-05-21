@@ -6,12 +6,11 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
 import './Pages.scss';
 import { BoardPreview } from '../components/BoardPreview';
-import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { getCookie } from '../services/authorizationService';
 
 export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
-  const [cookies] = useCookies(['token']);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
 
@@ -20,8 +19,9 @@ export const HomePage = () => {
   }
 
   useEffect(() => {
-    dispatch(getBoardsList(cookies.token));
-  }, [dispatch, cookies.token]);
+    const token = getCookie('token') as string;
+    dispatch(getBoardsList(token));
+  }, [dispatch]);
 
   return (
     <Container maxWidth="xl">

@@ -76,3 +76,10 @@ export const setUserDataInLocalStorage = async (userId: string) => {
   localStorage.setItem('userData', JSON.stringify(userData));
   return userData;
 };
+
+export function getCookie(name: string) {
+  const matches = document.cookie.match(
+    new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}

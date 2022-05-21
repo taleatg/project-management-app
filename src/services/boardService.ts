@@ -43,7 +43,7 @@ export const postBoard = createAsyncThunk(
     return axios({
       method: 'post',
       url: `/boards`,
-      data: { title: title },
+      data: JSON.stringify({ title: title }),
     })
       .then((res) => {
         return res.data;
