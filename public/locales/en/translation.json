@@ -35,7 +35,9 @@
     "add_task": "Add task",
     "update_task": "Update task",
     "task_title": "Task title",
-    "task_description": "Task description"
+    "task_description": "Task description",
+    "columns": "columns",
+    "tasks": "tasks"
   },
   "profile": {
     "profile": "Profile",

@@ -35,7 +35,9 @@
     "add_task": "Добавить задачу",
     "update_task": "Обновить задачу",
     "task_title": "Название задачи",
-    "task_description": "Описание задачи"
+    "task_description": "Описание задачи",
+    "columns": "колонки",
+    "tasks": "задачи"
   },
   "profile": {
     "profile": "Профиль",
