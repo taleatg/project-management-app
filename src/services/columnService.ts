@@ -21,10 +21,11 @@ export const getColumnsList = createAsyncThunk(
 );
 
 export const postColumn = async (title: string, boardId: string) => {
+  console.log(title);
   return axios({
     method: 'post',
     url: `/boards/${boardId}/columns`,
-    data: JSON.stringify(title),
+    data: { title },
   })
     .then((res) => {
       return res.data;

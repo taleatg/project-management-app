@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 
 interface ColumnType {
   title: string;
-  order: number;
 }
 
 export function CreateColumn(props: { button: JSX.Element }) {

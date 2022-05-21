@@ -54,7 +54,7 @@ export const BoardPage = () => {
       >
         {status === 'resolved' &&
           allColumns.length !== 0 &&
-          allColumns.map((column) => <Column key={column.id} column={column} />)}
+          allColumns.map((column) => <Column key={`${column.id}-1`} column={column} />)}
       </Grid>
       {status === 'rejected' && <BackendResponse backendErrors={t('errors.wrong')} type="error" />}
       {status === 'pending' && <CircularProgress />}

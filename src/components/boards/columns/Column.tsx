@@ -76,21 +76,6 @@ export function Column(props: ColumnProps) {
   async function deleteClickHandler(boardId: string, columnId: string) {
     await deleteColumn(boardId, columnId);
     dispatch(removeColumn(columnId));
-
-    const changedColumns = allColumns.filter(
-      (column) => column.order > currentColumn.order
-    ) as ColumnData[];
-    for (let i = 0; i < changedColumns.length; i++) {
-      const updatedColumn = await putColumn(
-        {
-          title: changedColumns[i].title,
-          order: changedColumns[i].order - 1,
-        },
-        boardId,
-        changedColumns[i].id
-      );
-      await dispatch(changeColumn(updatedColumn));
-    }
   }
 
   const createTask = async (data: UnpackNestedValue<ColumnType> | false) => {
