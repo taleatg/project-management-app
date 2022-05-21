@@ -3,7 +3,7 @@ import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useAppDispatch } from '../../../store/store';
 import { ColumnType, TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { Card, Divider, Menu } from '@mui/material';
@@ -24,8 +24,7 @@ interface TaskProps {
 
 export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
-  const { allColumns } = useAppSelector((state) => state.columnReducer);
-  const { removeTask, changedTask } = columnSlice.actions;
+  const { removeTask } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEdit, setIsEdit] = useState(false);
@@ -41,11 +40,6 @@ export function Task(props: TaskProps) {
     });
     dispatch(removeTask(data));
     handleClose();
-
-    const changedTasks = allColumns
-      .filter((column) => column.id === props.columnId)[0]
-      .tasks.filter((task) => task.order > props.task.order);
-    updateTasksOrder(changedTasks);
   };
 
   const updateTask = async (data: UnpackNestedValue<ColumnType> | false) => {
@@ -68,26 +62,6 @@ export function Task(props: TaskProps) {
       taskId: props.task.id,
     });
     dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
-  };
-
-  const updateTasksOrder = (tasks: TaskData[]) => {
-    tasks.map(async (task) => {
-      const updateTask = await editTask({
-        body: {
-          title: task.title,
-          order: task.order - 1,
-          description: task.description,
-          userId: task.userId,
-          boardId: boardId,
-          columnId: props.columnId,
-        },
-        boardId: boardId,
-        columnId: props.columnId,
-        taskId: task.id,
-      });
-
-      dispatch(changedTask(updateTask));
-    });
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
