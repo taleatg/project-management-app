@@ -82,7 +82,7 @@ export function CreateAndUpdateTask(props: TaskProps) {
   return (
     <>
       {props.textAction === 'Create' ? (
-        <Button size="small" fullWidth sx={{ textTransform: 'none' }} onClick={handleOpen}>
+        <Button size="small" fullWidth className="add-button" onClick={handleOpen}>
           <AddIcon fontSize="small" /> {t('board.add_task')}
         </Button>
       ) : null}

@@ -132,7 +132,7 @@ export function Column(props: ColumnProps) {
           textAction="Create"
           action={(data) => createTask(data)}
         />
-        <div>
+        <div className="task_wrapper">
           {status === 'resolved' &&
             tasks &&
             tasks.map((task) => <Task key={task.id} task={task} columnId={props.column.id} />)}
