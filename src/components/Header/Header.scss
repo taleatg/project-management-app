@@ -1,0 +1,27 @@
+.logo {
+  background: url('../../../public/project-management-app.svg') no-repeat center;
+  background-size: 2.2em 2.2em;
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.link {
+  text-decoration: none;
+  &__menu {
+    color: white;
+  }
+  &__burger-menu {
+    color: black;
+  }
+}
+
+.menu-buttons-box {
+  align-items: center;
+}
+
+.header-inner {
+  height: 60px;
+  position: sticky;
+  top: 5px;
+  transition: 0.3s;
+}

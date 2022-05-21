@@ -1,0 +1,13 @@
+.new-board {
+  &__button {
+    color: white;
+  }
+  &__submit {
+    margin: 20px;
+  }
+  &__error {
+    height: 10px;
+    font-size: 16px;
+    color: red;
+  }
+}
