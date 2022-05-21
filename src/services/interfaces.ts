@@ -24,6 +24,7 @@ export interface TaskData {
   done: false;
   description: string;
   userId: string;
+  columnId: string;
   files: [
     {
       filename: string;
