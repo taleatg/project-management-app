@@ -84,7 +84,6 @@ export function Column(props: ColumnProps) {
     const newTask = await postTask({
       body: {
         title: data.title,
-        order: tasks.length ? tasks.length + 1 : 1,
         description: data.description,
         userId: userId,
       },
