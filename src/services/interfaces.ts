@@ -22,7 +22,6 @@ export interface TaskData {
   id: string;
   title: string;
   order: 1;
-  done: false;
   description: string;
   userId: string;
   files: [

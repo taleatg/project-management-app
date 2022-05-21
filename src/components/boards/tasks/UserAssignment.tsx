@@ -3,10 +3,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
-import { useAppSelector } from '../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { TaskData, UserData } from '../../../services/interfaces';
 import { editTask } from '../../../services/taskService';
 import { useParams } from 'react-router-dom';
+import { columnSlice } from '../../../store/reducers/columnSlice';
 
 const ITEM_HEIGHT = 25;
 
@@ -17,6 +18,8 @@ interface TaskManagerProps {
 }
 
 export default function UserAssignment(props: TaskManagerProps) {
+  const dispatch = useAppDispatch();
+  const { changedTask } = columnSlice.actions;
   const { users } = useAppSelector((state) => state.authReducer);
   const params = useParams();
   const boardId: string = params.boardId as string;
@@ -32,7 +35,7 @@ export default function UserAssignment(props: TaskManagerProps) {
   };
 
   const selectResponsible = async (user: UserData) => {
-    await editTask({
+    const newTaskManager = await editTask({
       body: {
         title: props.task.title,
         order: props.task.order,
@@ -45,6 +48,8 @@ export default function UserAssignment(props: TaskManagerProps) {
       columnId: props.columnId,
       taskId: props.task.id,
     });
+
+    dispatch(changedTask(newTaskManager));
   };
 
   return (
