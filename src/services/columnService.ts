@@ -24,7 +24,7 @@ export const postColumn = async (title: string, boardId: string) => {
   return axios({
     method: 'post',
     url: `/boards/${boardId}/columns`,
-    data: { title },
+    data: JSON.stringify({ title }),
   })
     .then((res) => {
       return res.data;
