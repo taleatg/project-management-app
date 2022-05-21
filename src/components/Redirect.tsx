@@ -43,5 +43,5 @@ export function Redirect({ children }: { children: JSX.Element }) {
     };
   }, []);
 
-  return <div>{children}</div>;
+  return <div className="root-wrapper">{children}</div>;
 }
