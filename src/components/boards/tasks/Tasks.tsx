@@ -16,6 +16,7 @@ import { UnpackNestedValue } from 'react-hook-form';
 import { getUserName } from '../../../services/authorizationService';
 import { useParams } from 'react-router-dom';
 import UserAssignment from './UserAssignment';
+import { boardSlice } from '../../../store/reducers/boardSlice';
 
 interface TaskProps {
   task: TaskData;
@@ -107,9 +108,80 @@ export function Task(props: TaskProps) {
   };
   getName();
 
+  // d-n-d
+  const { setDraggableTask } = boardSlice.actions;
+  const { draggableTask } = useAppSelector((state) => state.boardReducer);
+
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
+    dispatch(setDraggableTask(task));
+    console.log('start');
+  };
+
+  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    //console.log(e);
+  };
+
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    //console.log(e);
+  };
+
+  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // добавить стиль при перетаскивании
+  };
+
+  const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
+    e.preventDefault();
+    console.log('end');
+    if (task.id !== (draggableTask as TaskData).id) {
+      {
+        const body = {
+          title: task.title,
+          order: (draggableTask as TaskData).order,
+          description: task.description,
+          userId: props.task.userId,
+          boardId: boardId,
+          columnId: props.columnId,
+        };
+        await editTask({
+          body,
+          boardId: boardId,
+          columnId: props.columnId,
+          taskId: task.id,
+        });
+      }
+      {
+        const body = {
+          title: (draggableTask as TaskData).title,
+          order: (task as TaskData).order,
+          description: (draggableTask as TaskData).description,
+          userId: props.task.userId,
+          boardId: boardId,
+          columnId: props.columnId,
+        };
+        await editTask({
+          body,
+          boardId: boardId,
+          columnId: props.columnId,
+          taskId: (draggableTask as TaskData).id,
+        });
+      }
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
+    }
+  };
+
   return (
     <div className="task">
-      <Card key={props.task.id} className="card">
+      <Card
+        key={props.task.id}
+        className="card"
+        draggable={true}
+        onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, props.task)}
+        onDragEnd={(e) => dragEndHandler(e)}
+        onDragOver={(e) => dragOverHandler(e)}
+        onDragLeave={(e) => dragLeaveHandler(e)}
+        onDrop={(e) => dropHandler(e, props.task)}
+      >
         <div className="title-task">
           <Typography variant="h5" component="div">
             {props.task.title}
