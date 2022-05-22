@@ -27,6 +27,7 @@ const style = {
 
 export interface FormValues {
   'Board title': string;
+  'Board description': string;
 }
 
 interface NewBoardModalProps {
@@ -54,7 +55,8 @@ export default function NewBoardModal(props: NewBoardModalProps) {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const title = data['Board title'];
-    await dispatch(postBoard(title));
+    const description = data['Board description'];
+    await dispatch(postBoard({ title: title, description: description }));
     reset();
     handleClose();
   };
@@ -114,6 +116,31 @@ export default function NewBoardModal(props: NewBoardModalProps) {
                   />
                   <FormHelperText error sx={{ height: '10px' }}>
                     {errors['Board title'] && t('errors.board_title_is_required')}
+                  </FormHelperText>
+                </>
+              )}
+            />
+            <Controller
+              control={control}
+              name="Board description"
+              defaultValue=""
+              rules={{
+                required: true,
+              }}
+              render={({ field }) => (
+                <>
+                  <TextField
+                    label={t('board.board_description')}
+                    sx={{ marginTop: '20px' }}
+                    margin="normal"
+                    fullWidth
+                    multiline
+                    variant="outlined"
+                    onChange={(e) => field.onChange(e)}
+                    value={field.value}
+                  />
+                  <FormHelperText error sx={{ height: '10px' }}>
+                    {errors['Board description'] && t('errors.board_description_is_required')}
                   </FormHelperText>
                 </>
               )}

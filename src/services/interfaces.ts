@@ -1,6 +1,7 @@
 export interface BoardData {
   id: string;
   title: string;
+  description: string;
 }
 
 export interface ColumnData {
@@ -21,7 +22,6 @@ export interface TaskData {
   id: string;
   title: string;
   order: 1;
-  done: false;
   description: string;
   userId: string;
   columnId: string;

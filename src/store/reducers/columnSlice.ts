@@ -22,7 +22,6 @@ export const columnState: ColumnState = {
         id: '',
         title: '',
         order: 1,
-        done: false,
         description: '',
         userId: '',
         columnId: '',

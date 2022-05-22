@@ -17,6 +17,7 @@ const boardState: BoardState = {
   currentBoard: {
     id: '',
     title: '',
+    description: '',
   },
   allBoard: [],
 };

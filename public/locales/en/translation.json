@@ -12,9 +12,6 @@
     "alexander": "Alexander Sivkov",
     "rs_school": "RS School React - free course for everyone!"
   },
-  "home": {
-
-  },
   "authorization": {
     "authorization": "Authorization",
     "registration": "Registration",
@@ -31,13 +28,16 @@
     "board": "Boards",
     "new_board": "New board",
     "board_title": "Board title",
+    "board_description": "Board description",
     "add_column": "Add column",
     "new_column": "New column",
     "column_title": "Column title",
     "add_task": "Add task",
     "update_task": "Update task",
     "task_title": "Task title",
-    "task_description": "Task description"
+    "task_description": "Task description",
+    "columns": "columns",
+    "tasks": "tasks"
   },
   "profile": {
     "profile": "Profile",
@@ -68,6 +68,7 @@
     "wrong": "Error! Something went wrong :(",
     "match_password": "Passwords don't match",
     "board_title_is_required": "Board title is required",
+    "board_description_is_required": "Board description is required",
     "column_title_is_required": "Column title is required",
     "title_is_required": "Title is required",
     "description_is_required": "Description is required"

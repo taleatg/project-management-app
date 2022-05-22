@@ -12,9 +12,6 @@
     "alexander": "Александр Сивков",
     "rs_school": "RS School React - бесплатный курс для всех желающих!"
   },
-  "home": {
-
-  },
   "authorization": {
     "authorization": "Авторизация",
     "registration": "Регистрация",
@@ -31,13 +28,16 @@
     "board": "Доски",
     "new_board": "Новая доска",
     "board_title": "Название доски",
+    "board_description": "Описание доски",
     "add_column": "Добавить колонку",
     "new_column": "Новая колонка",
     "column_title": "Заголовок колонки",
     "add_task": "Добавить задачу",
     "update_task": "Обновить задачу",
     "task_title": "Название задачи",
-    "task_description": "Описание задачи"
+    "task_description": "Описание задачи",
+    "columns": "колонки",
+    "tasks": "задачи"
   },
   "profile": {
     "profile": "Профиль",
@@ -68,6 +68,7 @@
     "wrong": "Ошибка! Что-то пошло не так :(",
     "match_password": "Пароли не совпадают",
     "board_title_is_required": "Заголовок доски обязателен",
+    "board_description_is_required": "Описание доски обязательно",
     "column_title_is_required": "Заголовок колонки обязателен",
     "title_is_required": "Требуется заголовок",
     "description_is_required": "Требуется описание"
