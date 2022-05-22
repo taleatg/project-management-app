@@ -1,5 +1,15 @@
 import React, { useEffect } from 'react';
-import { Box, CircularProgress, Container, Divider, Grid, Paper } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  InputAdornment,
+  InputBase,
+  Paper,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { deleteBoard, getBoardsList } from '../services/boardService';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -8,6 +18,7 @@ import './Pages.scss';
 import { BoardPreview } from '../components/BoardPreview';
 import { useTranslation } from 'react-i18next';
 import { getCookie } from '../services/authorizationService';
+import SearchIcon from '@mui/icons-material/Search';
 
 export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
@@ -25,7 +36,19 @@ export const HomePage = () => {
 
   return (
     <Container maxWidth="xl">
-      <h2>{t('board.board')}</h2>
+      <div className="title-wrapper">
+        <h2>{t('board.board')}</h2>
+        <Paper className="search" component="form">
+          <InputAdornment position="start" sx={{ ml: '5px' }}>
+            <SearchIcon />
+          </InputAdornment>
+          <InputBase sx={{ flex: 1 }} placeholder="Search task" />
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <Button color="primary" sx={{ p: '10px' }} aria-label="directions" type="submit">
+            {t('button.submit')}
+          </Button>
+        </Paper>
+      </div>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <Grid
           container
