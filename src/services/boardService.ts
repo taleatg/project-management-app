@@ -39,11 +39,11 @@ export const getBoardById = createAsyncThunk(
 
 export const postBoard = createAsyncThunk(
   'board/postBoard',
-  async (title: string, { rejectWithValue }) => {
+  async ({ title, description }: { title: string; description: string }, { rejectWithValue }) => {
     return axios({
       method: 'post',
       url: `/boards`,
-      data: JSON.stringify({ title: title }),
+      data: JSON.stringify({ title: title, description: description }),
     })
       .then((res) => {
         return res.data;

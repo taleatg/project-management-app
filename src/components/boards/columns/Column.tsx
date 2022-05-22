@@ -76,21 +76,6 @@ export function Column(props: ColumnProps) {
   async function deleteClickHandler(boardId: string, columnId: string) {
     await deleteColumn(boardId, columnId);
     dispatch(removeColumn(columnId));
-
-    const changedColumns = allColumns.filter(
-      (column) => column.order > currentColumn.order
-    ) as ColumnData[];
-    for (let i = 0; i < changedColumns.length; i++) {
-      const updatedColumn = await putColumn(
-        {
-          title: changedColumns[i].title,
-          order: changedColumns[i].order - 1,
-        },
-        boardId,
-        changedColumns[i].id
-      );
-      await dispatch(changeColumn(updatedColumn));
-    }
   }
 
   const createTask = async (data: UnpackNestedValue<ColumnType> | false) => {
@@ -99,7 +84,6 @@ export function Column(props: ColumnProps) {
     const newTask = await postTask({
       body: {
         title: data.title,
-        order: tasks.length ? tasks.length + 1 : 1,
         description: data.description,
         userId: userId,
       },
@@ -148,7 +132,7 @@ export function Column(props: ColumnProps) {
           textAction="Create"
           action={(data) => createTask(data)}
         />
-        <div>
+        <div className="task_wrapper">
           {status === 'resolved' &&
             tasks &&
             tasks.map((task) => <Task key={task.id} task={task} columnId={props.column.id} />)}

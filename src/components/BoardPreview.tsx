@@ -5,6 +5,7 @@ import { boardSlice } from '../store/reducers/boardSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getColumns } from '../services/columnService';
 import { getTasks } from '../services/taskService';
+import { useTranslation } from 'react-i18next';
 
 interface BoardPreviewProps {
   board: BoardData;
@@ -16,6 +17,7 @@ export const BoardPreview = (props: BoardPreviewProps) => {
   const dispatch = useAppDispatch();
   const [columns, setColumns] = useState(0);
   const [tasks, setTasks] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getCountColumns = async () => {
@@ -41,8 +43,11 @@ export const BoardPreview = (props: BoardPreviewProps) => {
         <ListItemText primary={props.board.title} />
       </ListItem>
       <ListItem sx={{ p: '0 16px' }}>
-        <ListItemText secondary={`columns: ${columns}`} />
-        <ListItemText secondary={`tasks: ${tasks}`} />
+        <ListItemText primary={props.board.description} />
+      </ListItem>
+      <ListItem sx={{ p: '0 16px' }}>
+        <ListItemText secondary={`${t('board.columns')}: ${columns}`} />
+        <ListItemText secondary={`${t('board.tasks')}: ${tasks}`} />
       </ListItem>
     </List>
   );
