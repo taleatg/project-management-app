@@ -84,7 +84,6 @@ export const columnSlice = createSlice({
           column.tasks[upgradeTaskIndex].description = action.payload.description;
           column.tasks[upgradeTaskIndex].order = action.payload.order;
           column.tasks[upgradeTaskIndex].userId = action.payload.userId;
-          column.tasks[upgradeTaskIndex].columnId = action.payload.columnId;
         }
       });
     },
