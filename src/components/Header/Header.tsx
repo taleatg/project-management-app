@@ -19,8 +19,10 @@ import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
-import { Tooltip, Zoom } from '@mui/material';
+import { Divider, InputAdornment, Paper, TextField, Tooltip, Zoom } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import SearchIcon from '@mui/icons-material/Search';
 
 type IPages = {
   [key: string]: string;
@@ -41,6 +43,7 @@ export const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
   const { t } = useTranslation();
+  const { handleSubmit, control, reset } = useForm();
 
   const pages: IPages = isAuthenticated
     ? {
@@ -70,6 +73,11 @@ export const Header = () => {
 
   const clickBackToMainHandler = () => {
     navigate('/home');
+  };
+
+  const searchHandler: SubmitHandler<FieldValues> = (data) => {
+    navigate('/search');
+    reset();
   };
 
   return (
@@ -152,9 +160,38 @@ export const Header = () => {
               </Link>
             )}
           </Box>
-          <LangSelect />
           {isAuthenticated ? (
             <>
+              <Paper className="search" component="form" sx={{ borderRadius: '25px' }}>
+                <Controller
+                  control={control}
+                  name="search"
+                  defaultValue=""
+                  render={({ field }) => (
+                    <>
+                      <TextField
+                        sx={{ pl: '15px' }}
+                        variant="standard"
+                        InputProps={{ disableUnderline: true }}
+                        placeholder={t('board.search_task')}
+                        onChange={(e) => field.onChange(e)}
+                      />
+                      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    </>
+                  )}
+                />
+                <Button
+                  color="primary"
+                  sx={{ minWidth: '40px' }}
+                  type="submit"
+                  onClick={handleSubmit(searchHandler)}
+                >
+                  <InputAdornment position="start" sx={{ ml: '5px' }}>
+                    <SearchIcon />
+                  </InputAdornment>
+                </Button>
+              </Paper>
+              <LangSelect />
               <Tooltip
                 title={t('button.go_to_main')}
                 TransitionComponent={Zoom}
@@ -181,6 +218,7 @@ export const Header = () => {
             </>
           ) : (
             <>
+              <LangSelect />
               <Link to={`/signin`} className="link link__menu">
                 <Button color="inherit">{t('button.sign_in')}</Button>
               </Link>
