@@ -7,10 +7,10 @@ import {
   Divider,
   Grid,
   InputAdornment,
-  InputBase,
   Paper,
+  TextField,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { deleteBoard, getBoardsList } from '../services/boardService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import ConfirmationModal from '../components/ConfirmationModal';
@@ -19,11 +19,14 @@ import { BoardPreview } from '../components/BoardPreview';
 import { useTranslation } from 'react-i18next';
 import { getCookie } from '../services/authorizationService';
 import SearchIcon from '@mui/icons-material/Search';
+import { FieldValues, SubmitHandler, useForm, Controller } from 'react-hook-form';
 
 export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const { handleSubmit, control, reset } = useForm();
+  const navigate = useNavigate();
 
   async function deleteData(id: string): Promise<void> {
     await dispatch(deleteBoard(id));
@@ -34,17 +37,42 @@ export const HomePage = () => {
     dispatch(getBoardsList(token));
   }, [dispatch]);
 
+  const searchHandler: SubmitHandler<FieldValues> = (data) => {
+    navigate('/search');
+    reset();
+  };
+
   return (
     <Container maxWidth="xl">
       <div className="title-wrapper">
         <h2>{t('board.board')}</h2>
         <Paper className="search" component="form">
-          <InputAdornment position="start" sx={{ ml: '5px' }}>
-            <SearchIcon />
-          </InputAdornment>
-          <InputBase sx={{ flex: 1 }} placeholder="Search task" />
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <Button color="primary" sx={{ p: '10px' }} aria-label="directions" type="submit">
+          <Controller
+            control={control}
+            name="search"
+            defaultValue=""
+            render={({ field }) => (
+              <>
+                <InputAdornment position="start" sx={{ ml: '5px' }}>
+                  <SearchIcon />
+                </InputAdornment>
+                <TextField
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
+                  placeholder={t('board.search_task')}
+                  onChange={(e) => field.onChange(e)}
+                />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+              </>
+            )}
+          />
+          <Button
+            color="primary"
+            sx={{ p: '10px' }}
+            aria-label="directions"
+            type="submit"
+            onClick={handleSubmit(searchHandler)}
+          >
             {t('button.submit')}
           </Button>
         </Paper>

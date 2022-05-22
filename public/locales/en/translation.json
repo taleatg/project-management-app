@@ -37,7 +37,8 @@
     "task_title": "Task title",
     "task_description": "Task description",
     "columns": "columns",
-    "tasks": "tasks"
+    "tasks": "tasks",
+    "search_task": "Search task"
   },
   "profile": {
     "profile": "Profile",

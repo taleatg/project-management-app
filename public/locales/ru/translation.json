@@ -37,7 +37,8 @@
     "task_title": "Название задачи",
     "task_description": "Описание задачи",
     "columns": "колонки",
-    "tasks": "задачи"
+    "tasks": "задачи",
+    "search_task": "Поиск задачи"
   },
   "profile": {
     "profile": "Профиль",
