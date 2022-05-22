@@ -23,6 +23,7 @@ import { Divider, InputAdornment, Paper, TextField, Tooltip, Zoom } from '@mui/m
 import { useTranslation } from 'react-i18next';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
+import { searchSlice } from '../../store/reducers/searchSlice';
 
 type IPages = {
   [key: string]: string;
@@ -39,6 +40,7 @@ export const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { switchAuthorization } = authSlice.actions;
+  const { updateSearch } = searchSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
@@ -76,6 +78,7 @@ export const Header = () => {
   };
 
   const searchHandler: SubmitHandler<FieldValues> = (data) => {
+    dispatch(updateSearch(data.search));
     navigate('/search');
     reset();
   };
@@ -168,18 +171,16 @@ export const Header = () => {
                   name="search"
                   defaultValue=""
                   render={({ field }) => (
-                    <>
-                      <TextField
-                        sx={{ pl: '15px' }}
-                        variant="standard"
-                        InputProps={{ disableUnderline: true }}
-                        placeholder={t('board.search_task')}
-                        onChange={(e) => field.onChange(e)}
-                      />
-                      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                    </>
+                    <TextField
+                      sx={{ pl: '15px' }}
+                      variant="standard"
+                      InputProps={{ disableUnderline: true }}
+                      placeholder={t('board.search_task')}
+                      onChange={(e) => field.onChange(e)}
+                    />
                   )}
                 />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <Button
                   color="primary"
                   sx={{ minWidth: '40px' }}

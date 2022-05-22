@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import authReducer from './reducers/authenticationSlice';
 import boardReducer from './reducers/boardSlice';
 import columnReducer from './reducers/columnSlice';
+import searchReducer from './reducers/searchSlice';
 
 const rootReducer = combineReducers({
   authReducer,
   boardReducer,
   columnReducer,
+  searchReducer,
 });
 
 const store = configureStore({
