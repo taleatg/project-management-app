@@ -110,6 +110,7 @@ export function Task(props: TaskProps) {
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
     e.preventDefault();
+    e.stopPropagation();
     if (task.columnId === (draggableTask as TaskData).columnId) {
       {
         const body = {
@@ -178,7 +179,6 @@ export function Task(props: TaskProps) {
           <Typography variant="h5" component="div">
             {props.task.title}
           </Typography>
-          <span className={'smallFont'}>{props.task.id}</span>
           <div>
             <Button
               className="show-more"

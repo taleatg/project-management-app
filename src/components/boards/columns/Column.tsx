@@ -6,12 +6,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
-import { ColumnData, ColumnType } from '../../../services/interfaces';
+import { ColumnData, ColumnType, TaskData } from '../../../services/interfaces';
 import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
-import { getTasksInColumn, postTask } from '../../../services/taskService';
+import { deleteTask, getTasksInColumn, postTask } from '../../../services/taskService';
 import { UnpackNestedValue } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getUsers } from '../../../services/authorizationService';
@@ -93,8 +93,43 @@ export function Column(props: ColumnProps) {
     dispatch(addTask(newTask));
   };
 
+  //  d-n-d
+  const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);
+
+  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // добавить стиль при перетаскивании
+  };
+
+  const dropHandler = async (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
+    e.preventDefault();
+    console.log(e.target);
+    await postTask({
+      body: {
+        title: (draggableTask as TaskData).title,
+        description: (draggableTask as TaskData).description,
+        userId: (draggableTask as TaskData).userId,
+      },
+      boardId: boardId,
+      columnId: column.id,
+    });
+    await deleteTask({
+      boardId: boardId,
+      columnId: columnOfDraggableTask,
+      taskId: (draggableTask as TaskData).id,
+    });
+
+    dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
+    dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
+  };
+
   return (
-    <Grid item className="column">
+    <Grid
+      item
+      className="column"
+      onDragOver={(e) => dragOverHandler(e)}
+      onDrop={(e) => dropHandler(e, props.column)}
+    >
       <div className="column__header">
         {isEdit ? (
           <>
