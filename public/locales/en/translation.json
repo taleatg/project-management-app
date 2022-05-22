@@ -48,6 +48,13 @@
     "ask_sure": "Are you sure?",
     "ask_title": "Do you really want to delete it?"
   },
+  "search": {
+    "board": "Board",
+    "column": "Column",
+    "title": "Task title",
+    "description": "Task description",
+    "assignee": "Responsible"
+  },
   "button": {
     "welcome": "welcome",
     "main": "main",

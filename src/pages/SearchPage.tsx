@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useTranslation } from 'react-i18next';
 
 function createData(
   project: string,
@@ -20,16 +21,18 @@ function createData(
 const rows = [createData('Board', 'Done', 'Task', 'some task', 'Vasya')];
 
 export function SearchPage() {
+  const { t } = useTranslation();
+
   return (
     <TableContainer component={Paper} className="table-container" sx={{ width: '95%', mt: '20px' }}>
       <Table aria-label="simple table">
         <TableHead sx={{ background: 'rgba(0, 0, 0, 0.2)' }}>
           <TableRow>
-            <TableCell align="center">Project</TableCell>
-            <TableCell align="center">Task title</TableCell>
-            <TableCell align="center">Task description</TableCell>
-            <TableCell align="center">Column</TableCell>
-            <TableCell align="center">Assignee</TableCell>
+            <TableCell align="center">{t('search.board')}</TableCell>
+            <TableCell align="center">{t('search.column')}</TableCell>
+            <TableCell align="center">{t('search.title')}</TableCell>
+            <TableCell align="center">{t('search.description')}</TableCell>
+            <TableCell align="center">{t('search.assignee')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
