@@ -6,6 +6,7 @@ interface BoardState {
   status: string | null;
   error: Error | null;
   draggableTask: TaskData | null;
+  columnOfDraggableTask: string;
   currentBoard: BoardData;
   allBoard: BoardData[];
 }
@@ -14,6 +15,7 @@ const boardState: BoardState = {
   status: null,
   error: null,
   draggableTask: null,
+  columnOfDraggableTask: '',
   currentBoard: {
     id: '',
     title: '',
@@ -35,6 +37,7 @@ export const boardSlice = createSlice({
     },
     setDraggableTask(state, action: PayloadAction<TaskData>) {
       state.draggableTask = action.payload;
+      state.columnOfDraggableTask = action.payload.columnId;
     },
   },
   extraReducers: (builder) => {
