@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
+import { deleteTask, editTask, getTasksInColumn, postTask } from '../../../services/taskService';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { ColumnType, TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
@@ -86,24 +86,22 @@ export function Task(props: TaskProps) {
       return name;
     }
   };
-  getName();
+  if (!userName) {
+    getName();
+  }
 
   // d-n-d
+
   const { setDraggableTask } = boardSlice.actions;
-  const { draggableTask } = useAppSelector((state) => state.boardReducer);
+  const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);
 
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
     dispatch(setDraggableTask(task));
-    console.log('start');
   };
 
-  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    //console.log(e);
-  };
+  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {};
 
-  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    //console.log(e);
-  };
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {};
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -112,24 +110,7 @@ export function Task(props: TaskProps) {
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
     e.preventDefault();
-    console.log('end');
-    if (task.id !== (draggableTask as TaskData).id) {
-      // {
-      //   const body = {
-      //     title: task.title,
-      //     order: (draggableTask as TaskData).order,
-      //     description: task.description,
-      //     userId: props.task.userId,
-      //     boardId: boardId,
-      //     columnId: props.columnId,
-      //   };
-      //   await editTask({
-      //     body,
-      //     boardId: boardId,
-      //     columnId: props.columnId,
-      //     taskId: task.id,
-      //   });
-      // }
+    if (task.columnId === (draggableTask as TaskData).columnId) {
       {
         const body = {
           title: (draggableTask as TaskData).title,
@@ -147,6 +128,37 @@ export function Task(props: TaskProps) {
         });
       }
       dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
+    } else {
+      const { data: createdTask } = await postTask({
+        body: {
+          title: (draggableTask as TaskData).title,
+          description: (draggableTask as TaskData).description,
+          userId: props.task.userId,
+        },
+        boardId: boardId,
+        columnId: (task as TaskData).columnId,
+      });
+      await deleteTask({
+        boardId: boardId,
+        columnId: columnOfDraggableTask,
+        taskId: (draggableTask as TaskData).id,
+      });
+      const body = {
+        title: (draggableTask as TaskData).title,
+        order: (task as TaskData).order,
+        description: (draggableTask as TaskData).description,
+        userId: props.task.userId,
+        boardId: boardId,
+        columnId: (task as TaskData).columnId,
+      };
+      await editTask({
+        body,
+        boardId: boardId,
+        columnId: (task as TaskData).columnId,
+        taskId: (createdTask as TaskData).id,
+      });
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: (task as TaskData).columnId }));
     }
   };
 
@@ -166,6 +178,7 @@ export function Task(props: TaskProps) {
           <Typography variant="h5" component="div">
             {props.task.title}
           </Typography>
+          <span className={'smallFont'}>{props.task.id}</span>
           <div>
             <Button
               className="show-more"
