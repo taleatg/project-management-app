@@ -3,7 +3,7 @@ import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { deleteTask, editTask, getTasksInColumn } from '../../../services/taskService';
-import { useAppDispatch } from '../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { ColumnType, TaskData } from '../../../services/interfaces';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { Card, Divider, Menu } from '@mui/material';
@@ -40,6 +40,12 @@ export function Task(props: TaskProps) {
       taskId: props.task.id,
     });
     dispatch(removeTask(data));
+    dispatch(
+      getTasksInColumn({
+        boardId: boardId,
+        columnId: props.columnId,
+      })
+    );
     handleClose();
   };
 
@@ -108,22 +114,22 @@ export function Task(props: TaskProps) {
     e.preventDefault();
     console.log('end');
     if (task.id !== (draggableTask as TaskData).id) {
-      {
-        const body = {
-          title: task.title,
-          order: (draggableTask as TaskData).order,
-          description: task.description,
-          userId: props.task.userId,
-          boardId: boardId,
-          columnId: props.columnId,
-        };
-        await editTask({
-          body,
-          boardId: boardId,
-          columnId: props.columnId,
-          taskId: task.id,
-        });
-      }
+      // {
+      //   const body = {
+      //     title: task.title,
+      //     order: (draggableTask as TaskData).order,
+      //     description: task.description,
+      //     userId: props.task.userId,
+      //     boardId: boardId,
+      //     columnId: props.columnId,
+      //   };
+      //   await editTask({
+      //     body,
+      //     boardId: boardId,
+      //     columnId: props.columnId,
+      //     taskId: task.id,
+      //   });
+      // }
       {
         const body = {
           title: (draggableTask as TaskData).title,
