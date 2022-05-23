@@ -25,7 +25,9 @@ export const HomePage = () => {
 
   return (
     <Container maxWidth="xl">
-      <h2>{t('board.board')}</h2>
+      <div className="title-wrapper">
+        <h2>{t('board.board')}</h2>
+      </div>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <Grid
           container

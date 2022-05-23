@@ -71,3 +71,12 @@ export interface UserData {
   name: string;
   login: string;
 }
+
+export interface SearchResult {
+  board: string;
+  column: string;
+  taskId: string;
+  title: string;
+  description: string;
+  assignee: string;
+}

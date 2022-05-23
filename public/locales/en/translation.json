@@ -37,7 +37,8 @@
     "task_title": "Task title",
     "task_description": "Task description",
     "columns": "columns",
-    "tasks": "tasks"
+    "tasks": "tasks",
+    "search_task": "Search task"
   },
   "profile": {
     "profile": "Profile",
@@ -46,6 +47,15 @@
   "confirmation_modal": {
     "ask_sure": "Are you sure?",
     "ask_title": "Do you really want to delete it?"
+  },
+  "search": {
+    "board": "Board",
+    "column": "Column",
+    "title": "Task title",
+    "description": "Task description",
+    "assignee": "Responsible",
+    "not_found": "Tasks not found",
+    "loading": "Loading..."
   },
   "button": {
     "welcome": "welcome",

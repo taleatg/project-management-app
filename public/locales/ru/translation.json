@@ -37,7 +37,8 @@
     "task_title": "Название задачи",
     "task_description": "Описание задачи",
     "columns": "колонки",
-    "tasks": "задачи"
+    "tasks": "задачи",
+    "search_task": "Поиск задачи"
   },
   "profile": {
     "profile": "Профиль",
@@ -46,6 +47,15 @@
   "confirmation_modal": {
     "ask_sure": "Вы уверены?",
     "ask_title": "Вы действительно хотите удалить это?"
+  },
+  "search": {
+    "board": "Доска",
+    "column": "Колонка",
+    "title": "Заголовок задачи",
+    "description": "Описание задачи",
+    "assignee": "Ответственный",
+    "not_found": "Задачи не найдены",
+    "loading": "Загрузка..."
   },
   "button": {
     "welcome": "добро пожаловать",

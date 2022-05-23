@@ -19,8 +19,17 @@ import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../NewBoardModal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
-import { Tooltip, Zoom } from '@mui/material';
+import { Divider, InputAdornment, Paper, TextField, Tooltip, Zoom } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import SearchIcon from '@mui/icons-material/Search';
+import { searchSlice } from '../../store/reducers/searchSlice';
+import { SearchResult } from '../../services/interfaces';
+import { getColumns } from '../../services/columnService';
+import { getTasks } from '../../services/taskService';
+import { getCookie, getUserById } from '../../services/authorizationService';
+import { getBoardsList } from '../../services/boardService';
+import { useEffect } from 'react';
 
 type IPages = {
   [key: string]: string;
@@ -41,6 +50,9 @@ export const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
   const { t } = useTranslation();
+  const { handleSubmit, control, reset } = useForm();
+  const { allBoard } = useAppSelector((state) => state.boardReducer);
+  const { updateSearchResult, updateLoadingState } = searchSlice.actions;
 
   const pages: IPages = isAuthenticated
     ? {
@@ -70,6 +82,39 @@ export const Header = () => {
 
   const clickBackToMainHandler = () => {
     navigate('/home');
+  };
+
+  useEffect(() => {
+    const token = getCookie('token') as string;
+    dispatch(getBoardsList(token));
+  }, [dispatch]);
+
+  const searchHandler: SubmitHandler<FieldValues> = async (data) => {
+    dispatch(updateLoadingState(true));
+    navigate('/search');
+    const resultTasks: SearchResult[] = [];
+    for (const board of allBoard) {
+      const columns = await getColumns(board.id);
+      for (const column of columns) {
+        const tasks = await getTasks({ boardId: board.id, columnId: column.id });
+        for (const task of tasks) {
+          if (task.title.toLowerCase().includes(data.search.toLowerCase())) {
+            resultTasks.push({
+              board: board.title,
+              column: column.title,
+              taskId: task.id,
+              title: task.title,
+              description: task.description,
+              assignee: (await getUserById(task.userId)).name,
+            });
+          }
+        }
+      }
+    }
+
+    dispatch(updateSearchResult(resultTasks));
+    dispatch(updateLoadingState(false));
+    reset();
   };
 
   return (
@@ -152,9 +197,36 @@ export const Header = () => {
               </Link>
             )}
           </Box>
-          <LangSelect />
           {isAuthenticated ? (
             <>
+              <Paper className="search" component="form" sx={{ borderRadius: '25px' }}>
+                <Controller
+                  control={control}
+                  name="search"
+                  defaultValue=""
+                  render={({ field }) => (
+                    <TextField
+                      sx={{ pl: '15px' }}
+                      variant="standard"
+                      InputProps={{ disableUnderline: true }}
+                      placeholder={t('board.search_task')}
+                      onChange={(e) => field.onChange(e)}
+                    />
+                  )}
+                />
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <Button
+                  color="primary"
+                  sx={{ minWidth: '40px' }}
+                  type="submit"
+                  onClick={handleSubmit(searchHandler)}
+                >
+                  <InputAdornment position="start" sx={{ ml: '5px' }}>
+                    <SearchIcon />
+                  </InputAdornment>
+                </Button>
+              </Paper>
+              <LangSelect />
               <Tooltip
                 title={t('button.go_to_main')}
                 TransitionComponent={Zoom}
@@ -181,6 +253,7 @@ export const Header = () => {
             </>
           ) : (
             <>
+              <LangSelect />
               <Link to={`/signin`} className="link link__menu">
                 <Button color="inherit">{t('button.sign_in')}</Button>
               </Link>

@@ -16,6 +16,7 @@ import { SignupPage } from './pages/SignupPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { getCookie } from './services/authorizationService';
 import { Redirect } from './components/Redirect';
+import { SearchPage } from './pages/SearchPage';
 
 function App() {
   const { switchAuthorization, setUserId, setCurrentUserData } = authSlice.actions;
@@ -83,6 +84,14 @@ function App() {
             <Route
               path="/signup"
               element={isAuthenticated ? <Navigate to="/home" /> : <SignupPage />}
+            />
+            <Route
+              path="/search"
+              element={
+                <PrivateRoute>
+                  <SearchPage />
+                </PrivateRoute>
+              }
             />
             <Route path="*" element={<NotFoundPage />} />{' '}
           </Route>
