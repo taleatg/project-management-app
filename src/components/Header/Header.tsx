@@ -24,11 +24,12 @@ import { useTranslation } from 'react-i18next';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchSlice } from '../../store/reducers/searchSlice';
-import { ColumnData, SearchResult, TaskData } from '../../services/interfaces';
+import { SearchResult } from '../../services/interfaces';
 import { getColumns } from '../../services/columnService';
 import { getTasks } from '../../services/taskService';
 import { getCookie, getUserById } from '../../services/authorizationService';
 import { getBoardsList } from '../../services/boardService';
+import { useEffect } from 'react';
 
 type IPages = {
   [key: string]: string;
@@ -51,7 +52,7 @@ export const Header = () => {
   const { t } = useTranslation();
   const { handleSubmit, control, reset } = useForm();
   const { allBoard } = useAppSelector((state) => state.boardReducer);
-  const { updateSearchResult } = searchSlice.actions;
+  const { updateSearchResult, updateLoadingState } = searchSlice.actions;
 
   const pages: IPages = isAuthenticated
     ? {
@@ -83,18 +84,21 @@ export const Header = () => {
     navigate('/home');
   };
 
-  const searchHandler: SubmitHandler<FieldValues> = async (data) => {
-    const tasks: SearchResult[] = [];
+  useEffect(() => {
     const token = getCookie('token') as string;
     dispatch(getBoardsList(token));
+  }, [dispatch]);
 
-    await allBoard.map(async (board) => {
+  const searchHandler: SubmitHandler<FieldValues> = async (data) => {
+    dispatch(updateLoadingState(true));
+    const resultTasks: SearchResult[] = [];
+    for (const board of allBoard) {
       const columns = await getColumns(board.id);
-      columns.map(async (column: ColumnData) => {
-        const allTasks = await getTasks({ boardId: board.id, columnId: column.id });
-        allTasks.map(async (task: TaskData) => {
+      for (const column of columns) {
+        const tasks = await getTasks({ boardId: board.id, columnId: column.id });
+        for (const task of tasks) {
           if (task.title.toLowerCase().includes(data.search.toLowerCase())) {
-            tasks.push({
+            resultTasks.push({
               board: board.title,
               column: column.title,
               taskId: task.id,
@@ -103,11 +107,12 @@ export const Header = () => {
               assignee: (await getUserById(task.userId)).name,
             });
           }
-        });
-      });
-    });
+        }
+      }
+    }
 
-    dispatch(updateSearchResult(tasks));
+    dispatch(updateSearchResult(resultTasks));
+    dispatch(updateLoadingState(false));
     navigate('/search');
     reset();
   };

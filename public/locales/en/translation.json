@@ -54,7 +54,8 @@
     "title": "Task title",
     "description": "Task description",
     "assignee": "Responsible",
-    "not_found": "Tasks not found"
+    "not_found": "Tasks not found",
+    "loading": "Loading..."
   },
   "button": {
     "welcome": "welcome",

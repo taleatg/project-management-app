@@ -100,3 +100,14 @@
   height: 35px;
   margin: 0 15px;
 }
+
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  color: #1976d2;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
