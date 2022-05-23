@@ -24,6 +24,11 @@ import { useTranslation } from 'react-i18next';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
 import { searchSlice } from '../../store/reducers/searchSlice';
+import { ColumnData, SearchResult, TaskData } from '../../services/interfaces';
+import { getColumns } from '../../services/columnService';
+import { getTasks } from '../../services/taskService';
+import { useState } from 'react';
+import { getUserById } from '../../services/authorizationService';
 
 type IPages = {
   [key: string]: string;
@@ -40,12 +45,16 @@ export const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { switchAuthorization } = authSlice.actions;
-  const { updateSearch } = searchSlice.actions;
   const { isAuthenticated } = useAppSelector((state) => state.authReducer);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const removeCookie = useCookies(['token', 'userId'])[2];
   const { t } = useTranslation();
   const { handleSubmit, control, reset } = useForm();
+
+  const { searchResult } = useAppSelector((state) => state.searchReducer);
+  const { allBoard } = useAppSelector((state) => state.boardReducer);
+  const { updateSearchResult } = searchSlice.actions;
+  const [result, setResult] = useState<SearchResult[]>(searchResult);
 
   const pages: IPages = isAuthenticated
     ? {
@@ -77,8 +86,32 @@ export const Header = () => {
     navigate('/home');
   };
 
-  const searchHandler: SubmitHandler<FieldValues> = (data) => {
-    dispatch(updateSearch(data.search));
+  const searchHandler: SubmitHandler<FieldValues> = async (data) => {
+    const tasks: SearchResult[] = [];
+
+    allBoard.map(async (board) => {
+      const columns = await getColumns(board.id);
+      columns.map(async (column: ColumnData) => {
+        const allTasks = await getTasks({ boardId: board.id, columnId: column.id });
+        allTasks.map(async (task: TaskData) => {
+          if (task.title.toLowerCase().includes(data.search.toLowerCase())) {
+            tasks.push({
+              board: board.title,
+              column: column.title,
+              taskId: task.id,
+              title: task.title,
+              description: task.description,
+              assignee: (await getUserById(task.userId)).name,
+            });
+          }
+        });
+      });
+    });
+
+    setResult(tasks);
+    dispatch(updateSearchResult(result));
+    console.log('task', data, tasks);
+    console.log('result', result);
     navigate('/search');
     reset();
   };
@@ -170,6 +203,9 @@ export const Header = () => {
                   control={control}
                   name="search"
                   defaultValue=""
+                  rules={{
+                    required: true,
+                  }}
                   render={({ field }) => (
                     <TextField
                       sx={{ pl: '15px' }}

@@ -1,19 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SearchResult } from '../../services/interfaces';
 
 interface SearchData {
-  text: string;
+  searchResult: SearchResult[];
 }
 
 const search: SearchData = {
-  text: '',
+  searchResult: [],
 };
 
 export const searchSlice = createSlice({
   name: 'search',
   initialState: search,
   reducers: {
-    updateSearch(state, action: PayloadAction<string>) {
-      state.text = action.payload;
+    updateSearchResult(state, action: PayloadAction<SearchResult[]>) {
+      console.log('payload', action.payload);
+      state.searchResult = action.payload;
     },
   },
 });
