@@ -21,7 +21,7 @@ export interface ColumnType {
 export interface TaskData {
   id: string;
   title: string;
-  order: 1;
+  order: number;
   description: string;
   userId: string;
   columnId: string;
@@ -36,7 +36,7 @@ export interface TaskData {
 export interface UpdateTask {
   id: string;
   title: string;
-  order: 1;
+  order: number;
   description: string;
   userId: string;
   columnId: string;
