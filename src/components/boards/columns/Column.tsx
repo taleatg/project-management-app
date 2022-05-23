@@ -7,7 +7,7 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData, ColumnType, TaskData } from '../../../services/interfaces';
-import { deleteColumn, putColumn } from '../../../services/columnService';
+import { deleteColumn, getColumnsList, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
@@ -16,6 +16,7 @@ import { UnpackNestedValue } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getUsers } from '../../../services/authorizationService';
 import { authSlice } from '../../../store/reducers/authenticationSlice';
+import { boardSlice } from '../../../store/reducers/boardSlice';
 
 interface ColumnProps {
   column: ColumnData;
@@ -94,7 +95,14 @@ export function Column(props: ColumnProps) {
   };
 
   //  d-n-d
-  const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);
+  const { setDraggableTask, setDraggableColumn } = boardSlice.actions;
+  const { draggableTask, draggableColumn, columnOfDraggableTask } = useAppSelector(
+    (state) => state.boardReducer
+  );
+
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
+    dispatch(setDraggableColumn(column));
+  };
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -103,32 +111,53 @@ export function Column(props: ColumnProps) {
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
     e.preventDefault();
-    console.log(e.target);
-    await postTask({
-      body: {
-        title: (draggableTask as TaskData).title,
-        description: (draggableTask as TaskData).description,
-        userId: (draggableTask as TaskData).userId,
-      },
-      boardId: boardId,
-      columnId: column.id,
-    });
-    await deleteTask({
-      boardId: boardId,
-      columnId: columnOfDraggableTask,
-      taskId: (draggableTask as TaskData).id,
-    });
-
-    dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
-    dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
+    if (draggableTask) {
+      await postTask({
+        body: {
+          title: (draggableTask as TaskData).title,
+          description: (draggableTask as TaskData).description,
+          userId: (draggableTask as TaskData).userId,
+        },
+        boardId: boardId,
+        columnId: column.id,
+      });
+      await deleteTask({
+        boardId: boardId,
+        columnId: columnOfDraggableTask,
+        taskId: (draggableTask as TaskData).id,
+      });
+      dispatch(setDraggableTask(null));
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
+    } else {
+      await putColumn(
+        {
+          title: (draggableColumn as ColumnData).title,
+          order: column.order,
+        },
+        boardId,
+        (draggableColumn as ColumnData).id
+      );
+      await putColumn(
+        {
+          title: (column as ColumnData).title,
+          order: (draggableColumn as ColumnData).order,
+        },
+        boardId,
+        (column as ColumnData).id
+      );
+      dispatch(getColumnsList(boardId));
+    }
   };
 
   return (
     <Grid
       item
       className="column"
+      onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, props.column)}
       onDragOver={(e) => dragOverHandler(e)}
       onDrop={(e) => dropHandler(e, props.column)}
+      draggable={true}
     >
       <div className="column__header">
         {isEdit ? (

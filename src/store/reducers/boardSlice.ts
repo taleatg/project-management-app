@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BoardData, TaskData } from '../../services/interfaces';
+import { BoardData, ColumnData, TaskData } from '../../services/interfaces';
 import { deleteBoard, getBoardById, getBoardsList, postBoard } from '../../services/boardService';
 
 interface BoardState {
@@ -7,6 +7,7 @@ interface BoardState {
   error: Error | null;
   draggableTask: TaskData | null;
   columnOfDraggableTask: string;
+  draggableColumn: ColumnData | null;
   currentBoard: BoardData;
   allBoard: BoardData[];
 }
@@ -16,6 +17,7 @@ const boardState: BoardState = {
   error: null,
   draggableTask: null,
   columnOfDraggableTask: '',
+  draggableColumn: null,
   currentBoard: {
     id: '',
     title: '',
@@ -35,9 +37,12 @@ export const boardSlice = createSlice({
     addNewBoardInState(state, action: PayloadAction<BoardData>) {
       state.allBoard.push(action.payload);
     },
-    setDraggableTask(state, action: PayloadAction<TaskData>) {
+    setDraggableTask(state, action: PayloadAction<TaskData | null>) {
       state.draggableTask = action.payload;
-      state.columnOfDraggableTask = action.payload.columnId;
+      action.payload ? (state.columnOfDraggableTask = action.payload.columnId) : '';
+    },
+    setDraggableColumn(state, action: PayloadAction<ColumnData | null>) {
+      state.draggableColumn = action.payload;
     },
   },
   extraReducers: (builder) => {
