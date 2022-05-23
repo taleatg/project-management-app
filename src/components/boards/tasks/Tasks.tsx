@@ -112,22 +112,20 @@ export function Task(props: TaskProps) {
     e.preventDefault();
     e.stopPropagation();
     if (task.columnId === (draggableTask as TaskData).columnId) {
-      {
-        const body = {
-          title: (draggableTask as TaskData).title,
-          order: (task as TaskData).order,
-          description: (draggableTask as TaskData).description,
-          userId: props.task.userId,
-          boardId: boardId,
-          columnId: props.columnId,
-        };
-        await editTask({
-          body,
-          boardId: boardId,
-          columnId: props.columnId,
-          taskId: (draggableTask as TaskData).id,
-        });
-      }
+      const body = {
+        title: (draggableTask as TaskData).title,
+        order: (task as TaskData).order,
+        description: (draggableTask as TaskData).description,
+        userId: props.task.userId,
+        boardId: boardId,
+        columnId: props.columnId,
+      };
+      await editTask({
+        body,
+        boardId: boardId,
+        columnId: props.columnId,
+        taskId: (draggableTask as TaskData).id,
+      });
       dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
     } else {
       const { data: createdTask } = await postTask({
@@ -161,6 +159,7 @@ export function Task(props: TaskProps) {
       dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
       dispatch(getTasksInColumn({ boardId: boardId, columnId: (task as TaskData).columnId }));
     }
+    dispatch(setDraggableTask(null));
   };
 
   return (
