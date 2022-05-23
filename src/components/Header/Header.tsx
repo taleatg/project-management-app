@@ -91,6 +91,7 @@ export const Header = () => {
 
   const searchHandler: SubmitHandler<FieldValues> = async (data) => {
     dispatch(updateLoadingState(true));
+    navigate('/search');
     const resultTasks: SearchResult[] = [];
     for (const board of allBoard) {
       const columns = await getColumns(board.id);
@@ -113,7 +114,6 @@ export const Header = () => {
 
     dispatch(updateSearchResult(resultTasks));
     dispatch(updateLoadingState(false));
-    navigate('/search');
     reset();
   };
 
