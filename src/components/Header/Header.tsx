@@ -27,7 +27,6 @@ import { searchSlice } from '../../store/reducers/searchSlice';
 import { ColumnData, SearchResult, TaskData } from '../../services/interfaces';
 import { getColumns } from '../../services/columnService';
 import { getTasks } from '../../services/taskService';
-import { useState } from 'react';
 import { getCookie, getUserById } from '../../services/authorizationService';
 import { getBoardsList } from '../../services/boardService';
 
