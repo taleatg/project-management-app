@@ -53,7 +53,8 @@
     "column": "Column",
     "title": "Task title",
     "description": "Task description",
-    "assignee": "Responsible"
+    "assignee": "Responsible",
+    "not_found": "Tasks not found"
   },
   "button": {
     "welcome": "welcome",

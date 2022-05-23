@@ -28,7 +28,8 @@ import { ColumnData, SearchResult, TaskData } from '../../services/interfaces';
 import { getColumns } from '../../services/columnService';
 import { getTasks } from '../../services/taskService';
 import { useState } from 'react';
-import { getUserById } from '../../services/authorizationService';
+import { getCookie, getUserById } from '../../services/authorizationService';
+import { getBoardsList } from '../../services/boardService';
 
 type IPages = {
   [key: string]: string;
@@ -50,11 +51,8 @@ export const Header = () => {
   const removeCookie = useCookies(['token', 'userId'])[2];
   const { t } = useTranslation();
   const { handleSubmit, control, reset } = useForm();
-
-  const { searchResult } = useAppSelector((state) => state.searchReducer);
   const { allBoard } = useAppSelector((state) => state.boardReducer);
   const { updateSearchResult } = searchSlice.actions;
-  const [result, setResult] = useState<SearchResult[]>(searchResult);
 
   const pages: IPages = isAuthenticated
     ? {
@@ -88,8 +86,10 @@ export const Header = () => {
 
   const searchHandler: SubmitHandler<FieldValues> = async (data) => {
     const tasks: SearchResult[] = [];
+    const token = getCookie('token') as string;
+    dispatch(getBoardsList(token));
 
-    allBoard.map(async (board) => {
+    await allBoard.map(async (board) => {
       const columns = await getColumns(board.id);
       columns.map(async (column: ColumnData) => {
         const allTasks = await getTasks({ boardId: board.id, columnId: column.id });
@@ -108,10 +108,7 @@ export const Header = () => {
       });
     });
 
-    setResult(tasks);
-    dispatch(updateSearchResult(result));
-    console.log('task', data, tasks);
-    console.log('result', result);
+    dispatch(updateSearchResult(tasks));
     navigate('/search');
     reset();
   };
@@ -203,9 +200,6 @@ export const Header = () => {
                   control={control}
                   name="search"
                   defaultValue=""
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field }) => (
                     <TextField
                       sx={{ pl: '15px' }}

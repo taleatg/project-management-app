@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../store/store';
+import { Alert } from '@mui/material';
 
 export function SearchPage() {
   const { t } = useTranslation();
@@ -50,7 +51,13 @@ export function SearchPage() {
           </Table>
         </TableContainer>
       ) : (
-        <>Not found</>
+        <Alert
+          severity="success"
+          color="info"
+          sx={{ m: '0 auto', maxWidth: '1440px', position: 'relative', top: '20px' }}
+        >
+          {t('search.not_found')}
+        </Alert>
       )}
     </>
   );
