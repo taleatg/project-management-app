@@ -70,7 +70,8 @@ export function EditProfile() {
   };
 
   return (
-    <>
+    <div className="edit-profile-wrapper">
+      <div className="profile-image" />
       <div className="edit-profile">
         <Typography variant="h4" component="div" gutterBottom sx={{ mb: '0' }}>
           {t('profile.edit_profile')}
@@ -169,6 +170,6 @@ export function EditProfile() {
       {isSuccessfulUpdate ? (
         <BackendResponse type="success" backendErrors="User data has been successfully updated!" />
       ) : null}
-    </>
+    </div>
   );
 }
