@@ -46,7 +46,8 @@
 
     .add-button {
       text-transform: none;
-      position: fixed;
+      position: sticky;
+      top: 5px;
       width: 225px;
       background: white;
       z-index: 100;
@@ -54,10 +55,6 @@
       &:hover {
         background: white;
       }
-    }
-
-    .task_wrapper {
-      margin-top: 25px;
     }
 
     @media(max-width: 520px) {

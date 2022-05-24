@@ -41,7 +41,7 @@ export function Redirect({ children }: { children: JSX.Element }) {
         clearTimeout(timer.current as NodeJS.Timeout);
       }
     };
-  }, []);
+  }, [isAuthenticated]);
 
   return <div className="root-wrapper">{children}</div>;
 }

@@ -77,3 +77,12 @@ export interface DataForReplaceTasks {
   columnId: string;
   orderTask: number;
 }
+
+export interface SearchResult {
+  board: string;
+  column: string;
+  taskId: string;
+  title: string;
+  description: string;
+  assignee: string;
+}
