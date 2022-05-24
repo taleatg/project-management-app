@@ -56,56 +56,59 @@
   @include flex-row-space-between;
 }
 
-::-webkit-scrollbar {
-  width: 2px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: none;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
-}
-
-.profile-page {
+.profile-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  height: 85vh;
+  justify-content: space-around;
 
-  .profile {
-    &__info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 25px;
-      margin: 10px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: calc(100% - 40px);
-      min-width: 14rem;
-      color: black;
-    }
-    &__avatar {
-      margin: 0 auto;
-    }
-    &__text{
-      display: flex;
-      align-items: center;
+  .profile-image {
+    background: url("../../public/background/profile.jpg") 75% 60% no-repeat;
+    background-size: 100%;
+    width: 600px;
+  }
 
-      .title {
-        margin: 0 10px 0 0;
-        text-transform: capitalize;
+  .profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .profile {
+      &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 25px;
+        margin: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: calc(100% - 40px);
+        min-width: 14rem;
+        color: black;
       }
+      &__avatar {
+        margin: 0 auto;
+      }
+      &__text{
+        display: flex;
+        align-items: center;
+
+        .title {
+          margin: 0 10px 0 0;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
+  @media(max-width: 720px) {
+    flex-wrap: wrap;
+
+    .profile-image {
+      width: 800px;
+      background-size: 250px;
+      background-position: center;
     }
   }
 }

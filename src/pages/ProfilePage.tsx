@@ -9,7 +9,7 @@ export const ProfilePage = () => {
   const { t } = useTranslation();
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" className="profile-wrapper" sx={{ display: 'flex' }}>
       <div className="profile-page">
         <Typography variant="h4" component="div" gutterBottom>
           {t('profile.profile')}
@@ -28,6 +28,7 @@ export const ProfilePage = () => {
           </Typography>
         </Paper>
       </div>
+      <div className="profile-image" />
     </Container>
   );
 };
