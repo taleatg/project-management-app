@@ -8,10 +8,9 @@
 
   @media(max-width: 1440px) {
     background-position: 100%;
-    background-size: 50%;
   }
 
-  @media(max-width: 750px) {
+  @media(max-width: 650px) {
     background: none;
   }
 }
@@ -35,7 +34,7 @@
       background: #e2eafc;
       box-shadow: 0 0 2px;
 
-      @media(max-width: 750px) {
+      @media(max-width: 650px) {
         width: calc(100vw - 100px);
       }
     }
@@ -109,6 +108,15 @@
       }
     }
   }
+}
+
+.search-image {
+  background: url("../../public/background/search.jpg") no-repeat center;
+  background-size: contain;
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  padding-top: 50px;
 }
 
 .table-container {

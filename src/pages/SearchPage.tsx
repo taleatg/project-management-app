@@ -64,6 +64,7 @@ export function SearchPage() {
               {t('search.not_found')}
             </Alert>
           )}
+          <div className="search-image" />
         </>
       )}
     </>
