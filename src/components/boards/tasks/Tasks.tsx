@@ -25,7 +25,7 @@ interface TaskProps {
 
 export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
-  const { removeTask } = columnSlice.actions;
+  const { removeTask, replaceTasks, changeTaskOrder } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEdit, setIsEdit] = useState(false);
@@ -112,6 +112,8 @@ export function Task(props: TaskProps) {
     e.preventDefault();
     e.stopPropagation();
     if (task.columnId === (draggableTask as TaskData).columnId) {
+      dispatch(replaceTasks([task.columnId, task as TaskData, draggableTask as TaskData]));
+      dispatch(changeTaskOrder({ columnId: task.columnId, orderTask: (task as TaskData).order }));
       const body = {
         title: (draggableTask as TaskData).title,
         order: (task as TaskData).order,
@@ -126,7 +128,6 @@ export function Task(props: TaskProps) {
         columnId: props.columnId,
         taskId: (draggableTask as TaskData).id,
       });
-      dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
     } else {
       const { data: createdTask } = await postTask({
         body: {

@@ -72,3 +72,8 @@ export interface UserData {
   name: string;
   login: string;
 }
+
+export interface DataForReplaceTasks {
+  columnId: string;
+  orderTask: number;
+}
