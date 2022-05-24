@@ -69,7 +69,8 @@ export const AuthForm = (props: { whichPage: string }) => {
   };
 
   return (
-    <>
+    <div className="authorization-wrapper">
+      <div className="authorization" />
       <div className="auth-form">
         <Typography variant="h4" component="div" gutterBottom>
           {authorization === 'signin'
@@ -118,6 +119,6 @@ export const AuthForm = (props: { whichPage: string }) => {
       </div>
 
       {backendErrors ? <BackendResponse type="error" backendErrors={backendErrors} /> : null}
-    </>
+    </div>
   );
 };
