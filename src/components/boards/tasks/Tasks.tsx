@@ -99,13 +99,19 @@ export function Task(props: TaskProps) {
     dispatch(setDraggableTask(task));
   };
 
-  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {};
+  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('.card')) {
+      ((e.target as HTMLElement).closest('.card') as HTMLDivElement).style.background = 'seashell';
+    }
+  };
 
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {};
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    // добавить стиль при перетаскивании
+    if ((e.target as HTMLElement).closest('.card')) {
+      ((e.target as HTMLElement).closest('.card') as HTMLDivElement).style.background = 'lightgrey';
+    }
   };
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
@@ -175,74 +181,76 @@ export function Task(props: TaskProps) {
         onDragLeave={(e) => dragLeaveHandler(e)}
         onDrop={(e) => dropHandler(e, props.task)}
       >
-        <div className="title-task">
-          <Typography variant="h5" component="div">
-            {props.task.title}
-          </Typography>
-          <div>
-            <Button
-              className="show-more"
-              sx={{ minWidth: '20px', minHeight: '20px' }}
-              id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              <MoreHorizIcon />
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-            >
-              <MenuItem sx={{ justifyContent: 'center' }} onClick={() => setIsEdit(true)}>
-                <BorderColorIcon />
-              </MenuItem>
-              <MenuItem>
-                <ConfirmationModal
-                  confirmedAction={() => deleteSelectedTask()}
-                  unconfirmedAction={handleClose}
-                />
-              </MenuItem>
-            </Menu>
+        <>
+          <div className="title-task">
+            <Typography variant="h5" component="div">
+              {props.task.title}
+            </Typography>
+            <div>
+              <Button
+                className="show-more"
+                sx={{ minWidth: '20px', minHeight: '20px' }}
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                <MoreHorizIcon />
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem sx={{ justifyContent: 'center' }} onClick={() => setIsEdit(true)}>
+                  <BorderColorIcon />
+                </MenuItem>
+                <MenuItem>
+                  <ConfirmationModal
+                    confirmedAction={() => deleteSelectedTask()}
+                    unconfirmedAction={handleClose}
+                  />
+                </MenuItem>
+              </Menu>
+            </div>
           </div>
-        </div>
-        {isEdit ? (
-          <CreateAndUpdateTask
-            task={props.task}
-            columnId={props.columnId}
-            action={(data) => updateTask(data)}
-            textAction="Update"
-            open={true}
-          />
-        ) : null}
-        <Divider />
-        <Typography className="description" component="p">
-          {props.task.description}
-        </Typography>
-        <div className="assign">
-          <UserAssignment
-            currentResponsible={userName}
-            task={props.task}
-            columnId={props.columnId}
-          />
-          <Typography sx={{ fontSize: '14px' }} component="p">
-            {userName}
+          {isEdit ? (
+            <CreateAndUpdateTask
+              task={props.task}
+              columnId={props.columnId}
+              action={(data) => updateTask(data)}
+              textAction="Update"
+              open={true}
+            />
+          ) : null}
+          <Divider />
+          <Typography className="description" component="p">
+            {props.task.description}
           </Typography>
-        </div>
+          <div className="assign">
+            <UserAssignment
+              currentResponsible={userName}
+              task={props.task}
+              columnId={props.columnId}
+            />
+            <Typography sx={{ fontSize: '14px' }} component="p">
+              {userName}
+            </Typography>
+          </div>
+        </>
       </Card>
     </div>
   );

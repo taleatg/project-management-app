@@ -115,7 +115,6 @@ export const columnSlice = createSlice({
       const currentColumnIndex = state.allColumns.findIndex(
         (column) => column.id === action.payload.columnId
       );
-      console.log(action.payload.orderTask);
       state.allColumns[currentColumnIndex].tasks.map((task, index) => {
         task.order = index + 1;
       });
