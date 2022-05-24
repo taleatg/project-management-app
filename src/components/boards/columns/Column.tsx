@@ -7,7 +7,7 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 import { ColumnData, ColumnType, TaskData } from '../../../services/interfaces';
-import { deleteColumn, getColumnsList, putColumn } from '../../../services/columnService';
+import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
@@ -23,7 +23,7 @@ interface ColumnProps {
 }
 
 export function Column(props: ColumnProps) {
-  const { changeColumn, removeColumn } = columnSlice.actions;
+  const { changeColumn, removeColumn, replaceColumns } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
@@ -130,6 +130,23 @@ export function Column(props: ColumnProps) {
       dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
       dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
     } else {
+      dispatch(replaceColumns([draggableColumn as ColumnData, column as ColumnData]));
+      dispatch(
+        changeColumn({
+          id: (draggableColumn as ColumnData).id,
+          title: (draggableColumn as ColumnData).title,
+          order: column.order,
+          tasks: (draggableColumn as ColumnData).tasks,
+        })
+      );
+      dispatch(
+        changeColumn({
+          id: (column as ColumnData).id,
+          title: (column as ColumnData).title,
+          order: (draggableColumn as ColumnData).order,
+          tasks: (column as ColumnData).tasks,
+        })
+      );
       await putColumn(
         {
           title: (draggableColumn as ColumnData).title,
@@ -146,7 +163,6 @@ export function Column(props: ColumnProps) {
         boardId,
         (column as ColumnData).id
       );
-      dispatch(getColumnsList(boardId));
     }
   };
 

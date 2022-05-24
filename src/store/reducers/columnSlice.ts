@@ -72,6 +72,10 @@ export const columnSlice = createSlice({
           .filter((column) => column.id === action.payload.columnId)[0]
           .tasks.filter((task) => task.id !== action.payload.taskId);
     },
+    replaceColumns(state, action: PayloadAction<ColumnData[]>) {
+      state.allColumns.splice(action.payload[0].order - 1, 1, action.payload[1]);
+      state.allColumns.splice(action.payload[1].order - 1, 1, action.payload[0]);
+    },
     changedTask(state, action: PayloadAction<UpdateTask>) {
       const upgradeTaskIndex: number = state.allColumns
         .filter((column) => column.id === action.payload.columnId)[0]
