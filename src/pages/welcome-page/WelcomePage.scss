@@ -1,131 +1,148 @@
-@mixin information-block {
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  box-shadow: 0 0 10px;
-}
-
-.welcome-background {
-  position: fixed;
-  top: 20px;
-  left: 0;
-  transform: translate(0, 20px);
-  background: url('../../../public/background/welcome.jpg') no-repeat center fixed;
-  height: 100%;
-  width: 100%;
-  background-size: contain;
-  z-index: -1;
-  filter: blur(1px);
-}
-
 .welcome-container {
   max-width: 1440px;
   margin: auto;
-  padding: 1em;
+  padding: 1rem;
 
-  .welcome-header {
-    @include information-block;
-    font-size: 2.75rem;
-    font-weight: 300;
-  }
+  .welcome-info-box {
+    display: flex;
 
-  .plan {
-    @include information-block;
-    color: black;
+    .welcome-text {
+      width: 100%;
+    }
+
+    .welcome-image {
+      background: url('../../../public/background/welcome.jpg') no-repeat center;
+      background-size: contain;
+      width: 1000px;
+    }
+
+    @media(max-width: 960px) {
+      flex-wrap: wrap;
+
+      .welcome-image {
+        height: 500px;
+      }
+    }
+
+    @media(max-width: 650px) {
+      .welcome-image {
+        height: 300px;
+      }
+    }
   }
 
   .welcome-information {
-    @include information-block;
-    font-size: 2.75rem;
+    font-size: 2.6rem;
     font-weight: 300;
+    text-indent: 1em;
+    margin: 1.5rem 0;
+
+    @media(max-width: 760px) {
+      font-size: 2rem;
+    }
+
+    @media(max-width: 500px) {
+      font-size: 1.5rem;
+    }
   }
 
   .team {
-    @include information-block;
     padding: 5px 15px;
     width: max-content;
     margin: auto;
-    color: black;
-    font-size: 28px;
   }
 
   .our-team {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-bottom: 1em;
-
-    .team-member {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2em 0;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-bottom: 1em;
 
-      .title {
-        @include information-block;
-        height: 300px;
+      .team-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2em 0;
 
-        a {
-          color: black;
-          font-size: 18px;
+        .title {
+          height: 300px;
+          font-size: 2.4rem;
+          font-weight: 300;
+          transition: .3s;
 
-          .team-lead {
-            display: block;
-            margin-right: 0.5em;
-            text-align: center;
+          &:hover {
+            transform: scale(1.1);
           }
 
-          .avatar {
-            margin-bottom: 1em;
-            width: 13em;
-            height: 13em;
-            background-size: contain;
-            border-radius: 10px;
-          }
+          a {
+            color: black;
+            font-size: 18px;
 
-          .name {
-            display: block;
-            text-align: center;
-          }
+            &:hover {
+              text-decoration: none;
+            }
 
-          .alexander {
-            background-image: url('../../../public/alex.jpeg');
-          }
+            .team-lead {
+              display: block;
+              margin-right: 0.5em;
+              text-align: center;
+            }
 
-          .tatsiana {
-            background-image: url('../../../public/tatsiana.jpeg');
-          }
+            .avatar {
+              margin-bottom: 1em;
+              width: 13em;
+              height: 13em;
+              background-size: contain;
+              border-radius: 10px;
+            }
 
-          .dina {
-            background-image: url('../../../public/dina.jpeg');
+            .name {
+              display: block;
+              text-align: center;
+              font-size: 24px;
+            }
+
+            .alexander {
+              background-image: url('../../../public/alex.jpeg');
+            }
+
+            .tatsiana {
+              background-image: url('../../../public/tatsiana.jpeg');
+            }
+
+            .dina {
+              background-image: url('../../../public/dina.jpeg');
+            }
           }
+        }
+
+        @media(max-width: 964px) {
+          margin: 0 15px;
         }
       }
 
       @media(max-width: 964px) {
-        margin: 0 15px;
+        flex-wrap: wrap;
+        justify-content: center;
       }
     }
 
-    @media(max-width: 964px) {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  }
-
   .rs {
-    @include information-block;
     padding: 5px 15px;
     width: max-content;
     margin: auto;
+    font-size: 24px;
+    font-weight: 300;
 
     @media(max-width: 620px) {
       max-width: 320px;
       word-break: break-all;
+      font-size: 20px;
     }
 
     @media(max-width: 450px) {
       max-width: 250px;
+      font-size: 18px;
     }
   }
 

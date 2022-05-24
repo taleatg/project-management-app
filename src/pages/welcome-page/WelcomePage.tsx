@@ -1,4 +1,4 @@
-import { Typography, Link, Divider } from '@mui/material';
+import { Link, Divider } from '@mui/material';
 import React from 'react';
 import './WelcomePage.scss';
 import { useTranslation } from 'react-i18next';
@@ -8,36 +8,20 @@ export const WelcomePage: React.FC = () => {
 
   return (
     <>
-      <div className="welcome-background" />
       <div className="welcome-container">
-        <h2 className="welcome-header">
-          <b>{t('welcome.project_name')}</b>
-          {t('welcome.project_description')}
-        </h2>
-        <div className="plan">
-          <Typography
-            variant="h3"
-            color="primary"
-            align="center"
-            sx={{ fontSize: '40px', color: 'black' }}
-          >
-            {t('welcome.plan')}
-          </Typography>
-          <Typography
-            paragraph={true}
-            align="center"
-            color="primary"
-            gutterBottom={true}
-            sx={{ fontSize: '25px', color: 'black' }}
-          >
-            {t('welcome.plan_description')}
-          </Typography>
+        <div className="welcome-info-box">
+          <div className="welcome-text">
+            <h4 className="welcome-information">
+              <b>{t('welcome.project_name')}</b>
+              {t('welcome.project_description')}
+            </h4>
+            <h4 className="welcome-information plan">{t('welcome.plan_description')}</h4>
+            <h4 className="welcome-information">{t('welcome.welcome_information')}</h4>
+          </div>
+          <div className="welcome-image" />
         </div>
-        <h2 className="welcome-information">{t('welcome.welcome_information')}</h2>
         <Divider>
-          <Typography variant="h3" align="center" color="primary" gutterBottom className="team">
-            {t('welcome.team')}
-          </Typography>
+          <h4 className="welcome-information team">{t('welcome.team')}</h4>
         </Divider>
         <div className="our-team">
           <div className="team-member">
@@ -48,7 +32,7 @@ export const WelcomePage: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <div className="avatar tatsiana"></div>
+                <div className="avatar tatsiana" />
                 <span className="team-lead">{t('welcome.team_lead')}</span>
                 <span className="name">{t('welcome.tatsiana')}</span>
               </Link>
@@ -62,7 +46,7 @@ export const WelcomePage: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <div className="avatar dina"></div>
+                <div className="avatar dina" />
                 <span className="name">{t('welcome.dina')}</span>
               </Link>
             </div>
@@ -70,7 +54,7 @@ export const WelcomePage: React.FC = () => {
           <div className="team-member">
             <div className="title link">
               <Link href="https://github.com/Alexivkov" underline="hover" target="blank">
-                <div className="avatar alexander"></div>
+                <div className="avatar alexander" />
                 <span className="name">{t('welcome.alexander')}</span>
               </Link>
             </div>

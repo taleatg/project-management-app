@@ -6,6 +6,10 @@
   a {
     text-decoration: none;
     color: black;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 
@@ -42,6 +46,11 @@
   margin: 0.5em;
   padding-left: 1.2em;
   transition: .3s;
+
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
 }
 
 .rs-school {

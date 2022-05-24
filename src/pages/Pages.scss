@@ -84,11 +84,11 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 25px;
-        margin: 10px;
+        margin: 15px;
         border: 1px solid rgba(0, 0, 0, 0.1);
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: calc(100% - 40px);
+        width: calc(100% - 60px);
         min-width: 14rem;
         color: black;
       }
@@ -138,6 +138,10 @@
   width: 180px;
   height: 35px;
   margin: 0 15px;
+
+  @media(max-width: 450px) {
+    margin: 0 5px;
+  }
 }
 
 .loading-wrapper {
