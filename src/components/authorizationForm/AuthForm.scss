@@ -59,9 +59,9 @@
 
 .backend-errors {
   position: absolute;
-  width: 94vw;
+  width: calc(100vw - 90px);
   top: 75px;
-  margin: 0 auto;
+  margin: 0 10px;
 }
 
 .MuiCollapse-wrapperInner {

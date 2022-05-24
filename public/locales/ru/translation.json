@@ -81,6 +81,7 @@
     "board_description_is_required": "Описание доски обязательно",
     "column_title_is_required": "Заголовок колонки обязателен",
     "title_is_required": "Требуется заголовок",
-    "description_is_required": "Требуется описание"
+    "description_is_required": "Требуется описание",
+    "page_not_found": "Страница не найдена"
   }
 }
