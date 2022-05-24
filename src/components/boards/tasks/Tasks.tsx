@@ -126,7 +126,6 @@ export function Task(props: TaskProps) {
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
     e.preventDefault();
-    (e.currentTarget as HTMLElement).style.background = 'seashell';
     if (draggableTask) {
       e.stopPropagation();
       if (task.columnId === (draggableTask as TaskData).columnId) {
@@ -183,7 +182,7 @@ export function Task(props: TaskProps) {
   };
 
   return (
-    <div className="task">
+    <div className="task" onDrop={(e) => dropHandler(e, props.task)}>
       <Card
         key={props.task.id}
         className="card"
@@ -192,7 +191,6 @@ export function Task(props: TaskProps) {
         onDragEnd={(e) => dragEndHandler(e)}
         onDragOver={(e) => dragOverHandler(e)}
         onDragLeave={(e) => dragLeaveHandler(e)}
-        onDrop={(e) => dropHandler(e, props.task)}
       >
         <>
           <div className="title-task">
