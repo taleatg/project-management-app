@@ -106,7 +106,6 @@ export function Column(props: ColumnProps) {
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    // добавить стиль при перетаскивании
   };
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {

@@ -100,73 +100,86 @@ export function Task(props: TaskProps) {
   };
 
   const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest('.card')) {
-      ((e.target as HTMLElement).closest('.card') as HTMLDivElement).style.background = 'seashell';
+    e.preventDefault();
+    e.stopPropagation();
+    if ((e.currentTarget as HTMLElement).classList.contains('card')) {
+      (e.currentTarget as HTMLElement).style.background = 'seashell';
     }
   };
 
-  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {};
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if ((e.currentTarget as HTMLElement).classList.contains('card')) {
+      (e.currentTarget as HTMLElement).style.background = 'seashell';
+    }
+  };
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if ((e.target as HTMLElement).closest('.card')) {
-      ((e.target as HTMLElement).closest('.card') as HTMLDivElement).style.background = 'lightgrey';
+    e.stopPropagation();
+
+    if ((e.currentTarget as HTMLElement).classList.contains('card')) {
+      (e.currentTarget as HTMLElement).style.background = 'lightgrey';
     }
   };
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (task.columnId === (draggableTask as TaskData).columnId) {
-      dispatch(replaceTasks([task.columnId, task as TaskData, draggableTask as TaskData]));
-      dispatch(changeTaskOrder({ columnId: task.columnId, orderTask: (task as TaskData).order }));
-      const body = {
-        title: (draggableTask as TaskData).title,
-        order: (task as TaskData).order,
-        description: (draggableTask as TaskData).description,
-        userId: props.task.userId,
-        boardId: boardId,
-        columnId: props.columnId,
-      };
-      await editTask({
-        body,
-        boardId: boardId,
-        columnId: props.columnId,
-        taskId: (draggableTask as TaskData).id,
-      });
-    } else {
-      const { data: createdTask } = await postTask({
-        body: {
+    (e.currentTarget as HTMLElement).style.background = 'seashell';
+    if (draggableTask) {
+      e.stopPropagation();
+      if (task.columnId === (draggableTask as TaskData).columnId) {
+        dispatch(replaceTasks([task.columnId, task as TaskData, draggableTask as TaskData]));
+        dispatch(changeTaskOrder({ columnId: task.columnId, orderTask: (task as TaskData).order }));
+        const body = {
           title: (draggableTask as TaskData).title,
+          order: (task as TaskData).order,
           description: (draggableTask as TaskData).description,
           userId: props.task.userId,
-        },
-        boardId: boardId,
-        columnId: (task as TaskData).columnId,
-      });
-      await deleteTask({
-        boardId: boardId,
-        columnId: columnOfDraggableTask,
-        taskId: (draggableTask as TaskData).id,
-      });
-      const body = {
-        title: (draggableTask as TaskData).title,
-        order: (task as TaskData).order,
-        description: (draggableTask as TaskData).description,
-        userId: props.task.userId,
-        boardId: boardId,
-        columnId: (task as TaskData).columnId,
-      };
-      await editTask({
-        body,
-        boardId: boardId,
-        columnId: (task as TaskData).columnId,
-        taskId: (createdTask as TaskData).id,
-      });
-      dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
-      dispatch(getTasksInColumn({ boardId: boardId, columnId: (task as TaskData).columnId }));
+          boardId: boardId,
+          columnId: props.columnId,
+        };
+        await editTask({
+          body,
+          boardId: boardId,
+          columnId: props.columnId,
+          taskId: (draggableTask as TaskData).id,
+        });
+      } else {
+        const { data: createdTask } = await postTask({
+          body: {
+            title: (draggableTask as TaskData).title,
+            description: (draggableTask as TaskData).description,
+            userId: props.task.userId,
+          },
+          boardId: boardId,
+          columnId: (task as TaskData).columnId,
+        });
+        await deleteTask({
+          boardId: boardId,
+          columnId: columnOfDraggableTask,
+          taskId: (draggableTask as TaskData).id,
+        });
+        const body = {
+          title: (draggableTask as TaskData).title,
+          order: (task as TaskData).order,
+          description: (draggableTask as TaskData).description,
+          userId: props.task.userId,
+          boardId: boardId,
+          columnId: (task as TaskData).columnId,
+        };
+        await editTask({
+          body,
+          boardId: boardId,
+          columnId: (task as TaskData).columnId,
+          taskId: (createdTask as TaskData).id,
+        });
+        dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
+        dispatch(getTasksInColumn({ boardId: boardId, columnId: (task as TaskData).columnId }));
+      }
+      dispatch(setDraggableTask(null));
     }
-    dispatch(setDraggableTask(null));
   };
 
   return (
