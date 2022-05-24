@@ -33,7 +33,7 @@
 }
 
 .creator {
-  background: url('../../../public/gh-cat.svg') no-repeat left;
+  background: url('../../../public/icons/gh-cat.svg') no-repeat left;
   background-size: 1.2em 1.2em;
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@
 .rs-school {
   width: 70px;
   height: 50px;
-  background: url('../../../public/rs-text-logo.svg') no-repeat center;
+  background: url('../../../public/icons/rs-text-logo.svg') no-repeat center;
   background-size: contain;
   transition: .3s;
 }
