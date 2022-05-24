@@ -25,7 +25,7 @@ export const HomePage = () => {
   }, [dispatch]);
 
   return (
-    <Container maxWidth="xl" sx={{ mb: '20px' }}>
+    <Container maxWidth="xl" className={status === 'pending' ? '' : 'main-image'}>
       <div className="title-wrapper">
         <h2>{t('board.board')}</h2>
       </div>

@@ -40,7 +40,7 @@ const header_outer = {
   position: 'sticky',
   top: '-25px',
   transition: '0.3s',
-  background: 'midnightblue',
+  background: '#484bee',
 };
 
 export const Header = () => {

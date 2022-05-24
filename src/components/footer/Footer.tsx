@@ -1,9 +1,10 @@
-import { Link } from '@mui/material';
+import { Divider, Link } from '@mui/material';
 import './Footer.scss';
 
 export const Footer = (): JSX.Element => {
   return (
     <footer className="footer">
+      <Divider />
       <div className="footer-container">
         <div className="year">© 2022</div>
         <div className="github-wrap">

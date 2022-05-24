@@ -1,8 +1,25 @@
 @import '../index';
 
+.main-image {
+  background: url("../../public/background/board.jpg") no-repeat 85% fixed;
+  background-size: 45%;
+  height: 100%;
+  margin-bottom: 50px;
+
+  @media(max-width: 1440px) {
+    background-position: 100%;
+    background-size: 50%;
+  }
+
+  @media(max-width: 750px) {
+    background: none;
+  }
+}
+
 .title-wrapper {
   display: flex;
   justify-content: space-between;
+  margin-left: 10px;
 }
 
 .boardList {
@@ -13,8 +30,14 @@
     width: 400px;
 
     .boardList_board {
-      width: 280px;
+      width: 340px;
       word-break: break-all;
+      background: #e2eafc;
+      box-shadow: 0 0 2px;
+
+      @media(max-width: 750px) {
+        width: calc(100vw - 100px);
+      }
     }
   }
 }
@@ -35,12 +58,12 @@
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: white;
+  background: none;
   border-radius: 5px;
 }
 

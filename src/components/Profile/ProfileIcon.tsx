@@ -40,7 +40,9 @@ export const ProfileIcon = () => {
             onClick={handleMenu}
             color="inherit"
           >
-            <Avatar>{currentUserData.name.slice(0, 2)}</Avatar>
+            <Avatar sx={{ color: '#484bee', background: '#fff' }}>
+              {currentUserData.name.slice(0, 2)}
+            </Avatar>
           </IconButton>
         </Tooltip>
       ) : (

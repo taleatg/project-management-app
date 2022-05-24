@@ -23,6 +23,7 @@ code {
 
 main {
   flex: 1;
+  background: rgba(238, 238, 238, 0.5);
 }
 
 @mixin flex-row-space-between {
