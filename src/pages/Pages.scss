@@ -44,6 +44,11 @@
 .columnButtons {
   width: 320px;
   @include flex-row-space-between;
+
+  .add-column {
+    color: #484bee;
+    display: flex;
+  }
 }
 
 .columnList {

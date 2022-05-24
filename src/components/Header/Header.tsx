@@ -87,7 +87,9 @@ export const Header = () => {
 
   useEffect(() => {
     const token = getCookie('token') as string;
-    dispatch(getBoardsList(token));
+    if (token) {
+      dispatch(getBoardsList(token));
+    }
   }, [dispatch]);
 
   const searchHandler: SubmitHandler<FieldValues> = async (data) => {

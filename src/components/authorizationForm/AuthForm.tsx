@@ -111,7 +111,7 @@ export const AuthForm = (props: { whichPage: string }) => {
             <LockIcon sx={{ fontSize: '18px' }} />
           )}
           <div className="button-container">
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" sx={{ background: '#484bee' }}>
               {t('button.submit')}
             </Button>
           </div>

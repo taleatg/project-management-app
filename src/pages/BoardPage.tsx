@@ -30,17 +30,22 @@ export const BoardPage = () => {
     <Container maxWidth="xl">
       <div className="topBoardPage">
         <h2>{title}</h2>
-        <Button variant={'contained'} startIcon={<HomeIcon />} onClick={() => navigate('/home')}>
+        <Button
+          variant={'contained'}
+          startIcon={<HomeIcon />}
+          onClick={() => navigate('/home')}
+          sx={{ background: '#484bee' }}
+        >
           {t('button.back_to_main')}
         </Button>
       </div>
       <div className="columnButtons">
         <CreateColumn
           button={
-            <>
-              <AddBoxIcon />
+            <div className="add-column">
+              <AddBoxIcon sx={{ color: '#484bee' }} />
               {t('board.add_column')}
-            </>
+            </div>
           }
         />
       </div>
