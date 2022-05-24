@@ -111,3 +111,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.not-found {
+  background: url("../../public/background/404.jpg") no-repeat center;
+  background-size: contain;
+  height: 100%;
+}

@@ -7,7 +7,7 @@ export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" className="not-found">
       <h2>Page not found</h2>
       <Button variant={'contained'} onClick={() => navigate('/welcome')}>
         Go to Welcome Page
