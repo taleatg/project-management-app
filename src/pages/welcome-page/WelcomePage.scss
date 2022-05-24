@@ -19,7 +19,9 @@
 }
 
 .welcome-container {
-  padding: 0 10%;
+  max-width: 1440px;
+  margin: auto;
+  padding: 1em;
 
   .welcome-header {
     @include information-block;

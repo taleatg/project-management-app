@@ -1,11 +1,11 @@
 .footer {
   font-size: 16px;
-  padding: 0.5em 0;
   flex: 0 0;
+  background: midnightblue;
 
   a {
     text-decoration: none;
-    color: black;
+    color: white;
   }
 }
 
@@ -14,6 +14,9 @@
   justify-content: space-between;
   padding: 0 24px;
   align-items: center;
+  max-width: 1440px;
+  margin: auto;
+  color: white;
 }
 
 .year {
@@ -44,7 +47,7 @@
 
 .rs-school {
   width: 70px;
-  height: 50px;
+  height: 25px;
   background: url('../../../public/rs-text-logo.svg') no-repeat center;
   background-size: contain;
   transition: .3s;
