@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { TaskData, UserData } from '../../../services/interfaces';
-import { editTask } from '../../../services/taskService';
+import { editTask, getTasksInColumn } from '../../../services/taskService';
 import { useParams } from 'react-router-dom';
 import { columnSlice } from '../../../store/reducers/columnSlice';
 
@@ -50,6 +50,7 @@ export default function UserAssignment(props: TaskManagerProps) {
     });
 
     dispatch(changedTask(newTaskManager));
+    dispatch(getTasksInColumn({ boardId: boardId, columnId: props.columnId }));
   };
 
   return (

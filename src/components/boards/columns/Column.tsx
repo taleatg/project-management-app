@@ -101,7 +101,6 @@ export function Column(props: ColumnProps) {
     dispatch(addTask(newTask));
   };
 
-  //  d-n-d
   const { setDraggableTask, setDraggableColumn } = boardSlice.actions;
   const { draggableTask, draggableColumn, columnOfDraggableTask } = useAppSelector(
     (state) => state.boardReducer

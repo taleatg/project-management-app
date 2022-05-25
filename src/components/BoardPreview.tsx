@@ -39,16 +39,16 @@ export const BoardPreview = (props: BoardPreviewProps) => {
 
   return (
     <List onClick={handlerClick}>
-      <ListItem>
+      <ListItem sx={{ p: '0 16px' }}>
         <ListItemText primary={props.board.title} />
       </ListItem>
-      <ListItem>
-        <ListItemText secondary={props.board.description} sx={{ p: 0 }} />
+      <ListItem sx={{ p: '0 16px' }}>
+        <ListItemText secondary={props.board.description} />
       </ListItem>
       <Divider variant="middle" />
-      <ListItem>
-        <ListItemText secondary={`${t('board.columns')}: ${columns}`} sx={{ p: 0 }} />
-        <ListItemText secondary={`${t('board.tasks')}: ${tasks}`} sx={{ p: 0 }} />
+      <ListItem sx={{ p: '0 16px' }}>
+        <ListItemText secondary={`${t('board.columns')}: ${columns}`} />
+        <ListItemText secondary={`${t('board.tasks')}: ${tasks}`} />
       </ListItem>
     </List>
   );
