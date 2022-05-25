@@ -9,7 +9,7 @@ export const Loading = () => {
 
   return (
     <Box className="loading-wrapper">
-      <CircularProgress sx={{ m: '0 auto', color: '#484bee' }} />
+      <CircularProgress sx={{ m: '0 auto' }} />
       <Typography variant="h5" component="h5" sx={{ mt: '10px', color: '#484bee' }}>
         {t('search.loading')}
       </Typography>

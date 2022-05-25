@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CircularProgress, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -11,6 +11,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBoardById } from '../services/boardService';
 import { useTranslation } from 'react-i18next';
+import { Loading } from '../components/Loading';
 
 export const BoardPage = () => {
   const { title } = useAppSelector((state) => state.boardReducer.currentBoard);
@@ -67,7 +68,7 @@ export const BoardPage = () => {
           allColumns.map((column) => <Column key={`${column.id}-1`} column={column} />)}
       </Grid>
       {status === 'rejected' && <BackendResponse backendErrors={t('errors.wrong')} type="error" />}
-      {status === 'pending' && <CircularProgress />}
+      {status === 'pending' && <Loading />}
     </Container>
   );
 };
