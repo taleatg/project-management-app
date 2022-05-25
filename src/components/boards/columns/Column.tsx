@@ -6,23 +6,24 @@ import CheckIcon from '@mui/icons-material/Check';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { columnSlice } from '../../../store/reducers/columnSlice';
-import { ColumnData, ColumnType } from '../../../services/interfaces';
+import { ColumnData, ColumnType, TaskData } from '../../../services/interfaces';
 import { deleteColumn, putColumn } from '../../../services/columnService';
 import ConfirmationModal from '../../ConfirmationModal';
 import { CreateAndUpdateTask } from '../tasks/CreateAndUpdateTask';
 import { Task } from '../tasks/Tasks';
-import { getTasksInColumn, postTask } from '../../../services/taskService';
+import { deleteTask, getTasksInColumn, postTask } from '../../../services/taskService';
 import { UnpackNestedValue } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { getUsers } from '../../../services/authorizationService';
 import { authSlice } from '../../../store/reducers/authenticationSlice';
+import { boardSlice } from '../../../store/reducers/boardSlice';
 
 interface ColumnProps {
   column: ColumnData;
 }
 
 export function Column(props: ColumnProps) {
-  const { changeColumn, removeColumn } = columnSlice.actions;
+  const { changeColumn, removeColumn, replaceColumns } = columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
@@ -57,9 +58,10 @@ export function Column(props: ColumnProps) {
   };
 
   const confirmClickHandler = async () => {
+    const title = newTitle ? newTitle : initTitle;
     const updatedColumn = await putColumn(
       {
-        title: newTitle,
+        title: title,
         order: currentColumn.order,
       },
       boardId,
@@ -67,6 +69,12 @@ export function Column(props: ColumnProps) {
     );
     await dispatch(changeColumn(updatedColumn));
     setIsEdit(false);
+  };
+
+  const enterClickHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === 'Enter') {
+      confirmClickHandler();
+    }
   };
 
   const cancelClickHandler = () => {
@@ -93,8 +101,86 @@ export function Column(props: ColumnProps) {
     dispatch(addTask(newTask));
   };
 
+  //  d-n-d
+  const { setDraggableTask, setDraggableColumn } = boardSlice.actions;
+  const { draggableTask, draggableColumn, columnOfDraggableTask } = useAppSelector(
+    (state) => state.boardReducer
+  );
+
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
+    dispatch(setDraggableColumn(column));
+  };
+
+  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const dropHandler = async (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
+    e.preventDefault();
+    if (draggableTask) {
+      await postTask({
+        body: {
+          title: (draggableTask as TaskData).title,
+          description: (draggableTask as TaskData).description,
+          userId: (draggableTask as TaskData).userId,
+        },
+        boardId: boardId,
+        columnId: column.id,
+      });
+      await deleteTask({
+        boardId: boardId,
+        columnId: columnOfDraggableTask,
+        taskId: (draggableTask as TaskData).id,
+      });
+      dispatch(setDraggableTask(null));
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
+      dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
+    } else {
+      dispatch(replaceColumns([draggableColumn as ColumnData, column as ColumnData]));
+      dispatch(
+        changeColumn({
+          id: (draggableColumn as ColumnData).id,
+          title: (draggableColumn as ColumnData).title,
+          order: column.order,
+          tasks: (draggableColumn as ColumnData).tasks,
+        })
+      );
+      dispatch(
+        changeColumn({
+          id: (column as ColumnData).id,
+          title: (column as ColumnData).title,
+          order: (draggableColumn as ColumnData).order,
+          tasks: (column as ColumnData).tasks,
+        })
+      );
+      await putColumn(
+        {
+          title: (draggableColumn as ColumnData).title,
+          order: column.order,
+        },
+        boardId,
+        (draggableColumn as ColumnData).id
+      );
+      await putColumn(
+        {
+          title: (column as ColumnData).title,
+          order: (draggableColumn as ColumnData).order,
+        },
+        boardId,
+        (column as ColumnData).id
+      );
+    }
+  };
+
   return (
-    <Grid item className="column">
+    <Grid
+      item
+      className="column"
+      onDragStart={(e: React.DragEvent<HTMLDivElement>) => dragStartHandler(e, props.column)}
+      onDragOver={(e) => dragOverHandler(e)}
+      onDrop={(e) => dropHandler(e, props.column)}
+      draggable={true}
+    >
       <div className="column__header">
         {isEdit ? (
           <>
@@ -112,6 +198,7 @@ export function Column(props: ColumnProps) {
               sx={{ width: '160px' }}
               size="small"
               onChange={(e) => setNewTitle(e.target.value)}
+              onKeyPress={(e) => enterClickHandler(e)}
             />
           </>
         ) : (
