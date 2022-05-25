@@ -114,7 +114,9 @@ export function Task(props: TaskProps) {
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    (e.currentTarget as HTMLElement).style.background = 'lightgrey';
+    if (draggableTask) {
+      (e.currentTarget as HTMLElement).style.background = 'lightgrey';
+    }
   };
 
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, task: TaskData) => {
