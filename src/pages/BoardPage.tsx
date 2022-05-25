@@ -37,7 +37,7 @@ export const BoardPage = () => {
           sx={{
             background: '#484bee',
             width: '180px',
-            height: '35px',
+            height: '40px',
             lineHeight: 'inherit',
             mt: '10px',
           }}
