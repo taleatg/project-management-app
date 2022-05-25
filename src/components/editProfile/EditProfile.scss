@@ -11,6 +11,10 @@
       width: 0;
     }
   }
+
+  @media(max-width: 650px) {
+    height: 80vh;
+  }
 }
 .edit-profile {
   display: flex;

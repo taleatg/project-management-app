@@ -122,7 +122,7 @@ export const Header = () => {
 
   return (
     <AppBar sx={header_outer}>
-      <Container maxWidth="xl" className="header-inner">
+      <Container maxWidth="xl" className="header-inner" sx={{ p: 0 }}>
         <Toolbar disableGutters>
           <Typography
             className="logo"

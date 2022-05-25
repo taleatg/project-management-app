@@ -34,7 +34,13 @@ export const BoardPage = () => {
           variant={'contained'}
           startIcon={<HomeIcon />}
           onClick={() => navigate('/home')}
-          sx={{ background: '#484bee' }}
+          sx={{
+            background: '#484bee',
+            width: '180px',
+            height: '35px',
+            lineHeight: 'inherit',
+            mt: '10px',
+          }}
         >
           {t('button.back_to_main')}
         </Button>
