@@ -35,7 +35,6 @@ export const BoardPage = () => {
           startIcon={<HomeIcon />}
           onClick={() => navigate('/home')}
           sx={{
-            background: '#484bee',
             width: '180px',
             height: '40px',
             lineHeight: 'inherit',
@@ -49,7 +48,7 @@ export const BoardPage = () => {
         <CreateColumn
           button={
             <div className="add-column">
-              <AddBoxIcon sx={{ color: '#484bee' }} />
+              <AddBoxIcon />
               {t('board.add_column')}
             </div>
           }
