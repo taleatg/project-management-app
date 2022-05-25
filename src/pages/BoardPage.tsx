@@ -30,7 +30,7 @@ export const BoardPage = () => {
     return function cleanup() {
       dispatch(removeAllColumns());
     };
-  });
+  }, [dispatch, boardId, removeAllColumns]);
 
   return (
     <Container maxWidth="xl">
