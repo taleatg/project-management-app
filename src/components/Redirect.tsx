@@ -4,8 +4,10 @@ import { getUserById } from '../services/authorizationService';
 import { authSlice } from '../store/reducers/authenticationSlice';
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 export function Redirect({ children }: { children: JSX.Element }) {
+  const removeCookie = useCookies(['token', 'userId'])[2];
   const { isAuthenticated, userId } = useAppSelector((state) => state.authReducer);
   const navigate = useNavigate();
   const { switchAuthorization } = authSlice.actions;
@@ -16,6 +18,9 @@ export function Redirect({ children }: { children: JSX.Element }) {
     if (data) {
       if (JSON.parse(data).statusCode === 401) {
         dispatch(switchAuthorization(false));
+        removeCookie('token');
+        removeCookie('userId');
+        localStorage.removeItem('userData');
         navigate('/welcome');
       } else {
         return JSON.parse(data);
