@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { CircularProgress, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -11,9 +11,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBoardById } from '../services/boardService';
 import { useTranslation } from 'react-i18next';
+import { Loading } from '../components/Loading';
+import { columnSlice } from '../store/reducers/columnSlice';
 
 export const BoardPage = () => {
   const { title } = useAppSelector((state) => state.boardReducer.currentBoard);
+  const { removeAllColumns } = columnSlice.actions;
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -24,7 +27,10 @@ export const BoardPage = () => {
   useEffect(() => {
     dispatch(getBoardById(boardId));
     dispatch(getColumnsList(boardId));
-  }, [dispatch, boardId]);
+    return function cleanup() {
+      dispatch(removeAllColumns());
+    };
+  }, [dispatch, boardId, removeAllColumns]);
 
   return (
     <Container maxWidth="xl">
@@ -35,7 +41,6 @@ export const BoardPage = () => {
           startIcon={<HomeIcon />}
           onClick={() => navigate('/home')}
           sx={{
-            background: '#484bee',
             width: '180px',
             height: '40px',
             lineHeight: 'inherit',
@@ -49,7 +54,7 @@ export const BoardPage = () => {
         <CreateColumn
           button={
             <div className="add-column">
-              <AddBoxIcon sx={{ color: '#484bee' }} />
+              <AddBoxIcon />
               {t('board.add_column')}
             </div>
           }
@@ -68,7 +73,7 @@ export const BoardPage = () => {
           allColumns.map((column) => <Column key={`${column.id}-1`} column={column} />)}
       </Grid>
       {status === 'rejected' && <BackendResponse backendErrors={t('errors.wrong')} type="error" />}
-      {status === 'pending' && <CircularProgress />}
+      {status === 'pending' && <Loading />}
     </Container>
   );
 };

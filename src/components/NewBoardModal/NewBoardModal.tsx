@@ -153,7 +153,6 @@ export default function NewBoardModal(props: NewBoardModalProps) {
                 mt: '20px',
                 left: '50%',
                 transform: 'translate(-50%, 0)',
-                background: '#484bee',
               }}
             >
               {t('button.create')}

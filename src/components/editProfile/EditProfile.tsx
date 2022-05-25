@@ -161,7 +161,7 @@ export function EditProfile() {
               textButton={t('button.delete_account')}
               confirmedAction={deleteAccount}
             />
-            <Button type="submit" variant="contained" sx={{ background: '#484bee' }}>
+            <Button type="submit" variant="contained">
               {t('button.update')}
             </Button>
           </div>
