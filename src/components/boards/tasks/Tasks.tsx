@@ -98,13 +98,13 @@ export function Task(props: TaskProps) {
   const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    (e.currentTarget as HTMLElement).style.background = 'seashell';
+    (e.currentTarget as HTMLElement).style.background = '#f8f0e8';
   };
 
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    (e.currentTarget as HTMLElement).style.background = 'seashell';
+    (e.currentTarget as HTMLElement).style.background = '#f8f0e8';
   };
 
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {

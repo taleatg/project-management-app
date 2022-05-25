@@ -10,7 +10,6 @@
     height: 70vh;
     background: rgba(0, 0, 0, 0.2);
     margin-right: 15px;
-    cursor: grab;
   }
 }
 
@@ -44,6 +43,7 @@
     margin: 5px 0 15px;
     overflow-y: scroll;
     position: relative;
+    cursor: grab;
 
     .add-button {
       text-transform: none;
