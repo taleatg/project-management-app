@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export function EditProfile() {
   const dispatch = useAppDispatch();
-  const { switchAuthorization } = authSlice.actions;
+  const { switchAuthorization, setCurrentUserData } = authSlice.actions;
   const { handleSubmit, control, reset } = useForm<SignInForm>();
   const { errors } = useFormState({ control });
   const { userId } = useAppSelector((state) => state.authReducer);
@@ -41,6 +41,7 @@ export function EditProfile() {
         path: `users/${userId}`,
         method: 'PUT',
       });
+      dispatch(setCurrentUserData({ id: userId, name: data.name, login: data.login }));
       reset();
 
       if (signin.message) {

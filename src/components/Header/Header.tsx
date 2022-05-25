@@ -108,7 +108,7 @@ export const Header = () => {
 
     dispatch(updateSearchResult(resultTasks));
     dispatch(updateLoadingState(false));
-    reset();
+    reset({ search: '' });
   };
 
   return (
@@ -197,14 +197,15 @@ export const Header = () => {
                 <Controller
                   control={control}
                   name="search"
-                  defaultValue=""
                   render={({ field }) => (
                     <TextField
+                      autoComplete="off"
                       sx={{ pl: '15px' }}
                       variant="standard"
                       InputProps={{ disableUnderline: true }}
                       placeholder={t('board.search_task')}
                       onChange={(e) => field.onChange(e)}
+                      value={field.value ?? ''}
                     />
                   )}
                 />
@@ -215,7 +216,7 @@ export const Header = () => {
                   type="submit"
                   onClick={handleSubmit(searchHandler)}
                 >
-                  <InputAdornment position="start" sx={{ ml: '5px' }}>
+                  <InputAdornment position="start" sx={{ ml: '5px', height: '100%' }}>
                     <SearchIcon />
                   </InputAdornment>
                 </Button>
