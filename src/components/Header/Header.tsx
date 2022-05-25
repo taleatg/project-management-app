@@ -200,6 +200,7 @@ export const Header = () => {
                   defaultValue=""
                   render={({ field }) => (
                     <TextField
+                      autoComplete="off"
                       sx={{ pl: '15px' }}
                       variant="standard"
                       InputProps={{ disableUnderline: true }}
