@@ -21,9 +21,10 @@ export interface ColumnType {
 export interface TaskData {
   id: string;
   title: string;
-  order: 1;
+  order: number;
   description: string;
   userId: string;
+  columnId: string;
   files: [
     {
       filename: string;
@@ -35,7 +36,7 @@ export interface TaskData {
 export interface UpdateTask {
   id: string;
   title: string;
-  order: 1;
+  order: number;
   description: string;
   userId: string;
   columnId: string;
@@ -70,6 +71,11 @@ export interface UserData {
   id: string;
   name: string;
   login: string;
+}
+
+export interface DataForReplaceTasks {
+  columnId: string;
+  orderTask: number;
 }
 
 export interface SearchResult {

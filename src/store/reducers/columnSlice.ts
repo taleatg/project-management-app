@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ColumnData, UpdateTask } from '../../services/interfaces';
+import { ColumnData, DataForReplaceTasks, UpdateTask } from '../../services/interfaces';
 import { getColumnsList } from '../../services/columnService';
 import { getTasksInColumn } from '../../services/taskService';
 
@@ -24,6 +24,7 @@ export const columnState: ColumnState = {
         order: 1,
         description: '',
         userId: '',
+        columnId: '',
         files: [
           {
             filename: '',
@@ -59,6 +60,10 @@ export const columnSlice = createSlice({
     removeColumn(state, action: PayloadAction<string>) {
       state.allColumns = state.allColumns.filter((column) => column.id !== action.payload);
     },
+    replaceColumns(state, action: PayloadAction<ColumnData[]>) {
+      state.allColumns.splice(action.payload[0].order - 1, 1, action.payload[1]);
+      state.allColumns.splice(action.payload[1].order - 1, 1, action.payload[0]);
+    },
     addTask(state, action) {
       const column = state.allColumns.filter((column) => column.id === action.payload?.columnId);
       if (column[0]) {
@@ -84,6 +89,34 @@ export const columnSlice = createSlice({
           column.tasks[upgradeTaskIndex].order = action.payload.order;
           column.tasks[upgradeTaskIndex].userId = action.payload.userId;
         }
+      });
+    },
+    replaceTasks(state, action) {
+      const currentColumnIndex = state.allColumns.findIndex(
+        (column) => column.id === action.payload[0]
+      );
+      if (action.payload[1].order > action.payload[2].order) {
+        state.allColumns[currentColumnIndex].tasks.splice(
+          action.payload[1].order,
+          0,
+          action.payload[2]
+        );
+        state.allColumns[currentColumnIndex].tasks.splice(action.payload[2].order - 1, 1);
+      } else {
+        state.allColumns[currentColumnIndex].tasks.splice(
+          action.payload[1].order - 1,
+          0,
+          action.payload[2]
+        );
+        state.allColumns[currentColumnIndex].tasks.splice(action.payload[2].order, 1);
+      }
+    },
+    changeTaskOrder(state, action: PayloadAction<DataForReplaceTasks>) {
+      const currentColumnIndex = state.allColumns.findIndex(
+        (column) => column.id === action.payload.columnId
+      );
+      state.allColumns[currentColumnIndex].tasks.map((task, index) => {
+        task.order = index + 1;
       });
     },
   },
