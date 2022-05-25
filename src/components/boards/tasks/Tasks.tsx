@@ -86,9 +86,8 @@ export function Task(props: TaskProps) {
       return name;
     }
   };
-  if (!userName) {
-    getName();
-  }
+
+  getName();
 
   // d-n-d
 
