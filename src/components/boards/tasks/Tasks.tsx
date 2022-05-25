@@ -119,7 +119,7 @@ export function Task(props: TaskProps) {
     e.preventDefault();
     if (draggableTask) {
       e.stopPropagation();
-      ((e.currentTarget as HTMLElement).children[0] as HTMLElement).style.background = 'seashell';
+      ((e.currentTarget as HTMLElement).children[0] as HTMLElement).style.background = '#f8f0e8';
       if (task.columnId === (draggableTask as TaskData).columnId) {
         dispatch(replaceTasks([task.columnId, task as TaskData, draggableTask as TaskData]));
         dispatch(changeTaskOrder({ columnId: task.columnId, orderTask: (task as TaskData).order }));
