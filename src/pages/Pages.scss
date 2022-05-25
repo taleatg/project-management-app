@@ -1,8 +1,24 @@
 @import '../index';
 
+.main-image {
+  background: url("../../public/background/board.jpg") no-repeat 85% fixed;
+  background-size: 45%;
+  height: 100%;
+  margin-bottom: 50px;
+
+  @media(max-width: 1440px) {
+    background-position: 100%;
+  }
+
+  @media(max-width: 650px) {
+    background: none;
+  }
+}
+
 .title-wrapper {
   display: flex;
   justify-content: space-between;
+  margin-left: 10px;
 }
 
 .boardList {
@@ -13,15 +29,25 @@
     width: 400px;
 
     .boardList_board {
-      width: 280px;
+      width: 340px;
       word-break: break-all;
+      background: #e2eafc;
+      box-shadow: 0 0 2px;
+
+      @media(max-width: 650px) {
+        width: calc(100vw - 100px);
+      }
     }
   }
 }
 
 .columnButtons {
-  width: 320px;
   @include flex-row-space-between;
+
+  .add-column {
+    color: #484bee;
+    display: flex;
+  }
 }
 
 .columnList {
@@ -32,60 +58,77 @@
 
 .topBoardPage {
   @include flex-row-space-between;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: white;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
-}
-
-.profile-page {
+  margin: 0 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  flex-wrap: wrap-reverse;
+}
 
-  .profile {
-    &__info {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 25px;
-      margin: 10px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      width: calc(100% - 40px);
-      min-width: 14rem;
-      color: black;
-    }
-    &__avatar {
-      margin: 0 auto;
-    }
-    &__text{
-      display: flex;
-      align-items: center;
+.profile-wrapper {
+  display: flex;
+  height: 85vh;
+  justify-content: space-around;
 
-      .title {
-        margin: 0 10px 0 0;
-        text-transform: capitalize;
+  .profile-image {
+    background: url("../../public/background/profile.jpg") 75% 60% no-repeat;
+    background-size: 100%;
+    width: 600px;
+  }
+
+  .profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .profile {
+      &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        margin: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: calc(100% - 60px);
+        min-width: 14rem;
+        color: black;
+      }
+      &__avatar {
+        margin: 0 auto;
+      }
+      &__text{
+        display: flex;
+        align-items: center;
+
+        .title {
+          margin: 0 10px 0 0;
+          text-transform: capitalize;
+        }
       }
     }
   }
+
+  @media(max-width: 720px) {
+    flex-wrap: wrap;
+    height: 75vh;
+
+    .profile-image {
+      width: 400px;
+      height: 40%;
+      background-size: 300px;
+      background-position: center;
+    }
+  }
+}
+
+.search-image {
+  background: url("../../public/background/search.jpg") no-repeat center;
+  background-size: contain;
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  padding-top: 50px;
 }
 
 .table-container {
@@ -99,6 +142,10 @@
   width: 180px;
   height: 35px;
   margin: 0 15px;
+
+  @media(max-width: 450px) {
+    margin: 0 5px;
+  }
 }
 
 .loading-wrapper {
@@ -110,4 +157,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.not-found {
+  background: url("../../public/background/404.jpg") no-repeat center;
+  background-size: contain;
+  height: 100%;
 }

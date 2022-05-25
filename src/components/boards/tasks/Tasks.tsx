@@ -86,11 +86,7 @@ export function Task(props: TaskProps) {
       return name;
     }
   };
-  if (!userName) {
-    getName();
-  }
-
-  // d-n-d
+  getName();
 
   const { setDraggableTask } = boardSlice.actions;
   const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);

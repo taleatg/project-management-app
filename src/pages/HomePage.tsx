@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, CircularProgress, Container, Divider, Grid, Paper } from '@mui/material';
+import { Box, Container, Divider, Grid, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { deleteBoard, getBoardsList } from '../services/boardService';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -8,6 +8,7 @@ import './Pages.scss';
 import { BoardPreview } from '../components/BoardPreview';
 import { useTranslation } from 'react-i18next';
 import { getCookie } from '../services/authorizationService';
+import { Loading } from '../components/Loading';
 
 export const HomePage = () => {
   const { status, allBoard } = useAppSelector((state) => state.boardReducer);
@@ -24,11 +25,11 @@ export const HomePage = () => {
   }, [dispatch]);
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" className={status === 'pending' ? '' : 'main-image'}>
       <div className="title-wrapper">
         <h2>{t('board.board')}</h2>
       </div>
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <Box sx={{ width: '100%', maxWidth: 360, marginLeft: '10px' }}>
         <Grid
           container
           rowSpacing={2}
@@ -51,7 +52,7 @@ export const HomePage = () => {
         </Grid>
       </Box>
       {status === 'rejected' && <h4>{t('error')}</h4>}
-      {status === 'pending' && <CircularProgress />}
+      {status === 'pending' && <Loading />}
     </Container>
   );
 };

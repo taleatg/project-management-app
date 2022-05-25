@@ -103,7 +103,11 @@ export function CreateColumn(props: { button: JSX.Element }) {
               type="submit"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              sx={{ mt: '20px', left: '50%', transform: 'translate(-50%, 0)' }}
+              sx={{
+                mt: '20px',
+                left: '50%',
+                transform: 'translate(-50%, 0)',
+              }}
             >
               {t('button.create')}
             </Button>

@@ -5,7 +5,7 @@ import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { CreateColumn } from '../components/boards/columns/CreateColumn';
 import { Column } from '../components/boards/columns/Column';
-import { BackendResponse } from '../components/authorization form/BackendResponse';
+import { BackendResponse } from '../components/authorizationForm/BackendResponse';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,17 +30,28 @@ export const BoardPage = () => {
     <Container maxWidth="xl">
       <div className="topBoardPage">
         <h2>{title}</h2>
-        <Button variant={'contained'} startIcon={<HomeIcon />} onClick={() => navigate('/home')}>
+        <Button
+          variant={'contained'}
+          startIcon={<HomeIcon />}
+          onClick={() => navigate('/home')}
+          sx={{
+            background: '#484bee',
+            width: '180px',
+            height: '40px',
+            lineHeight: 'inherit',
+            mt: '10px',
+          }}
+        >
           {t('button.back_to_main')}
         </Button>
       </div>
       <div className="columnButtons">
         <CreateColumn
           button={
-            <>
-              <AddBoxIcon />
+            <div className="add-column">
+              <AddBoxIcon sx={{ color: '#484bee' }} />
               {t('board.add_column')}
-            </>
+            </div>
           }
         />
       </div>

@@ -69,7 +69,8 @@ export const AuthForm = (props: { whichPage: string }) => {
   };
 
   return (
-    <>
+    <div className="authorization-wrapper">
+      <div className="authorization" />
       <div className="auth-form">
         <Typography variant="h4" component="div" gutterBottom>
           {authorization === 'signin'
@@ -110,7 +111,7 @@ export const AuthForm = (props: { whichPage: string }) => {
             <LockIcon sx={{ fontSize: '18px' }} />
           )}
           <div className="button-container">
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" sx={{ background: '#484bee' }}>
               {t('button.submit')}
             </Button>
           </div>
@@ -118,6 +119,6 @@ export const AuthForm = (props: { whichPage: string }) => {
       </div>
 
       {backendErrors ? <BackendResponse type="error" backendErrors={backendErrors} /> : null}
-    </>
+    </div>
   );
 };

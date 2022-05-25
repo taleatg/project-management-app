@@ -81,6 +81,7 @@
     "board_description_is_required": "Board description is required",
     "column_title_is_required": "Column title is required",
     "title_is_required": "Title is required",
-    "description_is_required": "Description is required"
+    "description_is_required": "Description is required",
+    "page_not_found": "Page not found"
   }
 }

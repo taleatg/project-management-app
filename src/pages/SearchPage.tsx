@@ -6,11 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../store/store';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
+import { Loading } from '../components/Loading';
 
 export function SearchPage() {
   const { t } = useTranslation();
@@ -19,12 +18,7 @@ export function SearchPage() {
   return (
     <>
       {isLoading ? (
-        <Box className="loading-wrapper">
-          <CircularProgress sx={{ m: '0 auto' }} />
-          <Typography variant="h5" component="h5" sx={{ mt: '10px' }}>
-            {t('search.loading')}
-          </Typography>
-        </Box>
+        <Loading />
       ) : (
         <>
           {searchResult.length ? (
@@ -70,6 +64,7 @@ export function SearchPage() {
               {t('search.not_found')}
             </Alert>
           )}
+          <div className="search-image" />
         </>
       )}
     </>
