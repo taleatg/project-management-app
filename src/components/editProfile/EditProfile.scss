@@ -1,12 +1,28 @@
+.edit-profile-wrapper {
+  display: flex;
+  height: 85vh;
+
+  .profile-image {
+    background: url("../../../public/background/edit-profile.jpg") no-repeat 15% 60% fixed;
+    background-size: 35%;
+    width: 600px;
+
+    @media(max-width: 650px) {
+      width: 0;
+    }
+  }
+
+  @media(max-width: 650px) {
+    height: 80vh;
+  }
+}
 .edit-profile {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding: 0 30%;
-  left: 50%;
-  transform: translate(-50%, 0);
+  max-width: 360px;
+  margin: auto;
 
   .edit-form {
     padding: 0 25px 25px;
@@ -16,6 +32,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: calc(100% - 20px);
     min-width: 16rem;
+    background: white;
 
     .edit-value {
       margin: 30px 0;

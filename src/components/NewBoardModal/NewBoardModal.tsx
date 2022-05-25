@@ -149,7 +149,12 @@ export default function NewBoardModal(props: NewBoardModalProps) {
               type="submit"
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              sx={{ mt: '20px', left: '50%', transform: 'translate(-50%, 0)' }}
+              sx={{
+                mt: '20px',
+                left: '50%',
+                transform: 'translate(-50%, 0)',
+                background: '#484bee',
+              }}
             >
               {t('button.create')}
             </Button>

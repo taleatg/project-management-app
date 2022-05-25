@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText } from '@mui/material';
+import { Divider, List, ListItem, ListItemText } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { BoardData, ColumnData } from '../services/interfaces';
 import { boardSlice } from '../store/reducers/boardSlice';
@@ -43,8 +43,9 @@ export const BoardPreview = (props: BoardPreviewProps) => {
         <ListItemText primary={props.board.title} />
       </ListItem>
       <ListItem sx={{ p: '0 16px' }}>
-        <ListItemText primary={props.board.description} />
+        <ListItemText secondary={props.board.description} />
       </ListItem>
+      <Divider variant="middle" />
       <ListItem sx={{ p: '0 16px' }}>
         <ListItemText secondary={`${t('board.columns')}: ${columns}`} />
         <ListItemText secondary={`${t('board.tasks')}: ${tasks}`} />

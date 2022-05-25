@@ -39,8 +39,11 @@ export const ProfileIcon = () => {
             aria-haspopup="true"
             onClick={handleMenu}
             color="inherit"
+            sx={{ p: '2px' }}
           >
-            <Avatar>{currentUserData.name.slice(0, 2)}</Avatar>
+            <Avatar sx={{ color: '#484bee', background: '#fff' }}>
+              {currentUserData.name.slice(0, 2)}
+            </Avatar>
           </IconButton>
         </Tooltip>
       ) : (

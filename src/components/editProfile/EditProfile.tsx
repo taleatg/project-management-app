@@ -4,13 +4,13 @@ import { Button, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import { FormField } from '../authorization form/FormFields';
+import { FormField } from '../authorizationForm/FormFields';
 import { SignInForm } from '../../services/interfaces';
 import './EditProfile.scss';
 import { deleteUser, updateUser } from '../../services/authorizationService';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import ConfirmationModal from '../ConfirmationModal';
-import { BackendResponse } from '../authorization form/BackendResponse';
+import { BackendResponse } from '../authorizationForm/BackendResponse';
 import { useNavigate } from 'react-router-dom';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import { useCookies } from 'react-cookie';
@@ -70,7 +70,8 @@ export function EditProfile() {
   };
 
   return (
-    <>
+    <div className="edit-profile-wrapper">
+      <div className="profile-image" />
       <div className="edit-profile">
         <Typography variant="h4" component="div" gutterBottom sx={{ mb: '0' }}>
           {t('profile.edit_profile')}
@@ -159,7 +160,7 @@ export function EditProfile() {
               textButton={t('button.delete_account')}
               confirmedAction={deleteAccount}
             />
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" sx={{ background: '#484bee' }}>
               {t('button.update')}
             </Button>
           </div>
@@ -169,6 +170,6 @@ export function EditProfile() {
       {isSuccessfulUpdate ? (
         <BackendResponse type="success" backendErrors="User data has been successfully updated!" />
       ) : null}
-    </>
+    </div>
   );
 }

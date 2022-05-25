@@ -10,6 +10,7 @@
     height: 70vh;
     background: rgba(0, 0, 0, 0.2);
     margin-right: 15px;
+    cursor: grab;
   }
 }
 
@@ -47,10 +48,11 @@
     .add-button {
       text-transform: none;
       position: sticky;
-      top: 5px;
+      top: 0;
       width: 225px;
       background: white;
       z-index: 100;
+      color: #484bee;
 
       &:hover {
         background: white;
@@ -58,7 +60,7 @@
     }
 
     @media(max-width: 520px) {
-      height: calc(100vh - 25rem);
+      height: calc(100vh - 30rem);
     }
   }
 }

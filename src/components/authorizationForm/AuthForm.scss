@@ -1,0 +1,83 @@
+.authorization-wrapper {
+  display: flex;
+  justify-content: space-between;
+
+  @media(max-width: 950px) {
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .auth-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 20rem;
+    height: max-content;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: auto;
+    background: white;
+
+    .auth-form__form {
+      .auth-input {
+        margin: 20px 0;
+      }
+    }
+
+    .button-container {
+      display: flex;
+      margin-top: 10px;
+      justify-content: space-around;
+    }
+
+    @media(max-width: 520px) {
+      width: 16rem;
+    }
+  }
+
+  .authorization {
+    background: url('../../../public/background/authorization.jpg') no-repeat center;
+    background-size: contain;
+    width: calc(100vh - 200px);
+    height: calc(100vh - 200px);
+    margin: 40px 80px 0;
+
+    @media(max-width: 950px) {
+      margin: 20px;
+    }
+
+    @media(max-width: 650px) {
+      width: calc(100vw - 40px);
+      height: calc(100vw - 40px);
+    }
+  }
+}
+
+.backend-errors {
+  position: absolute;
+  width: calc(100vw - 90px);
+  top: 75px;
+  margin: 0 10px;
+}
+
+.MuiCollapse-wrapperInner {
+  margin-top: 10px;
+}
+
+.MuiAlert-icon {
+  display: flex;
+  align-items: center;
+}
+
+.MuiAlert-message {
+  font-size: 20px;
+}
+
+.css-1wc848c-MuiFormHelperText-root.Mui-error {
+  position: absolute;
+  top: 55px;
+}

@@ -3,6 +3,7 @@ import { Control, Controller } from 'react-hook-form';
 import { InputAdornment, TextField } from '@mui/material';
 import { SignInForm } from '../../services/interfaces';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../store/store';
 
 export const FormField = (
   control: Control<SignInForm>,
@@ -15,6 +16,8 @@ export const FormField = (
   icon: JSX.Element
 ) => {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAppSelector((state) => state.authReducer);
+
   return (
     <Controller
       control={control}
@@ -31,7 +34,7 @@ export const FormField = (
       }}
       render={({ field }) => (
         <TextField
-          size="small"
+          size={isAuthenticated ? 'small' : 'medium'}
           label={name}
           type={type}
           className="auth-input"
@@ -43,6 +46,7 @@ export const FormField = (
           InputProps={{
             startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
           }}
+          autoComplete="off"
         />
       )}
     />

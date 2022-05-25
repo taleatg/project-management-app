@@ -38,6 +38,7 @@ const header_outer = {
   position: 'sticky',
   top: '-25px',
   transition: '0.3s',
+  background: '#484bee',
 };
 
 export const Header = () => {
@@ -112,7 +113,7 @@ export const Header = () => {
 
   return (
     <AppBar sx={header_outer}>
-      <Container maxWidth="xl" className="header-inner">
+      <Container maxWidth="xl" className="header-inner" sx={{ p: 0 }}>
         <Toolbar disableGutters>
           <Typography
             className="logo"
@@ -210,7 +211,7 @@ export const Header = () => {
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <Button
                   color="primary"
-                  sx={{ minWidth: '40px' }}
+                  sx={{ minWidth: '20px' }}
                   type="submit"
                   onClick={handleSubmit(searchHandler)}
                 >
@@ -227,7 +228,7 @@ export const Header = () => {
                 color="inherit"
                 onClick={clickBackToMainHandler}
               >
-                <IconButton>
+                <IconButton sx={{ p: '0 5px 0 0' }}>
                   <DirectionsRunIcon sx={{ transform: 'scale(-1, 1)' }} />
                 </IconButton>
               </Tooltip>
