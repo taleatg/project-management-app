@@ -58,9 +58,10 @@ export function Column(props: ColumnProps) {
   };
 
   const confirmClickHandler = async () => {
+    const title = newTitle ? newTitle : initTitle;
     const updatedColumn = await putColumn(
       {
-        title: newTitle,
+        title: title,
         order: currentColumn.order,
       },
       boardId,
@@ -68,6 +69,12 @@ export function Column(props: ColumnProps) {
     );
     await dispatch(changeColumn(updatedColumn));
     setIsEdit(false);
+  };
+
+  const enterClickHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === 'Enter') {
+      confirmClickHandler();
+    }
   };
 
   const cancelClickHandler = () => {
@@ -191,6 +198,7 @@ export function Column(props: ColumnProps) {
               sx={{ width: '160px' }}
               size="small"
               onChange={(e) => setNewTitle(e.target.value)}
+              onKeyPress={(e) => enterClickHandler(e)}
             />
           </>
         ) : (
