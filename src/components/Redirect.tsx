@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { getUserById } from '../services/authorizationService';
 import { authSlice } from '../store/reducers/authenticationSlice';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 export function Redirect({ children }: { children: JSX.Element }) {
@@ -23,14 +23,14 @@ export function Redirect({ children }: { children: JSX.Element }) {
     }
   };
 
-  async function check() {
+  const check = useCallback(async () => {
     const response = await getUserById(userId);
     if (response?.statusCode !== 401) {
       timer.current = setTimeout(check, 1000 * 5 * 60);
     } else {
       clearTimeout(timer.current as NodeJS.Timeout);
     }
-  }
+  }, [userId]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,7 +41,7 @@ export function Redirect({ children }: { children: JSX.Element }) {
         clearTimeout(timer.current as NodeJS.Timeout);
       }
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, check]);
 
   return <div className="root-wrapper">{children}</div>;
 }
