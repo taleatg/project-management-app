@@ -119,6 +119,9 @@ export const columnSlice = createSlice({
         task.order = index + 1;
       });
     },
+    removeAllColumns(state) {
+      state.allColumns = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getColumnsList.pending, (state) => {

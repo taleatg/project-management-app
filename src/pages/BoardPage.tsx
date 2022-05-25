@@ -12,9 +12,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getBoardById } from '../services/boardService';
 import { useTranslation } from 'react-i18next';
 import { Loading } from '../components/Loading';
+import { columnSlice } from '../store/reducers/columnSlice';
 
 export const BoardPage = () => {
   const { title } = useAppSelector((state) => state.boardReducer.currentBoard);
+  const { removeAllColumns } = columnSlice.actions;
   const { status, allColumns } = useAppSelector((state) => state.columnReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -25,7 +27,10 @@ export const BoardPage = () => {
   useEffect(() => {
     dispatch(getBoardById(boardId));
     dispatch(getColumnsList(boardId));
-  }, [dispatch, boardId]);
+    return function cleanup() {
+      dispatch(removeAllColumns());
+    };
+  });
 
   return (
     <Container maxWidth="xl">
