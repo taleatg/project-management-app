@@ -86,7 +86,10 @@ export function Task(props: TaskProps) {
       return name;
     }
   };
+
   getName();
+
+  // d-n-d
 
   const { setDraggableTask } = boardSlice.actions;
   const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);

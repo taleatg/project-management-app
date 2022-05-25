@@ -27,9 +27,7 @@ import { searchSlice } from '../../store/reducers/searchSlice';
 import { SearchResult } from '../../services/interfaces';
 import { getColumns } from '../../services/columnService';
 import { getTasks } from '../../services/taskService';
-import { getCookie, getUserById } from '../../services/authorizationService';
-import { getBoardsList } from '../../services/boardService';
-import { useEffect } from 'react';
+import { getUserById } from '../../services/authorizationService';
 
 type IPages = {
   [key: string]: string;
@@ -84,13 +82,6 @@ export const Header = () => {
   const clickBackToMainHandler = () => {
     navigate('/home');
   };
-
-  useEffect(() => {
-    const token = getCookie('token') as string;
-    if (token) {
-      dispatch(getBoardsList(token));
-    }
-  }, [dispatch]);
 
   const searchHandler: SubmitHandler<FieldValues> = async (data) => {
     dispatch(updateLoadingState(true));
