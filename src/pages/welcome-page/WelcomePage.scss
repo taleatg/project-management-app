@@ -11,7 +11,7 @@
     }
 
     .welcome-image {
-      background: url('../../../public/background/welcome.webp') no-repeat center;
+      background: url('../../../public/assets/images/background/welcome.webp') no-repeat center;
       background-size: contain;
       width: 1000px;
     }
@@ -103,15 +103,15 @@
             }
 
             .alexander {
-              background-image: url('../../../public/alex.jpeg');
+              background-image: url('../../../public/assets/images/alex.jpeg');
             }
 
             .tatsiana {
-              background-image: url('../../../public/tatsiana.jpeg');
+              background-image: url('../../../public/assets/images/tatsiana.jpeg');
             }
 
             .dina {
-              background-image: url('../../../public/dina.jpeg');
+              background-image: url('../../../public/assets/images/dina.jpeg');
             }
           }
         }

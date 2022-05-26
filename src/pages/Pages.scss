@@ -1,7 +1,7 @@
 @import '../index';
 
 .main-image {
-  background: url("../../public/background/board.webp") no-repeat 85% fixed;
+  background: url("../../public/assets/images/background/board.webp") no-repeat 85% fixed;
   background-size: 45%;
   height: 100%;
   margin-bottom: 50px;
@@ -69,7 +69,7 @@
   justify-content: space-around;
 
   .profile-image {
-    background: url("../../public/background/profile.webp") 75% 60% no-repeat;
+    background: url("../../public/assets/images/background/profile.webp") 75% 60% no-repeat;
     background-size: 100%;
     width: 600px;
   }
@@ -123,7 +123,7 @@
 }
 
 .search-image {
-  background: url("../../public/background/search.webp") no-repeat center;
+  background: url("../../public/assets/images/background/search.webp") no-repeat center;
   background-size: contain;
   width: 300px;
   height: 300px;
@@ -160,7 +160,7 @@
 }
 
 .not-found {
-  background: url("../../public/background/404.webp") no-repeat center;
+  background: url("../../public/assets/images/background/404.webp") no-repeat center;
   background-size: contain;
   height: 100%;
 }
