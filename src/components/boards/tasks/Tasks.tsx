@@ -87,7 +87,7 @@ export function Task(props: TaskProps) {
     }
   };
 
-  getName();
+  //getName();
 
   // d-n-d
 
