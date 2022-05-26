@@ -23,7 +23,7 @@ interface ColumnProps {
 }
 
 export function Column(props: ColumnProps) {
-  const { changeColumn, removeColumn, replaceColumns, removeTask, changeTaskOrder } =
+  const { changeColumn, removeColumn, replaceColumns, removeTask, changeTaskOrder, changeTaskId } =
     columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -139,7 +139,7 @@ export function Column(props: ColumnProps) {
         })
       );
       dispatch(changeTaskOrder(column.id));
-      await postTask({
+      const { data: createdTask } = await postTask({
         body: {
           title: (draggableTask as TaskData).title,
           description: (draggableTask as TaskData).description,
@@ -148,6 +148,13 @@ export function Column(props: ColumnProps) {
         boardId: boardId,
         columnId: column.id,
       });
+      dispatch(
+        changeTaskId({
+          columnId: column.id,
+          oldId: (draggableTask as TaskData).id,
+          newId: createdTask.id,
+        })
+      );
       await deleteTask({
         boardId: boardId,
         columnId: columnOfDraggableTask,
