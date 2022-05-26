@@ -5,7 +5,7 @@ import { getColumnsList } from '../services/columnService';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { CreateColumn } from '../components/boards/columns/CreateColumn';
 import { Column } from '../components/boards/columns/Column';
-import { BackendResponse } from '../components/authorizationForm/BackendResponse';
+import { BackendResponse } from '../components/authorization-form/BackendResponse';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate, useParams } from 'react-router-dom';

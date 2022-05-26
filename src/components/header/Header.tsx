@@ -16,7 +16,7 @@ import './Header.scss';
 import LangSelect from '../LangSelect';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
-import NewBoardModal from '../NewBoardModal/NewBoardModal';
+import NewBoardModal from '../new-board-modal/NewBoardModal';
 import { useCookies } from 'react-cookie';
 import { ProfileIcon } from '../Profile/ProfileIcon';
 import { Divider, InputAdornment, Paper, TextField, Tooltip, Zoom } from '@mui/material';

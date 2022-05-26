@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '@mui/material';
-import { EditProfile } from '../components/editProfile/EditProfile';
+import { EditProfile } from '../components/edit-profile/EditProfile';
 
 export const EditProfilePage = () => {
   return (
