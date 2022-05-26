@@ -49,7 +49,7 @@ export default function ConfirmationModal(props: ConfirmModalProps) {
         </Button>
       ) : (
         <IconButton aria-label="delete" onClick={handleClickOpen}>
-          <DeleteIcon color={'primary'} />
+          <DeleteIcon />
         </IconButton>
       )}
       <Dialog
