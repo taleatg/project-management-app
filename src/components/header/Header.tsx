@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { authSlice } from '../../store/reducers/authenticationSlice';
 import NewBoardModal from '../new-board-modal/NewBoardModal';
 import { useCookies } from 'react-cookie';
-import { ProfileIcon } from '../Profile/ProfileIcon';
+import { ProfileIcon } from '../profile/ProfileIcon';
 import { Divider, InputAdornment, Paper, TextField, Tooltip, Zoom } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
