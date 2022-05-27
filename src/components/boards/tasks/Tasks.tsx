@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -25,13 +25,21 @@ interface TaskProps {
 
 export function Task(props: TaskProps) {
   const dispatch = useAppDispatch();
-  const { removeTask, replaceTasks, changeTaskOrder } = columnSlice.actions;
+  const { removeTask, replaceTasks, changeTaskOrder, changeTaskId } = columnSlice.actions;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [isEdit, setIsEdit] = useState(false);
   const params = useParams();
   const boardId: string = params.boardId as string;
   const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const getName = async () => {
+      const name = await getUserName(props.task.userId);
+      setUserName(name.name);
+    };
+    getName();
+  }, [props.task.userId]);
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -79,18 +87,6 @@ export function Task(props: TaskProps) {
     setAnchorEl(null);
   };
 
-  const getName = async () => {
-    if (props.task?.userId) {
-      const name = await getUserName(props.task.userId);
-      setUserName(name.name);
-      return name;
-    }
-  };
-
-  getName();
-
-  // d-n-d
-
   const { setDraggableTask } = boardSlice.actions;
   const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);
 
@@ -124,8 +120,15 @@ export function Task(props: TaskProps) {
       e.stopPropagation();
       ((e.currentTarget as HTMLElement).children[0] as HTMLElement).style.background = '#f8f0e8';
       if (task.columnId === (draggableTask as TaskData).columnId) {
-        dispatch(replaceTasks([task.columnId, task as TaskData, draggableTask as TaskData]));
-        dispatch(changeTaskOrder({ columnId: task.columnId, orderTask: (task as TaskData).order }));
+        dispatch(
+          replaceTasks([
+            task.columnId,
+            task as TaskData,
+            draggableTask as TaskData,
+            (draggableTask as TaskData).columnId,
+          ])
+        );
+        dispatch(changeTaskOrder(task.columnId));
         const body = {
           title: (draggableTask as TaskData).title,
           order: (task as TaskData).order,
@@ -141,6 +144,29 @@ export function Task(props: TaskProps) {
           taskId: (draggableTask as TaskData).id,
         });
       } else {
+        dispatch(
+          removeTask({
+            columnId: (draggableTask as TaskData).columnId,
+            taskId: (draggableTask as TaskData).id,
+          })
+        );
+        const newDraggableTask = {
+          id: (draggableTask as TaskData).id,
+          title: (draggableTask as TaskData).title,
+          order: (task as TaskData).order,
+          description: (draggableTask as TaskData).description,
+          userId: (draggableTask as TaskData).userId,
+          columnId: (task as TaskData).columnId,
+        };
+        dispatch(
+          replaceTasks([
+            task.columnId,
+            task as TaskData,
+            newDraggableTask as TaskData,
+            (draggableTask as TaskData).columnId,
+          ])
+        );
+        dispatch(changeTaskOrder(task.columnId));
         const { data: createdTask } = await postTask({
           body: {
             title: (draggableTask as TaskData).title,
@@ -155,6 +181,13 @@ export function Task(props: TaskProps) {
           columnId: columnOfDraggableTask,
           taskId: (draggableTask as TaskData).id,
         });
+        dispatch(
+          changeTaskId({
+            columnId: (task as TaskData).columnId,
+            oldId: (draggableTask as TaskData).id,
+            newId: createdTask.id,
+          })
+        );
         const body = {
           title: (draggableTask as TaskData).title,
           order: (task as TaskData).order,
@@ -169,8 +202,6 @@ export function Task(props: TaskProps) {
           columnId: (task as TaskData).columnId,
           taskId: (createdTask as TaskData).id,
         });
-        dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
-        dispatch(getTasksInColumn({ boardId: boardId, columnId: (task as TaskData).columnId }));
       }
       dispatch(setDraggableTask(null));
     }

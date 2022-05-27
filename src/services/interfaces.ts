@@ -73,9 +73,10 @@ export interface UserData {
   login: string;
 }
 
-export interface DataForReplaceTasks {
+export interface DataForChangeId {
   columnId: string;
-  orderTask: number;
+  oldId: string;
+  newId: string;
 }
 
 export interface SearchResult {

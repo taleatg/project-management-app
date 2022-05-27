@@ -23,7 +23,8 @@ interface ColumnProps {
 }
 
 export function Column(props: ColumnProps) {
-  const { changeColumn, removeColumn, replaceColumns } = columnSlice.actions;
+  const { changeColumn, removeColumn, replaceColumns, removeTask, changeTaskOrder, changeTaskId } =
+    columnSlice.actions;
   const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const { allColumns, status } = useAppSelector((state) => state.columnReducer);
@@ -117,7 +118,28 @@ export function Column(props: ColumnProps) {
   const dropHandler = async (e: React.DragEvent<HTMLDivElement>, column: ColumnData) => {
     e.preventDefault();
     if (draggableTask) {
-      await postTask({
+      dispatch(
+        removeTask({
+          columnId: (draggableTask as TaskData).columnId,
+          taskId: (draggableTask as TaskData).id,
+        })
+      );
+      dispatch(
+        addTask({
+          data: {
+            id: (draggableTask as TaskData).id,
+            title: (draggableTask as TaskData).title,
+            order: (draggableTask as TaskData).order,
+            description: (draggableTask as TaskData).description,
+            userId: (draggableTask as TaskData).userId,
+            columnId: column.id,
+          },
+          boardId: boardId,
+          columnId: column.id,
+        })
+      );
+      dispatch(changeTaskOrder(column.id));
+      const { data: createdTask } = await postTask({
         body: {
           title: (draggableTask as TaskData).title,
           description: (draggableTask as TaskData).description,
@@ -126,14 +148,19 @@ export function Column(props: ColumnProps) {
         boardId: boardId,
         columnId: column.id,
       });
+      dispatch(
+        changeTaskId({
+          columnId: column.id,
+          oldId: (draggableTask as TaskData).id,
+          newId: createdTask.id,
+        })
+      );
       await deleteTask({
         boardId: boardId,
         columnId: columnOfDraggableTask,
         taskId: (draggableTask as TaskData).id,
       });
       dispatch(setDraggableTask(null));
-      dispatch(getTasksInColumn({ boardId: boardId, columnId: columnOfDraggableTask }));
-      dispatch(getTasksInColumn({ boardId: boardId, columnId: column.id }));
     } else {
       dispatch(replaceColumns([draggableColumn as ColumnData, column as ColumnData]));
       dispatch(
