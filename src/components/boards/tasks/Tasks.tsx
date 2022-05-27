@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Tasks.scss';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -32,6 +32,14 @@ export function Task(props: TaskProps) {
   const params = useParams();
   const boardId: string = params.boardId as string;
   const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const getName = async () => {
+      const name = await getUserName(props.task.userId);
+      setUserName(name.name);
+    };
+    getName();
+  }, [props.task.userId]);
 
   const deleteSelectedTask = async () => {
     const data = await deleteTask({
@@ -78,18 +86,6 @@ export function Task(props: TaskProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const getName = async () => {
-    if (props.task?.userId) {
-      const name = await getUserName(props.task.userId);
-      setUserName(name.name);
-      return name;
-    }
-  };
-
-  //getName();
-
-  // d-n-d
 
   const { setDraggableTask } = boardSlice.actions;
   const { draggableTask, columnOfDraggableTask } = useAppSelector((state) => state.boardReducer);
