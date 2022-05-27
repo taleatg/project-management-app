@@ -7,6 +7,6 @@ axios.defaults.transformRequest = ((data, headers: Record<string, string>) => {
   return data;
 }) as AxiosRequestTransformer;
 
-axios.defaults.baseURL = 'https://project-management-appp.herokuapp.com/';
+axios.defaults.baseURL = 'https://project-management-app.herokuapp.com/';
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.put['Content-Type'] = 'application/json; charset=UTF-8';
