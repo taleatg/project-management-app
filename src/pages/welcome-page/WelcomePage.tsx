@@ -71,7 +71,7 @@ export const WelcomePage: React.FC = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <img src="rs-logo.svg" alt="" />
+            <img src="./assets/icons/rs-logo.svg" alt="logo" />
             <span>{t('welcome.rs_school')}</span>
           </Link>
         </div>
