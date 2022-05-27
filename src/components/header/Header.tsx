@@ -25,9 +25,10 @@ import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form
 import SearchIcon from '@mui/icons-material/Search';
 import { searchSlice } from '../../store/reducers/searchSlice';
 import { SearchResult } from '../../services/interfaces';
-import { getColumns } from '../../services/columnService';
-import { getTasks } from '../../services/taskService';
+import { getColumnById } from '../../services/columnService';
+import { searchTask } from '../../services/taskService';
 import { getUserById } from '../../services/authorizationService';
+import { getBoard } from '../../services/boardService';
 
 type IPages = {
   [key: string]: string;
@@ -50,7 +51,6 @@ export const Header = () => {
   const removeCookie = useCookies(['token', 'userId'])[2];
   const { t } = useTranslation();
   const { handleSubmit, control, reset } = useForm();
-  const { allBoard } = useAppSelector((state) => state.boardReducer);
   const { updateSearchResult, updateLoadingState } = searchSlice.actions;
 
   const pages: IPages = isAuthenticated
@@ -87,22 +87,18 @@ export const Header = () => {
     dispatch(updateLoadingState(true));
     navigate('/search');
     const resultTasks: SearchResult[] = [];
-    for (const board of allBoard) {
-      const columns = await getColumns(board.id);
-      for (const column of columns) {
-        const tasks = await getTasks({ boardId: board.id, columnId: column.id });
-        for (const task of tasks) {
-          if (task.title.toLowerCase().includes(data.search.toLowerCase())) {
-            resultTasks.push({
-              board: board.title,
-              column: column.title,
-              taskId: task.id,
-              title: task.title,
-              description: task.description,
-              assignee: (await getUserById(task.userId)).name,
-            });
-          }
-        }
+    const tasks = await searchTask();
+
+    for (const task of tasks) {
+      if (task.title.toLowerCase().includes(data.search.toLowerCase())) {
+        resultTasks.push({
+          board: (await getBoard(task.boardId)).title,
+          column: (await getColumnById(task.boardId, task.columnId)).title,
+          taskId: task.id,
+          title: task.title,
+          description: task.description,
+          assignee: (await getUserById(task.userId)).name,
+        });
       }
     }
 

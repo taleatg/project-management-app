@@ -77,3 +77,16 @@ export const getColumns = async (boardId: string) => {
       return err.response.data;
     });
 };
+
+export const getColumnById = async (boardId: string, columnId: string) => {
+  return axios({
+    method: 'get',
+    url: `/boards/${boardId}/columns/${columnId}`,
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};

@@ -73,3 +73,16 @@ export const deleteBoard = createAsyncThunk(
       });
   }
 );
+
+export const getBoard = async (boardId: string) => {
+  return axios({
+    method: 'get',
+    url: `/boards/${boardId}`,
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};

@@ -84,3 +84,16 @@ export const getTasks = async ({ boardId, columnId }: { boardId: string; columnI
       return err.response.data;
     });
 };
+
+export const searchTask = async () => {
+  return axios({
+    method: 'get',
+    url: 'search/tasks',
+  })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+};
