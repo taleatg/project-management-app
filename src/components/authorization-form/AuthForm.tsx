@@ -95,7 +95,7 @@ export const AuthForm = (props: { whichPage: string }) => {
             errors.login?.message,
             'login',
             t('authorization.login'),
-            /^[A-Za-z0-9]{5,}/,
+            /^[A-Za-z0-9]{5,}|[@]{1,}[A-Za-z0-9]{2,}.[A-Za-z0-9]{2,5}/,
             t('authorization.login_error'),
             'text',
             <AlternateEmailIcon sx={{ fontSize: '18px' }} />
