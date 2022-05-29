@@ -18,7 +18,7 @@
     "name": "name",
     "name_error": "Enter at least two letters",
     "login": "login",
-    "login_error": "Login must contain at least 5 Latin letters or numbers",
+    "login_error": "Enter correct login or email",
     "password": "password",
     "repeat_password": "Repeat password",
     "password_error": "Password must contain at least 8 characters",
